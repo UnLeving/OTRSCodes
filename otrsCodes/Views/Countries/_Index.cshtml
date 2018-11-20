@@ -1,0 +1,109 @@
+﻿
+@Html.DropDownList("Id", ViewBag.CountryId as SelectList, htmlAttributes: new { @class = "form-control form-control-sm" })
+
+<div class="row">
+    <div class="col-lg-6 col-md-9 col-sm-12">
+        <table class="table  table-condensed table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">R</th>
+                    <th scope="col">AB</th>
+                    <th scope="col">0</th>
+                    <th scope="col">1</th>
+                    <th scope="col">2</th>
+                    <th scope="col">3</th>
+                    <th scope="col">4</th>
+                    <th scope="col">5</th>
+                    <th scope="col">6</th>
+                    <th scope="col">7</th>
+                    <th scope="col">8</th>
+                    <th scope="col">9</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 50; i++)
+                {
+                    <tr>
+                        <td>1</td>
+                        <th scope="row">
+                            @i
+                        </th>
+                        <td>@(i * 0)</td>
+                        <td>@(i * 111)</td>
+                        <td>@(i * 211)</td>
+                        <td>@(i * 311)</td>
+                        <td>@(i * 411)</td>
+                        <td>@(i * 511)</td>
+                        <td>@(i * 611)</td>
+                        <td>@(i * 711)</td>
+                        <td>@(i * 811)</td>
+                        <td>@(i * 911)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6 col-md-9 col-sm-12">
+        <table class="table  table-condensed table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">R</th>
+                    <th scope="col">AB</th>
+                    <th scope="col">0</th>
+                    <th scope="col">1</th>
+                    <th scope="col">2</th>
+                    <th scope="col">3</th>
+                    <th scope="col">4</th>
+                    <th scope="col">5</th>
+                    <th scope="col">6</th>
+                    <th scope="col">7</th>
+                    <th scope="col">8</th>
+                    <th scope="col">9</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 50; i < 100; i++)
+                {
+                    <tr>
+                        <td>1</td>
+                        <th scope="row">
+                            @i
+                        </th>
+                        <td>@(i * 0)</td>
+                        <td>@(i * 1)</td>
+                        <td>@(i * 2)</td>
+                        <td>@(i * 3)</td>
+                        <td>@(i * 4)</td>
+                        <td>@(i * 5)</td>
+                        <td>@(i * 6)</td>
+                        <td>@(i * 7)</td>
+                        <td>@(i * 8)</td>
+                        <td>@(i * 9)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.DropDownList("Id", ViewBag.NetworkId as SelectList, htmlAttributes: new { @class = "form-control form-control-sm" })
+
+<table class="table  table-condensed table-bordered table-dark">
+    <thead>
+        <tr>
+            <th scope="col">1</th>
+            <th scope="col">2</th>
+            <th scope="col">3</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="col">1</th>
+            <th scope="col">2</th>
+            <th scope="col">3</th>
+        </tr>
+    </tbody>
+</table>
