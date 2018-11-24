@@ -5318,8 +5318,8 @@ input[type="button"].btn-block {
 .list-group {
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
+    -ms-flex-direction: row;
+    flex-direction: row;
     padding-left: 0;
     margin-bottom: 0;
 }
