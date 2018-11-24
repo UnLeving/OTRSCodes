@@ -17,6 +17,11 @@ namespace otrsCodes.Controllers
             return View(networks.ToList());
         }
 
+        public ActionResult Get(int? id)
+        {
+            return PartialView(db.Countries.Find(id).Networks.ToList());
+        }
+
         // GET: Networks/Details/5
         public ActionResult Details(int? id)
         {

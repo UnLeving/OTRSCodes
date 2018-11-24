@@ -1,5 +1,4 @@
-﻿
-@Html.DropDownList("Id", ViewBag.CountryId as SelectList, htmlAttributes: new { @class = "form-control form-control-sm" })
+﻿@Html.DropDownList("Id", ViewBag.CountryId as SelectList,"--select country--" ,new { id = "ddlCountries", @class = "form-control form-control-sm" })
 
 <div class="row">
     <div class="col-lg-6 col-md-9 col-sm-12">
@@ -88,22 +87,4 @@
     </div>
 </div>
 
-@Html.DropDownList("Id", ViewBag.NetworkId as SelectList, htmlAttributes: new { @class = "form-control form-control-sm" })
-
-<table class="table  table-condensed table-bordered table-dark">
-    <thead>
-        <tr>
-            <th scope="col">1</th>
-            <th scope="col">2</th>
-            <th scope="col">3</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="col">1</th>
-            <th scope="col">2</th>
-            <th scope="col">3</th>
-        </tr>
-    </tbody>
-</table>
+<div id="myResultContent"></div>
