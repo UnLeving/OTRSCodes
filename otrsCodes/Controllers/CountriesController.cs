@@ -10,8 +10,7 @@ namespace otrsCodes.Controllers
     public class CountriesController : Controller
     {
         private Model1 db = new Model1();
-        
-        // GET: Countries
+
         public ActionResult Index(int num = 0)
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
