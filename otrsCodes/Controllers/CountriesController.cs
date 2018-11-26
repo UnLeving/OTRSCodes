@@ -10,9 +10,9 @@ namespace otrsCodes.Controllers
     public class CountriesController : Controller
     {
         private Model1 db = new Model1();
-
+        
         // GET: Countries
-        public ActionResult Index()
+        public ActionResult Index(int num = 0)
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name");
@@ -21,7 +21,7 @@ namespace otrsCodes.Controllers
             for (int i = 0; i < 100; i++)
             {
                 BaseTable table = new BaseTable();
-                table.R = 6;
+                table.R = num;
                 table.AB = i;
                 int val = table.R * 1000 + i * 10;
                 table.a = val + 0;
