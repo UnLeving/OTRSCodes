@@ -19,4 +19,5 @@ $("#ddlCountries").change(function () {
 
 $("td").click(function () {
     $(this).css('background-color', document.getElementById("HexSaver").value);
+    alert($(this).text());
 });

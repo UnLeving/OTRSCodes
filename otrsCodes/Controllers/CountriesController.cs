@@ -1,5 +1,6 @@
 ﻿using otrsCodes.Models;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -22,17 +23,17 @@ namespace otrsCodes.Controllers
                 BaseTable table = new BaseTable();
                 table.R = 6;
                 table.AB = i;
-                
-                table.a = (table.R * 1000) + (i * 10 + 0);
-                table.b = (table.R * 1000) + (i * 10 + 1);
-                table.c = (table.R * 1000) + (i * 10 + 2);
-                table.d = (table.R * 1000) + (i * 10 + 3);
-                table.e = (table.R * 1000) + (i * 10 + 4);
-                table.f = (table.R * 1000) + (i * 10 + 5);
-                table.g = (table.R * 1000) + (i * 10 + 6);
-                table.h = (table.R * 1000) + (i * 10 + 7);
-                table.k = (table.R * 1000) + (i * 10 + 8);
-                table.l = (table.R * 1000) + (i * 10 + 9);
+                int val = table.R * 1000 + i * 10;
+                table.a = val + 0;
+                table.b = val + 1;
+                table.c = val + 2;
+                table.d = val + 3;
+                table.e = val + 4;
+                table.f = val + 5;
+                table.g = val + 6;
+                table.h = val + 7;
+                table.k = val + 8;
+                table.l = val + 9;
                 dt1.Add(table);
             }
             return PartialView(dt1);
@@ -97,21 +98,20 @@ namespace otrsCodes.Controllers
         //    return View(countries);
         //}
 
-        //// POST: Countries/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,Name,Code")] Countries countries)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(countries).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(countries);
-        //}
+        // POST: Countries/Edit/5
+        [HttpPost]
+        public ActionResult Edit(Countries countries, int countryid, int networkid, int code, string hex)
+        {
+            if (ModelState.IsValid)
+            {
+                var t = db.Countries.Find(countryid).Networks.Where(i=>i.Id== networkid).First();
+
+                db.Entry(countries).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(countries);
+        }
 
         //// GET: Countries/Delete/5
         //public ActionResult Delete(int? id)

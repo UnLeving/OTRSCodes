@@ -12,6 +12,7 @@ namespace otrsCodes.Models
         public virtual DbSet<Colors> Colors { get; set; }
         public virtual DbSet<Countries> Countries { get; set; }
         public virtual DbSet<Networks> Networks { get; set; }
+        public virtual DbSet<Codes> Codes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -42,6 +43,10 @@ namespace otrsCodes.Models
             modelBuilder.Entity<Networks>()
                 .Property(e => e.Name)
                 .IsFixedLength();
+
+            modelBuilder.Entity<Codes>()
+               .Property(e => e.Code)
+               .IsFixedLength();
         }
     }
 }

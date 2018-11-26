@@ -128,6 +128,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CodesController.cs" />
     <Compile Include="Controllers\ColorsController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -136,6 +137,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BaseTable.cs" />
+    <Compile Include="Models\Codes.cs" />
     <Compile Include="Models\Colors.cs" />
     <Compile Include="Models\Countries.cs" />
     <Compile Include="Models\Model1.cs" />
@@ -232,6 +234,11 @@
     <Content Include="Views\Networks\Index.cshtml" />
     <Content Include="Views\Countries\Index.cshtml" />
     <Content Include="Views\Countries\Net.cshtml" />
+    <Content Include="Views\Codes\Create.cshtml" />
+    <Content Include="Views\Codes\Delete.cshtml" />
+    <Content Include="Views\Codes\Details.cshtml" />
+    <Content Include="Views\Codes\Edit.cshtml" />
+    <Content Include="Views\Codes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
