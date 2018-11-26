@@ -1,7 +1,5 @@
 ﻿using otrsCodes.Models;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -17,18 +15,39 @@ namespace otrsCodes.Controllers
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name");
-            return PartialView();
+
+            List<BaseTable> dt1 = new List<BaseTable>();
+            for (int i = 0; i < 50; i++)
+            {
+                BaseTable table = new BaseTable();
+                table.R = 6;
+                table.AB = i;
+
+
+                table.a = (table.R * 1000) + (i * 10 + 0);
+                table.b = (table.R * 1000) + (i * 10 + 1);
+                table.c = (table.R * 1000) + (i * 10 + 2);
+                table.d = (table.R * 1000) + (i * 10 + 3);
+                table.e = (table.R * 1000) + (i * 10 + 4);
+                table.f = (table.R * 1000) + (i * 10 + 5);
+                table.g = (table.R * 1000) + (i * 10 + 6);
+                table.h = (table.R * 1000) + (i * 10 + 7);
+                table.k = (table.R * 1000) + (i * 10 + 8);
+                table.l = (table.R * 1000) + (i * 10 + 9);
+                //dt2.Rows[i][j] = (int.Parse(dt1.Rows[0].Field<string>(0)) * 1000) + ((i + 50) * 10 + j - 2);
+
+
+                dt1.Add(table);
+            }
+
+            return PartialView(dt1);
+
         }
 
         [HttpGet]
         public ActionResult Net(int? id)
         {
             return PartialView(db.Countries.Find(id).Networks.ToList());
-        }
-
-        public ActionResult Net()
-        {
-            return PartialView(db.Countries.Find(1).Networks.ToList());
         }
 
         // GET: Countries/Details/5
