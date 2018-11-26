@@ -1,23 +1,31 @@
 ﻿function li_onclick_networks(e) {
-    var hex = $(e).data('ass-id');
-    document.getElementById("HexSaver").value = hex;
+    document.getElementById("HexSaver").value = $(e).css('background-color');
+    document.getElementById("NetworkIdSaver").value = e.id;
 }
 
 $("#ddlCountries").change(function () {
-    var categoryId = $("#ddlCountries").val();
+    var countryId = $("#ddlCountries").val();
+    document.getElementById("CountryIdSaver").value = countryId;
+
     $.ajax({
         url: "/Countries/Net",
         type: "GET",
-        data: { id: categoryId }
+        data: { id: countryId }
     })
         .done(function (partialViewResult) {
             $("#myResultContent").html(partialViewResult);
-        });
 
-    //$("#myResultContent").load('@(Url.Action("Get","Networks",null, Request.Url.Scheme))?id=' + categoryId);
+        });
 });
 
 $("td").click(function () {
     $(this).css('background-color', document.getElementById("HexSaver").value);
-    alert($(this).text());
+    $.ajax({
+        url: "/Countries/AddCode",
+        type: "POST",
+        data: { CountryId: document.getElementById("CountryIdSaver").value, NetworkId: document.getElementById("NetworkIdSaver").value, Code: $(this).text() }
+    })
+        .done(function (status) {
+            alert(status);
+        });
 });

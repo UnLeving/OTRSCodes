@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<otrsCodes.Models.BaseTable>
 @Html.DropDownList("Id", ViewBag.CountryId as SelectList, "--select country--", new { id = "ddlCountries", @class = "form-control form-control-sm" })
+@Html.Hidden("CountryIdSaver", "TEST")
 
 <div class="row">
     <div class="col-lg-6 col-md-9 col-sm-12">

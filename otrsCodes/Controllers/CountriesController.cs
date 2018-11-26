@@ -60,84 +60,29 @@ namespace otrsCodes.Controllers
             return View(countries);
         }
 
-        //// GET: Countries/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Countries/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,Name,Code")] Countries countries)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Countries.Add(countries);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(countries);
-        //}
-
-        //// GET: Countries/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Countries countries = db.Countries.Find(id);
-        //    if (countries == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(countries);
-        //}
-
-        // POST: Countries/Edit/5
         [HttpPost]
-        public ActionResult Edit(Countries countries, int countryid, int networkid, int code, string hex)
+        public HttpStatusCode AddCode([Bind(Include = "CountryId,NetworkId,Code")] Codes codes)
         {
             if (ModelState.IsValid)
             {
-                var t = db.Countries.Find(countryid).Networks.Where(i=>i.Id== networkid).First();
-
-                db.Entry(countries).State = EntityState.Modified;
+                db.Codes.Add(codes);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return HttpStatusCode.OK;
             }
-            return View(countries);
+            return HttpStatusCode.BadRequest;
         }
 
-        //// GET: Countries/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Countries countries = db.Countries.Find(id);
-        //    if (countries == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(countries);
-        //}
-
-        //// POST: Countries/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Countries countries = db.Countries.Find(id);
-        //    db.Countries.Remove(countries);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        public HttpStatusCode Edit([Bind(Include = "CountryId,NetworkId,Code")] Codes codes)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(codes).State = EntityState.Modified;
+                db.SaveChanges();
+                return HttpStatusCode.OK;
+            }
+            return HttpStatusCode.BadRequest;
+        }
 
         protected override void Dispose(bool disposing)
         {
