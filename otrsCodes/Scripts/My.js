@@ -17,7 +17,6 @@ $("#ddlCountries").change(function () {
     //$("#myResultContent").load('@(Url.Action("Get","Networks",null, Request.Url.Scheme))?id=' + categoryId);
 });
 
-$("#tb1 td").click(function () {
+$("td").click(function () {
     $(this).css('background-color', document.getElementById("HexSaver").value);
-    alert(celltext);
 });

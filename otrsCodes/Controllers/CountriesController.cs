@@ -17,13 +17,12 @@ namespace otrsCodes.Controllers
             ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name");
 
             List<BaseTable> dt1 = new List<BaseTable>();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 100; i++)
             {
                 BaseTable table = new BaseTable();
                 table.R = 6;
                 table.AB = i;
-
-
+                
                 table.a = (table.R * 1000) + (i * 10 + 0);
                 table.b = (table.R * 1000) + (i * 10 + 1);
                 table.c = (table.R * 1000) + (i * 10 + 2);
@@ -34,14 +33,9 @@ namespace otrsCodes.Controllers
                 table.h = (table.R * 1000) + (i * 10 + 7);
                 table.k = (table.R * 1000) + (i * 10 + 8);
                 table.l = (table.R * 1000) + (i * 10 + 9);
-                //dt2.Rows[i][j] = (int.Parse(dt1.Rows[0].Field<string>(0)) * 1000) + ((i + 50) * 10 + j - 2);
-
-
                 dt1.Add(table);
             }
-
             return PartialView(dt1);
-
         }
 
         [HttpGet]

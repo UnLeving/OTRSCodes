@@ -22,22 +22,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @for (int i = 0; i < 50; i++)
                 {
-                <tr>
-                    <th scope="row">@item.R</th>
-                    <th scope="row">@item.AB </th>
-                    <td>@item.a</td>
-                    <td>@item.b</td>
-                    <td>@item.c</td>
-                    <td>@item.d</td>
-                    <td>@item.e</td>
-                    <td>@item.f</td>
-                    <td>@item.g</td>
-                    <td>@item.h</td>
-                    <td>@item.k</td>
-                    <td>@item.l</td>
-                </tr>
+                    <tr>
+                        <th scope="row">@Model.ElementAt(i).R</th>
+                        <th scope="row">@Model.ElementAt(i).AB </th>
+                        <td>@Model.ElementAt(i).a</td>
+                        <td>@Model.ElementAt(i).b</td>
+                        <td>@Model.ElementAt(i).c</td>
+                        <td>@Model.ElementAt(i).d</td>
+                        <td>@Model.ElementAt(i).e</td>
+                        <td>@Model.ElementAt(i).f</td>
+                        <td>@Model.ElementAt(i).g</td>
+                        <td>@Model.ElementAt(i).h</td>
+                        <td>@Model.ElementAt(i).k</td>
+                        <td>@Model.ElementAt(i).l</td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -65,20 +65,18 @@
                 @for (int i = 50; i < 100; i++)
                 {
                     <tr>
-                        <td>1</td>
-                        <th scope="row">
-                            @i
-                        </th>
-                        <td>@(i * 0)</td>
-                        <td>@(i * 1)</td>
-                        <td>@(i * 2)</td>
-                        <td>@(i * 3)</td>
-                        <td>@(i * 4)</td>
-                        <td>@(i * 5)</td>
-                        <td>@(i * 6)</td>
-                        <td>@(i * 7)</td>
-                        <td>@(i * 8)</td>
-                        <td>@(i * 9)</td>
+                        <th scope="row">@Model.ElementAt(i).R</th>
+                        <th scope="row">@Model.ElementAt(i).AB </th>
+                        <td>@Model.ElementAt(i).a</td>
+                        <td>@Model.ElementAt(i).b</td>
+                        <td>@Model.ElementAt(i).c</td>
+                        <td>@Model.ElementAt(i).d</td>
+                        <td>@Model.ElementAt(i).e</td>
+                        <td>@Model.ElementAt(i).f</td>
+                        <td>@Model.ElementAt(i).g</td>
+                        <td>@Model.ElementAt(i).h</td>
+                        <td>@Model.ElementAt(i).k</td>
+                        <td>@Model.ElementAt(i).l</td>
                     </tr>
                 }
             </tbody>
