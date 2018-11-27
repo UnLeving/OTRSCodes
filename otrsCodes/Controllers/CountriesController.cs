@@ -14,12 +14,13 @@ namespace otrsCodes.Controllers
         public ActionResult CountryList()
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
-
-            return View();
+            return View(new SelectList(db.Countries, "Id", "Name"));
         }
 
         public ActionResult Index(int num = 0)
         {
+            //TODO:complete this
+            db.Countries.Find(num).Codes.ToList();
             List<BaseTable> dt1 = new List<BaseTable>();
             for (int i = 0; i < 100; i++)
             {
@@ -41,8 +42,6 @@ namespace otrsCodes.Controllers
             }
             return PartialView(dt1);
         }
-
-
 
         // GET: Countries/Details/5
         public ActionResult Details(int? id)

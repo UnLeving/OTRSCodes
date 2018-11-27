@@ -9,6 +9,7 @@ namespace otrsCodes.Models
         public Countries()
         {
             Networks = new HashSet<Networks>();
+            Codes = new HashSet<Codes>();
         }
 
         public int Id { get; set; }
@@ -23,5 +24,6 @@ namespace otrsCodes.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Networks> Networks { get; set; }
+        public virtual ICollection<Codes> Codes { get; set; }
     }
 }
