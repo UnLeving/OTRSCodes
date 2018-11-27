@@ -10,14 +10,8 @@ namespace otrsCodes.Controllers
     {
         private Model1 db = new Model1();
 
-        // GET: Networks
-        public ActionResult Index()
-        {
-            var networks = db.Networks.Include(n => n.Colors).Include(n => n.Countries);
-            return View(networks.ToList());
-        }
-
-        public ActionResult Get(int? id)
+        [HttpGet]
+        public ActionResult Index(int? id)
         {
             return PartialView(db.Countries.Find(id).Networks.ToList());
         }

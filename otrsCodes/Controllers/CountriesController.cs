@@ -11,11 +11,15 @@ namespace otrsCodes.Controllers
     {
         private Model1 db = new Model1();
 
-        public ActionResult Index(int num = 0)
+        public ActionResult CountryList()
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
-            ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name");
 
+            return View();
+        }
+
+        public ActionResult Index(int num = 0)
+        {
             List<BaseTable> dt1 = new List<BaseTable>();
             for (int i = 0; i < 100; i++)
             {
@@ -38,11 +42,7 @@ namespace otrsCodes.Controllers
             return PartialView(dt1);
         }
 
-        [HttpGet]
-        public ActionResult Net(int? id)
-        {
-            return PartialView(db.Countries.Find(id).Networks.ToList());
-        }
+
 
         // GET: Countries/Details/5
         public ActionResult Details(int? id)
@@ -60,27 +60,27 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
-        public HttpStatusCode AddCode([Bind(Include = "CountryId,NetworkId,Code")] Codes codes)
+        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,Code")] Codes codes)
         {
             if (ModelState.IsValid)
             {
                 db.Codes.Add(codes);
                 db.SaveChanges();
-                return HttpStatusCode.OK;
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
-            return HttpStatusCode.BadRequest;
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         [HttpPost]
-        public HttpStatusCode Edit([Bind(Include = "CountryId,NetworkId,Code")] Codes codes)
+        public ActionResult Edit([Bind(Include = "CountryId,NetworkId,Code")] Codes codes)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(codes).State = EntityState.Modified;
                 db.SaveChanges();
-                return HttpStatusCode.OK;
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
-            return HttpStatusCode.BadRequest;
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         protected override void Dispose(bool disposing)

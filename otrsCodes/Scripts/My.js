@@ -1,4 +1,4 @@
-﻿function li_onclick_networks(e) {
+﻿function NetworkSelected(e) {
     document.getElementById("HexSaver").value = $(e).css('background-color');
     document.getElementById("NetworkIdSaver").value = e.id;
 }
@@ -8,15 +8,26 @@ $("#ddlCountries").change(function () {
     document.getElementById("CountryIdSaver").value = countryId;
 
     $.ajax({
-        url: "/Countries/Net",
+        url: "/Countries/Index",
         type: "GET",
         data: { id: countryId }
     })
         .done(function (partialViewResult) {
-            $("#myResultContent").html(partialViewResult);
-
+            $("#CodesContent").html(partialViewResult);
+            RetreiveCodes(countryId);
         });
 });
+
+function RetreiveCodes(countryId) {
+    $.ajax({
+        url: "/Networks/Index",
+        type: "GET",
+        data: { id: countryId }
+    })
+        .done(function (partialViewResult) {
+            $("#NetworkContent").html(partialViewResult);
+        });
+}
 
 $("td").click(function () {
     $(this).css('background-color', document.getElementById("HexSaver").value);

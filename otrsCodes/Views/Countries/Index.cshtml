@@ -1,6 +1,4 @@
 ﻿@model IEnumerable<otrsCodes.Models.BaseTable>
-@Html.DropDownList("Id", ViewBag.CountryId as SelectList, "--select country--", new { id = "ddlCountries", @class = "form-control form-control-sm" })
-@Html.Hidden("CountryIdSaver", "TEST")
 
 <div class="row">
     <div class="col-lg-6 col-md-9 col-sm-12">
@@ -27,7 +25,7 @@
                     <tr>
                         <th id="RValue" scope="row">@Model.ElementAt(i).R</th>
                         <th scope="row">@Model.ElementAt(i).AB </th>
-                        <td>@Model.ElementAt(i).a</td>
+                        <td style="background-color:aqua">@Model.ElementAt(i).a</td>
                         <td>@Model.ElementAt(i).b</td>
                         <td>@Model.ElementAt(i).c</td>
                         <td>@Model.ElementAt(i).d</td>
@@ -82,5 +80,3 @@
         </table>
     </div>
 </div>
-
-<div id="myResultContent"></div>
