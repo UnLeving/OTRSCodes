@@ -8,7 +8,7 @@ namespace otrsCodes.Controllers
 {
     public class NetworksController : Controller
     {
-        private Model1 db = new Model1();
+        private Model db = new Model();
 
         [HttpGet]
         public ActionResult Index(int? id)

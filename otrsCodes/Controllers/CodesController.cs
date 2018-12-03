@@ -12,7 +12,7 @@ namespace otrsCodes.Controllers
 {
     public class CodesController : Controller
     {
-        private Model1 db = new Model1();
+        private Model db = new Model();
 
         // GET: Codes
         public ActionResult Index()

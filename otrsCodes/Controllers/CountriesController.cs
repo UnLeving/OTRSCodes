@@ -9,7 +9,7 @@ namespace otrsCodes.Controllers
 {
     public class CountriesController : Controller
     {
-        private Model1 db = new Model1();
+        private Model db = new Model();
 
         public ActionResult CountryList()
         {
@@ -20,7 +20,7 @@ namespace otrsCodes.Controllers
         public ActionResult Index(int num = 0)
         {
             //TODO:complete this
-            db.Countries.Find(num).Codes.ToList();
+            //db.Countries.Find(num).Codes.ToList();
             List<BaseTable> dt1 = new List<BaseTable>();
             for (int i = 0; i < 100; i++)
             {

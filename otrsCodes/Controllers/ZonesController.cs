@@ -1,112 +1,121 @@
-﻿using otrsCodes.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
+using otrsCodes.Models;
 
 namespace otrsCodes.Controllers
 {
-    public class ColorsController : Controller
+    public class ZonesController : Controller
     {
         private Model db = new Model();
 
-        // GET: Colors
+        // GET: Zones
         public ActionResult Index()
         {
-            return View(db.Colors.ToList());
+            var zones = db.Zones.Include(z => z.Countries);
+            return View(zones.ToList());
         }
 
-        // GET: Colors/Details/5
+        // GET: Zones/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Colors colors = db.Colors.Find(id);
-            if (colors == null)
+            Zones zones = db.Zones.Find(id);
+            if (zones == null)
             {
                 return HttpNotFound();
             }
-            return View(colors);
+            return View(zones);
         }
 
-        // GET: Colors/Create
+        // GET: Zones/Create
         public ActionResult Create()
         {
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             return View();
         }
 
-        // POST: Colors/Create
+        // POST: Zones/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Hex")] Colors colors)
+        public ActionResult Create([Bind(Include = "Id,Zone,CountryId")] Zones zones)
         {
             if (ModelState.IsValid)
             {
-                db.Colors.Add(colors);
+                db.Zones.Add(zones);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(colors);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zones.CountryId);
+            return View(zones);
         }
 
-        // GET: Colors/Edit/5
+        // GET: Zones/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Colors colors = db.Colors.Find(id);
-            if (colors == null)
+            Zones zones = db.Zones.Find(id);
+            if (zones == null)
             {
                 return HttpNotFound();
             }
-            return View(colors);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zones.CountryId);
+            return View(zones);
         }
 
-        // POST: Colors/Edit/5
+        // POST: Zones/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Hex")] Colors colors)
+        public ActionResult Edit([Bind(Include = "Id,Zone,CountryId")] Zones zones)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(colors).State = EntityState.Modified;
+                db.Entry(zones).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(colors);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zones.CountryId);
+            return View(zones);
         }
 
-        // GET: Colors/Delete/5
+        // GET: Zones/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Colors colors = db.Colors.Find(id);
-            if (colors == null)
+            Zones zones = db.Zones.Find(id);
+            if (zones == null)
             {
                 return HttpNotFound();
             }
-            return View(colors);
+            return View(zones);
         }
 
-        // POST: Colors/Delete/5
+        // POST: Zones/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Colors colors = db.Colors.Find(id);
-            db.Colors.Remove(colors);
+            Zones zones = db.Zones.Find(id);
+            db.Zones.Remove(zones);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
