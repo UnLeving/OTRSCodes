@@ -1,7 +1,6 @@
 ﻿using otrsCodes.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -14,18 +13,17 @@ namespace otrsCodes.Controllers
         public ActionResult CountryList()
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
-            return View(new SelectList(db.Countries, "Id", "Name"));
+            return PartialView(new SelectList(db.Countries, "Id", "Name"));
         }
 
-        public ActionResult Index(int num = 0)
+        public ActionResult Index(int id = 0, int zoneId = 0)
         {
-            //TODO:complete this
-            //db.Countries.Find(num).Codes.ToList();
+            //db.Countries.Find(id).Codes.ToList();
             List<BaseTable> dt1 = new List<BaseTable>();
             for (int i = 0; i < 100; i++)
             {
                 BaseTable table = new BaseTable();
-                table.R = num;
+                table.R = zoneId;
                 table.AB = i;
                 int val = table.R * 1000 + i * 10;
                 table.a = val + 0;
@@ -59,10 +57,15 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,Code")] Codes codes)
+        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,Zone,Code")] Codes codes)
         {
             if (ModelState.IsValid)
             {
+                if (db.Zones.Find(codes.Id) == null)
+                {
+                    db.Zones.Add(new Zones() { Id = codes.ZoneId, CountryId = codes.CountryId });
+                    db.SaveChanges();
+                }
                 db.Codes.Add(codes);
                 db.SaveChanges();
                 return new HttpStatusCodeResult(HttpStatusCode.OK);

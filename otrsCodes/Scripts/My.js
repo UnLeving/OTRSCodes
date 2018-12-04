@@ -22,19 +22,27 @@ function RetreiveCodes(countryId) {
     $.ajax({
         url: "/Networks/Index",
         type: "GET",
-        data: { id: countryId }
+        data: {
+            id: countryId,
+            zoneId: document.getElementById("RValue").value
+        }
     })
         .done(function (partialViewResult) {
             $("#NetworkContent").html(partialViewResult);
         });
 }
 
-$("td").click(function () {
+$('body').on('click', 'td', function () {
     $(this).css('background-color', document.getElementById("HexSaver").value);
     $.ajax({
         url: "/Countries/AddCode",
         type: "POST",
-        data: { CountryId: document.getElementById("CountryIdSaver").value, NetworkId: document.getElementById("NetworkIdSaver").value, Code: $(this).text() }
+        data: {
+            CountryId: document.getElementById("CountryIdSaver").value,
+            NetworkId: document.getElementById("NetworkIdSaver").value,
+            Zone: document.getElementById("RValue").value,
+            Code: $(this).text()
+        }
     })
         .done(function (status) {
             alert(status);
@@ -70,4 +78,4 @@ function UpdateTable(response) {
     var $table2 = $('#tb2');
     $table1.find('tbody').empty().append($bodyContent1);
     $table2.find('tbody').empty().append($bodyContent2);
-};
+}

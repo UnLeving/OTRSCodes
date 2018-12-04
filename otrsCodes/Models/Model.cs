@@ -66,12 +66,11 @@ namespace otrsCodes.Models
                 .WithRequired(e => e.Networks)
                 .HasForeignKey(e => e.NetworkId)
                 .WillCascadeOnDelete(false);
-
+            //.WithRequired(e => e.Zones)
+            //.HasForeignKey(e => e.ZoneId)
+            //.WillCascadeOnDelete(false);
             modelBuilder.Entity<Zones>()
-                .HasMany(e => e.Codes)
-                .WithRequired(e => e.Zones)
-                .HasForeignKey(e => e.ZoneId)
-                .WillCascadeOnDelete(false);
+                .HasMany(e => e.Codes);                
         }
     }
 }

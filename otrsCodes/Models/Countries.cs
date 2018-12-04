@@ -12,7 +12,7 @@ namespace otrsCodes.Models
             Networks = new HashSet<Networks>();
             Zones = new HashSet<Zones>();
         }
-
+        [Key]
         public int Id { get; set; }
 
         [Required]

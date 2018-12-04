@@ -10,7 +10,7 @@ namespace otrsCodes.Models
         {
             Networks = new HashSet<Networks>();
         }
-
+        [Key]
         public int Id { get; set; }
 
         [Required]
