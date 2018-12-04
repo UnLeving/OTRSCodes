@@ -1,4 +1,4 @@
-﻿@model IEnumerable<otrsCodes.Models.Networks>
+﻿@model IEnumerable<otrsCodes.Models.Network>
 
 <div class="container">
     <div class="row">
@@ -11,7 +11,7 @@
                 {
                     <li onclick="NetworkSelected(this)"
                         class="list-group-item"
-                        style="background-color:@item.Colors.Hex"
+                        style="background-color:@item.Color.Hex"
                         id="@item.Id">
                         @item.Name
                     </li>

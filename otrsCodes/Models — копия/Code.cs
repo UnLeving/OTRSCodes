@@ -2,26 +2,25 @@ namespace otrsCodes.Models
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-
-    public partial class Codes
+    
+    public class Code
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
         [StringLength(10)]
-        public string Code { get; set; }
+        public string Value { get; set; }
 
         public int CountryId { get; set; }
-
         public int NetworkId { get; set; }
-
         public int ZoneId { get; set; }
+
         [ForeignKey("CountryId")]
-        public virtual Countries Countries { get; set; }
+        public Country Countries { get; set; }
         [ForeignKey("NetworkId")]
-        public virtual Networks Networks { get; set; }
+        public Network Networks { get; set; }
         [ForeignKey("ZoneId")]
-        public virtual Zones Zones { get; set; }
+        public Zone Zones { get; set; }
     }
 }

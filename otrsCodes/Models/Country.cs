@@ -1,18 +1,22 @@
 namespace otrsCodes.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public partial class Countries
+    [Table("Country")]
+    public partial class Country
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Countries()
+        public Country()
         {
-            Codes = new HashSet<Codes>();
-            Networks = new HashSet<Networks>();
-            Zones = new HashSet<Zones>();
+            Codes = new HashSet<Code>();
+            Networks = new HashSet<Network>();
+            Zones = new HashSet<Zone>();
         }
-        [Key]
+
         public int Id { get; set; }
 
         [Required]
@@ -24,12 +28,12 @@ namespace otrsCodes.Models
         public string Code { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Codes> Codes { get; set; }
+        public virtual ICollection<Code> Codes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Networks> Networks { get; set; }
+        public virtual ICollection<Network> Networks { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Zones> Zones { get; set; }
+        public virtual ICollection<Zone> Zones { get; set; }
     }
 }

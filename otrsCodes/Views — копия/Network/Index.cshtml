@@ -1,0 +1,23 @@
+﻿@model IEnumerable<otrsCodes.Models.Network>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center">
+            <ul class="list-group">
+                @Html.Hidden("HexSaver", "TEST")
+                @Html.Hidden("NetworkIdSaver", "TEST")
+                <li class="list-group-item">@Html.ActionLink("Create New", "Create")</li>
+                @foreach (var item in Model)
+                {
+                    <li onclick="NetworkSelected(this)"
+                        class="list-group-item"
+                        style="background-color:@item.Colors.Hex"
+                        id="@item.Id">
+                        @item.Name
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,32 +1,27 @@
 namespace otrsCodes.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
-    public partial class Networks
+    [Table("Zone")]
+    public partial class Zone
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Networks()
+        public Zone()
         {
-            Codes = new HashSet<Codes>();
+            Codes = new HashSet<Code>();
         }
-        [Key]
+
         public int Id { get; set; }
 
         public int CountryId { get; set; }
 
-        public int ColorId { get; set; }
-
-        [Required]
-        [StringLength(20)]
-        public string Name { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Codes> Codes { get; set; }
-        [ForeignKey("ColorId")]
-        public virtual Colors Colors { get; set; }
-        [ForeignKey("CountryId")]
-        public virtual Countries Countries { get; set; }
+        public virtual ICollection<Code> Codes { get; set; }
+
+        public virtual Country Country { get; set; }
     }
 }

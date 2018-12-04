@@ -14,18 +14,15 @@ $("#ddlCountries").change(function () {
     })
         .done(function (partialViewResult) {
             $("#CodesContent").html(partialViewResult);
-            RetreiveCodes(countryId);
+            RetreiveNetworks(countryId);
         });
 });
 
-function RetreiveCodes(countryId) {
+function RetreiveNetworks(countryId) {
     $.ajax({
         url: "/Networks/Index",
         type: "GET",
-        data: {
-            id: countryId,
-            zoneId: document.getElementById("RValue").value
-        }
+        data: { id: countryId }
     })
         .done(function (partialViewResult) {
             $("#NetworkContent").html(partialViewResult);
@@ -56,14 +53,13 @@ $(document).bind('keydown', function (e) {
         if (key === 'ArrowUp') {
             key = $n * 10;
         }
-        else if (key === 'ArrowDown')
-        {
-            key = $n/10;
+        else if (key === 'ArrowDown') {
+            key = $n / 10;
         }
         $.ajax({
             url: "/Countries/Index",
             type: "GET",
-            data: { num: key }
+            data: { zoneId: key }
         })
             .done(function (response) {
                 UpdateTable(response);

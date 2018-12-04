@@ -4,15 +4,12 @@
     {
         public int R;
         public int AB;
-        public int a;
-        public int b;
-        public int c;
-        public int d;
-        public int e;
-        public int f;
-        public int g;
-        public int h;
-        public int k;
-        public int l;
+        public CodeDt[] codes = new CodeDt[10];
+    }
+
+    public class CodeDt
+    {
+        public int code;
+        public string color;
     }
 }

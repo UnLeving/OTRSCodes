@@ -138,12 +138,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BaseTable.cs" />
-    <Compile Include="Models\Codes.cs" />
-    <Compile Include="Models\Colors.cs" />
-    <Compile Include="Models\Countries.cs" />
+    <Compile Include="Models\Code.cs" />
+    <Compile Include="Models\Color.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Model.cs" />
-    <Compile Include="Models\Networks.cs" />
-    <Compile Include="Models\Zones.cs" />
+    <Compile Include="Models\Network.cs" />
+    <Compile Include="Models\Zone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -220,34 +220,18 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Colors\Create.cshtml" />
-    <Content Include="Views\Colors\Delete.cshtml" />
-    <Content Include="Views\Colors\Details.cshtml" />
-    <Content Include="Views\Colors\Edit.cshtml" />
-    <Content Include="Views\Colors\Index.cshtml" />
     <Content Include="Views\Countries\Create.cshtml" />
-    <Content Include="Views\Countries\Delete.cshtml" />
-    <Content Include="Views\Countries\Details.cshtml" />
-    <Content Include="Views\Countries\Edit.cshtml" />
+    <Content Include="Views\Colors\Create.cshtml" />
     <Content Include="Views\Networks\Create.cshtml" />
-    <Content Include="Views\Networks\Delete.cshtml" />
-    <Content Include="Views\Networks\Details.cshtml" />
-    <Content Include="Views\Networks\Edit.cshtml" />
+    <Content Include="Views\Colors\Index.cshtml" />
     <Content Include="Views\Countries\Index.cshtml" />
     <Content Include="Views\Networks\Index.cshtml" />
-    <Content Include="Views\Codes\Create.cshtml" />
-    <Content Include="Views\Codes\Delete.cshtml" />
-    <Content Include="Views\Codes\Details.cshtml" />
-    <Content Include="Views\Codes\Edit.cshtml" />
-    <Content Include="Views\Codes\Index.cshtml" />
     <Content Include="Views\Countries\CountryList.cshtml" />
-    <Content Include="Views\Zones\Create.cshtml" />
-    <Content Include="Views\Zones\Delete.cshtml" />
-    <Content Include="Views\Zones\Details.cshtml" />
-    <Content Include="Views\Zones\Edit.cshtml" />
-    <Content Include="Views\Zones\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Codes\" />
+    <Folder Include="Views\Zones\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />

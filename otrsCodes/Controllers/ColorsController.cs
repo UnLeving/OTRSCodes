@@ -1,8 +1,12 @@
-﻿using otrsCodes.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
+using otrsCodes.Models;
 
 namespace otrsCodes.Controllers
 {
@@ -23,12 +27,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Colors colors = db.Colors.Find(id);
-            if (colors == null)
+            Color color = db.Colors.Find(id);
+            if (color == null)
             {
                 return HttpNotFound();
             }
-            return View(colors);
+            return View(color);
         }
 
         // GET: Colors/Create
@@ -42,16 +46,16 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Hex")] Colors colors)
+        public ActionResult Create([Bind(Include = "Id,Hex")] Color color)
         {
             if (ModelState.IsValid)
             {
-                db.Colors.Add(colors);
+                db.Colors.Add(color);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("index");
             }
 
-            return View(colors);
+            return View(color);
         }
 
         // GET: Colors/Edit/5
@@ -61,12 +65,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Colors colors = db.Colors.Find(id);
-            if (colors == null)
+            Color color = db.Colors.Find(id);
+            if (color == null)
             {
                 return HttpNotFound();
             }
-            return View(colors);
+            return View(color);
         }
 
         // POST: Colors/Edit/5
@@ -74,15 +78,15 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Hex")] Colors colors)
+        public ActionResult Edit([Bind(Include = "Id,Hex")] Color color)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(colors).State = EntityState.Modified;
+                db.Entry(color).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(colors);
+            return View(color);
         }
 
         // GET: Colors/Delete/5
@@ -92,12 +96,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Colors colors = db.Colors.Find(id);
-            if (colors == null)
+            Color color = db.Colors.Find(id);
+            if (color == null)
             {
                 return HttpNotFound();
             }
-            return View(colors);
+            return View(color);
         }
 
         // POST: Colors/Delete/5
@@ -105,8 +109,8 @@ namespace otrsCodes.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Colors colors = db.Colors.Find(id);
-            db.Colors.Remove(colors);
+            Color color = db.Colors.Find(id);
+            db.Colors.Remove(color);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -17,7 +17,7 @@ namespace otrsCodes.Controllers
         // GET: Zones
         public ActionResult Index()
         {
-            var zones = db.Zones.Include(z => z.Countries);
+            var zones = db.Zones.Include(z => z.Country);
             return View(zones.ToList());
         }
 
@@ -28,12 +28,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zones zones = db.Zones.Find(id);
-            if (zones == null)
+            Zone zone = db.Zones.Find(id);
+            if (zone == null)
             {
                 return HttpNotFound();
             }
-            return View(zones);
+            return View(zone);
         }
 
         // GET: Zones/Create
@@ -48,17 +48,17 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Zone,CountryId")] Zones zones)
+        public ActionResult Create([Bind(Include = "Id,CountryId")] Zone zone)
         {
             if (ModelState.IsValid)
             {
-                db.Zones.Add(zones);
+                db.Zones.Add(zone);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zones.CountryId);
-            return View(zones);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zone.CountryId);
+            return View(zone);
         }
 
         // GET: Zones/Edit/5
@@ -68,13 +68,13 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zones zones = db.Zones.Find(id);
-            if (zones == null)
+            Zone zone = db.Zones.Find(id);
+            if (zone == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zones.CountryId);
-            return View(zones);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zone.CountryId);
+            return View(zone);
         }
 
         // POST: Zones/Edit/5
@@ -82,16 +82,16 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Zone,CountryId")] Zones zones)
+        public ActionResult Edit([Bind(Include = "Id,CountryId")] Zone zone)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(zones).State = EntityState.Modified;
+                db.Entry(zone).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zones.CountryId);
-            return View(zones);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", zone.CountryId);
+            return View(zone);
         }
 
         // GET: Zones/Delete/5
@@ -101,12 +101,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zones zones = db.Zones.Find(id);
-            if (zones == null)
+            Zone zone = db.Zones.Find(id);
+            if (zone == null)
             {
                 return HttpNotFound();
             }
-            return View(zones);
+            return View(zone);
         }
 
         // POST: Zones/Delete/5
@@ -114,8 +114,8 @@ namespace otrsCodes.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Zones zones = db.Zones.Find(id);
-            db.Zones.Remove(zones);
+            Zone zone = db.Zones.Find(id);
+            db.Zones.Remove(zone);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

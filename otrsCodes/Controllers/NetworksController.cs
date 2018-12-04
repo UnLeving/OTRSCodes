@@ -1,8 +1,12 @@
-﻿using otrsCodes.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
+using otrsCodes.Models;
 
 namespace otrsCodes.Controllers
 {
@@ -10,10 +14,11 @@ namespace otrsCodes.Controllers
     {
         private Model db = new Model();
 
-        [HttpGet]
-        public ActionResult Index(int? id)
+        // GET: Networks
+        public ActionResult Index()
         {
-            return PartialView(db.Countries.Find(id).Networks.ToList());
+            var networks = db.Networks.Include(n => n.Color).Include(n => n.Country);
+            return View(networks.ToList());
         }
 
         // GET: Networks/Details/5
@@ -23,12 +28,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Networks networks = db.Networks.Find(id);
-            if (networks == null)
+            Network network = db.Networks.Find(id);
+            if (network == null)
             {
                 return HttpNotFound();
             }
-            return View(networks);
+            return View(network);
         }
 
         // GET: Networks/Create
@@ -44,18 +49,18 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CountryId,ColorId,Name")] Networks networks)
+        public ActionResult Create([Bind(Include = "Id,CountryId,ColorId,Name")] Network network)
         {
             if (ModelState.IsValid)
             {
-                db.Networks.Add(networks);
+                db.Networks.Add(network);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex", networks.ColorId);
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", networks.CountryId);
-            return View(networks);
+            ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex", network.ColorId);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", network.CountryId);
+            return View(network);
         }
 
         // GET: Networks/Edit/5
@@ -65,14 +70,14 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Networks networks = db.Networks.Find(id);
-            if (networks == null)
+            Network network = db.Networks.Find(id);
+            if (network == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex", networks.ColorId);
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", networks.CountryId);
-            return View(networks);
+            ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex", network.ColorId);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", network.CountryId);
+            return View(network);
         }
 
         // POST: Networks/Edit/5
@@ -80,17 +85,17 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CountryId,ColorId,Name")] Networks networks)
+        public ActionResult Edit([Bind(Include = "Id,CountryId,ColorId,Name")] Network network)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(networks).State = EntityState.Modified;
+                db.Entry(network).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex", networks.ColorId);
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", networks.CountryId);
-            return View(networks);
+            ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex", network.ColorId);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", network.CountryId);
+            return View(network);
         }
 
         // GET: Networks/Delete/5
@@ -100,12 +105,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Networks networks = db.Networks.Find(id);
-            if (networks == null)
+            Network network = db.Networks.Find(id);
+            if (network == null)
             {
                 return HttpNotFound();
             }
-            return View(networks);
+            return View(network);
         }
 
         // POST: Networks/Delete/5
@@ -113,8 +118,8 @@ namespace otrsCodes.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Networks networks = db.Networks.Find(id);
-            db.Networks.Remove(networks);
+            Network network = db.Networks.Find(id);
+            db.Networks.Remove(network);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

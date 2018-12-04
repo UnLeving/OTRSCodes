@@ -7,34 +7,22 @@
                 <tr>
                     <th scope="col">R</th>
                     <th scope="col">AB</th>
-                    <th scope="col">0</th>
-                    <th scope="col">1</th>
-                    <th scope="col">2</th>
-                    <th scope="col">3</th>
-                    <th scope="col">4</th>
-                    <th scope="col">5</th>
-                    <th scope="col">6</th>
-                    <th scope="col">7</th>
-                    <th scope="col">8</th>
-                    <th scope="col">9</th>
+                    @for (int i = 0; i < 10; ++i)
+                    {
+                        <th scope="col">@i</th>
+                    }
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < 50; i++)
+                @for (int i = 0; i < 50; ++i)
                 {
                     <tr>
                         <th id="RValue" scope="row">@Model.ElementAt(i).R</th>
                         <th scope="row">@Model.ElementAt(i).AB </th>
-                        <td>@Model.ElementAt(i).a</td>
-                        <td>@Model.ElementAt(i).b</td>
-                        <td>@Model.ElementAt(i).c</td>
-                        <td>@Model.ElementAt(i).d</td>
-                        <td>@Model.ElementAt(i).e</td>
-                        <td>@Model.ElementAt(i).f</td>
-                        <td>@Model.ElementAt(i).g</td>
-                        <td>@Model.ElementAt(i).h</td>
-                        <td>@Model.ElementAt(i).k</td>
-                        <td>@Model.ElementAt(i).l</td>
+                        @for (int j = 0; j < 10; ++j)
+                        {
+                            <td> @Model.ElementAt(i).codes[j].code</td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -46,16 +34,10 @@
                 <tr>
                     <th scope="col">R</th>
                     <th scope="col">AB</th>
-                    <th scope="col">0</th>
-                    <th scope="col">1</th>
-                    <th scope="col">2</th>
-                    <th scope="col">3</th>
-                    <th scope="col">4</th>
-                    <th scope="col">5</th>
-                    <th scope="col">6</th>
-                    <th scope="col">7</th>
-                    <th scope="col">8</th>
-                    <th scope="col">9</th>
+                    @for (int i = 0; i < 10; ++i)
+                    {
+                        <th scope="col">@i</th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -64,16 +46,10 @@
                     <tr>
                         <th scope="row">@Model.ElementAt(i).R</th>
                         <th scope="row">@Model.ElementAt(i).AB </th>
-                        <td>@Model.ElementAt(i).a</td>
-                        <td>@Model.ElementAt(i).b</td>
-                        <td>@Model.ElementAt(i).c</td>
-                        <td>@Model.ElementAt(i).d</td>
-                        <td>@Model.ElementAt(i).e</td>
-                        <td>@Model.ElementAt(i).f</td>
-                        <td>@Model.ElementAt(i).g</td>
-                        <td>@Model.ElementAt(i).h</td>
-                        <td>@Model.ElementAt(i).k</td>
-                        <td>@Model.ElementAt(i).l</td>
+                        @for (int j = 0; j < 10; ++j)
+                        {
+                            <td> @Model.ElementAt(i).codes[j].code</td>
+                        }
                     </tr>
                 }
             </tbody>

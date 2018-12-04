@@ -17,7 +17,8 @@ namespace otrsCodes.Controllers
         // GET: Codes
         public ActionResult Index()
         {
-            return View(db.Codes.ToList());
+            var codes = db.Codes.Include(c => c.Country).Include(c => c.Network).Include(c => c.Zone);
+            return View(codes.ToList());
         }
 
         // GET: Codes/Details/5
@@ -27,17 +28,20 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Codes codes = db.Codes.Find(id);
-            if (codes == null)
+            Code code = db.Codes.Find(id);
+            if (code == null)
             {
                 return HttpNotFound();
             }
-            return View(codes);
+            return View(code);
         }
 
         // GET: Codes/Create
         public ActionResult Create()
         {
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
+            ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name");
+            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id");
             return View();
         }
 
@@ -46,16 +50,19 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CountryId,NetworkId,Code")] Codes codes)
+        public ActionResult Create([Bind(Include = "Id,Value,CountryId,NetworkId,ZoneId")] Code code)
         {
             if (ModelState.IsValid)
             {
-                db.Codes.Add(codes);
+                db.Codes.Add(code);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(codes);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", code.CountryId);
+            ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name", code.NetworkId);
+            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id", code.ZoneId);
+            return View(code);
         }
 
         // GET: Codes/Edit/5
@@ -65,12 +72,15 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Codes codes = db.Codes.Find(id);
-            if (codes == null)
+            Code code = db.Codes.Find(id);
+            if (code == null)
             {
                 return HttpNotFound();
             }
-            return View(codes);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", code.CountryId);
+            ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name", code.NetworkId);
+            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id", code.ZoneId);
+            return View(code);
         }
 
         // POST: Codes/Edit/5
@@ -78,15 +88,18 @@ namespace otrsCodes.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CountryId,NetworkId,Code")] Codes codes)
+        public ActionResult Edit([Bind(Include = "Id,Value,CountryId,NetworkId,ZoneId")] Code code)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(codes).State = EntityState.Modified;
+                db.Entry(code).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(codes);
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", code.CountryId);
+            ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name", code.NetworkId);
+            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id", code.ZoneId);
+            return View(code);
         }
 
         // GET: Codes/Delete/5
@@ -96,12 +109,12 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Codes codes = db.Codes.Find(id);
-            if (codes == null)
+            Code code = db.Codes.Find(id);
+            if (code == null)
             {
                 return HttpNotFound();
             }
-            return View(codes);
+            return View(code);
         }
 
         // POST: Codes/Delete/5
@@ -109,8 +122,8 @@ namespace otrsCodes.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Codes codes = db.Codes.Find(id);
-            db.Codes.Remove(codes);
+            Code code = db.Codes.Find(id);
+            db.Codes.Remove(code);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
