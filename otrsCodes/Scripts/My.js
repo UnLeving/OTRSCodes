@@ -4,25 +4,22 @@
 }
 
 $("#ddlCountries").change(function () {
-    var countryId = $("#ddlCountries").val();
-    document.getElementById("CountryIdSaver").value = countryId;
-
     $.ajax({
         url: "/Countries/Index",
         type: "GET",
-        data: { id: countryId }
+        data: { id: $("#ddlCountries").val() }
     })
         .done(function (partialViewResult) {
             $("#CodesContent").html(partialViewResult);
-            RetreiveNetworks(countryId);
+            RetreiveNetworks();
         });
 });
 
-function RetreiveNetworks(countryId) {
+function RetreiveNetworks() {
     $.ajax({
         url: "/Networks/Index",
         type: "GET",
-        data: { id: countryId }
+        data: { id: $("#ddlCountries").val() }
     })
         .done(function (partialViewResult) {
             $("#NetworkContent").html(partialViewResult);
@@ -35,7 +32,7 @@ $('body').on('click', 'td', function () {
         url: "/Countries/AddCode",
         type: "POST",
         data: {
-            CountryId: document.getElementById("CountryIdSaver").value,
+            CountryId: $("#ddlCountries").val(),
             NetworkId: document.getElementById("NetworkIdSaver").value,
             Zone: document.getElementById("RValue").value,
             Code: $(this).text()
@@ -59,7 +56,10 @@ $(document).bind('keydown', function (e) {
         $.ajax({
             url: "/Countries/Index",
             type: "GET",
-            data: { zoneId: key }
+            data: {
+                id: $("#ddlCountries").val(),
+                zoneId: key
+            }
         })
             .done(function (response) {
                 UpdateTable(response);

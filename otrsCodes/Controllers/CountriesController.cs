@@ -13,13 +13,7 @@ namespace otrsCodes.Controllers
     public class CountriesController : Controller
     {
         private Model db = new Model();
-
-        // GET: Countries
-        //public ActionResult Index()
-        //{
-        //    return View(db.Countries.ToList());
-        //}
-         
+        
         public ActionResult Index(int id = 0, int zoneId = 0)
         {
             List<BaseTable> dt1 = new List<BaseTable>();
@@ -57,8 +51,7 @@ namespace otrsCodes.Controllers
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             return PartialView(new SelectList(db.Countries, "Id", "Name"));
         }
-
-        // GET: Countries/Details/5
+        
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -72,16 +65,12 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-
-        // GET: Countries/Create
+        
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Countries/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Code")] Country country)
@@ -112,8 +101,7 @@ namespace otrsCodes.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
-
-        // GET: Countries/Edit/5
+        
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -127,10 +115,7 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-
-        // POST: Countries/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Code")] Country country)
@@ -143,8 +128,7 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-
-        // GET: Countries/Delete/5
+        
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -158,8 +142,7 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-
-        // POST: Countries/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -180,3 +163,8 @@ namespace otrsCodes.Controllers
         }
     }
 }
+
+//public ActionResult Index()
+//{
+//    return View(db.Countries.ToList());
+//}
