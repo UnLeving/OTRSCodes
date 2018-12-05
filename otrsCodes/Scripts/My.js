@@ -34,8 +34,8 @@ $('body').on('click', 'td', function () {
         data: {
             CountryId: $("#ddlCountries").val(),
             NetworkId: document.getElementById("NetworkIdSaver").value,
-            Zone: document.getElementById("RValue").value,
-            Code: $(this).text()
+            ZoneId: document.getElementById("RValue").value,
+            Value: $(this).text()
         }
     })
         .done(function (status) {

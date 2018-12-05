@@ -10,6 +10,6 @@
     public class CodeDt
     {
         public int code;
-        public string color;
+        public string color = "#212529";
     }
 }

@@ -1,44 +1,47 @@
-﻿using System;
+﻿using otrsCodes.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using otrsCodes.Models;
 
 namespace otrsCodes.Controllers
 {
     public class CountriesController : Controller
     {
         private Model db = new Model();
-        
+
         public ActionResult Index(int id = 0, int zoneId = 0)
         {
             List<BaseTable> dt1 = new List<BaseTable>();
-            //Country country = db.Countries.Find(id);
-            //if (country != null)
-            //{
-            //    var codes = country.Zones
-            //        .Where(zone=>zone.Id==zoneId).First().Codes;
+            Country country = db.Countries.Find(id);
+            ICollection<Code> codes = null;
+            if (country != null)
+            {
+                if (country.Zones.Count != 0)
+                {
+                    codes = country.Zones
+                      .Where(zone => zone.Id == zoneId).First().Codes;
+                }
+            }
 
-            //    foreach (var code in codes)
-            //    {
-            //       var colorHex = code.Networks.Colors.Hex;
-            //    }
-            //}
-            int val;
             for (int i = 0; i < 100; ++i)
             {
                 BaseTable table = new BaseTable();
                 table.R = zoneId;
                 table.AB = i;
-                val = table.R * 1000 + i * 10;
+                int val = zoneId * 1000 + i * 10;
 
-                for (int j = 0; j < table.codes.Length; ++j)
+                for (int j = 0; j < 10; ++j)
                 {
                     table.codes[j] = new CodeDt() { code = val + j };
+                    if (codes != null)
+                        foreach (var code in codes)
+                        {
+                            if (code.Value.Trim() == (val + j).ToString())
+                                table.codes[j] = new CodeDt() { code = val + j, color = code.Network.Color.Hex };
+                        }
                 }
                 dt1.Add(table);
             }
@@ -51,7 +54,7 @@ namespace otrsCodes.Controllers
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             return PartialView(new SelectList(db.Countries, "Id", "Name"));
         }
-        
+
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -65,7 +68,7 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-        
+
         public ActionResult Create()
         {
             return View();
@@ -86,7 +89,7 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,Zone,Code")] Code codes)
+        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,ZoneId,Value")] Code codes)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +104,7 @@ namespace otrsCodes.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
-        
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -115,7 +118,7 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Code")] Country country)
@@ -128,7 +131,7 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-        
+
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -142,7 +145,7 @@ namespace otrsCodes.Controllers
             }
             return View(country);
         }
-        
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
