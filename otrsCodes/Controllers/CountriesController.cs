@@ -95,7 +95,7 @@ namespace otrsCodes.Controllers
             {
                 if (db.Zones.Find(codes.Id) == null)
                 {
-                    db.Zones.Add(new Zone() { Id = codes.ZoneId, CountryId = codes.CountryId });
+                    db.Zones.Add(new Zone() { Value = codes.ZoneId, CountryId = codes.CountryId });
                     db.SaveChanges();
                 }
                 db.Codes.Add(codes);

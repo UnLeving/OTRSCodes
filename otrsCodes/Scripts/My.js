@@ -38,9 +38,10 @@ $('body').on('click', 'td', function () {
             Value: $(this).text()
         }
     })
-        .done(function (status) {
-            alert(status);
-        });
+        //.done(function (status) {
+        //    alert(status);
+        //})
+        ;
 });
 
 $(document).bind('keydown', function (e) {
