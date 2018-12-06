@@ -98,11 +98,16 @@ namespace otrsCodes.Controllers
                     db.Zones.Add(new Zone() { Value = codes.ZoneId, CountryId = codes.CountryId });
                     db.SaveChanges();
                 }
-                db.Codes.Add(codes);
-                db.SaveChanges();
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
+                if (db.Codes.Where(c=> c.Value == codes.Value).FirstOrDefault() == null)
+                {
+                    db.Codes.Add(codes);
+                    db.SaveChanges();
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+                else
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Code {codes.Value} already exist");
             }
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
         }
 
         public ActionResult Edit(int? id)

@@ -37,11 +37,13 @@ $('body').on('click', 'td', function () {
             ZoneId: document.getElementById("RValue").value,
             Value: $(this).text()
         }
-    })
+    }).fail(function (status) {
+        alert(status.statusText);
+    });
         //.done(function (status) {
         //    alert(status);
         //})
-        ;
+        
 });
 
 $(document).bind('keydown', function (e) {

@@ -50,9 +50,13 @@ namespace otrsCodes.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Colors.Add(color);
-                db.SaveChanges();
-                return RedirectToAction("index");
+                if (db.Zones.Find(color.Hex) == null)
+                {
+                    db.Colors.Add(color);
+                    db.SaveChanges();
+                    return RedirectToAction("index");
+                }
+                return new HttpStatusCodeResult(HttpStatusCode.Conflict, $"{color.Hex} already exist");
             }
 
             return View(color);
