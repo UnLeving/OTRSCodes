@@ -41,7 +41,7 @@ namespace otrsCodes.Controllers
         {
             ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex");
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
-            return View();
+            return PartialView();
         }
 
         // POST: Networks/Create
@@ -53,14 +53,16 @@ namespace otrsCodes.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Networks.Add(network);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.Networks.Where(c => c.Name == network.Name).FirstOrDefault() == null)
+                {
+                    db.Networks.Add(network);
+                    db.SaveChanges();
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Network {network.Name} already exist");
             }
 
-            ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex", network.ColorId);
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", network.CountryId);
-            return View(network);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 
         // GET: Networks/Edit/5

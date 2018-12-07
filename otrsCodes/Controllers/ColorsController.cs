@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using otrsCodes.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using otrsCodes.Models;
 
 namespace otrsCodes.Controllers
 {
@@ -38,7 +35,7 @@ namespace otrsCodes.Controllers
         // GET: Colors/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Colors/Create
@@ -50,16 +47,16 @@ namespace otrsCodes.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (db.Zones.Find(color.Hex) == null)
+                if (db.Colors.Where(c => c.Hex == color.Hex).FirstOrDefault() == null)
                 {
                     db.Colors.Add(color);
                     db.SaveChanges();
-                    return RedirectToAction("index");
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
                 }
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict, $"{color.Hex} already exist");
             }
 
-            return View(color);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 
         // GET: Colors/Edit/5

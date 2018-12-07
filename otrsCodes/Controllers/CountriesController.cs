@@ -71,7 +71,7 @@ namespace otrsCodes.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -80,12 +80,16 @@ namespace otrsCodes.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Countries.Add(country);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.Countries.Where(c => c.Name == country.Name).FirstOrDefault() == null)
+                {
+                    db.Countries.Add(country);
+                    db.SaveChanges();
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Country {country.Name} already exist");
             }
 
-            return View(country);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 
         [HttpPost]
@@ -98,14 +102,13 @@ namespace otrsCodes.Controllers
                     db.Zones.Add(new Zone() { Value = codes.ZoneId, CountryId = codes.CountryId });
                     db.SaveChanges();
                 }
-                if (db.Codes.Where(c=> c.Value == codes.Value).FirstOrDefault() == null)
+                if (db.Codes.Where(c => c.Value == codes.Value).FirstOrDefault() == null)
                 {
                     db.Codes.Add(codes);
                     db.SaveChanges();
                     return new HttpStatusCodeResult(HttpStatusCode.OK);
                 }
-                else
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Code {codes.Value} already exist");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Code {codes.Value} already exist");
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
         }

@@ -78,3 +78,15 @@ function UpdateTable(response) {
     $table1.find('tbody').empty().append($bodyContent1);
     $table2.find('tbody').empty().append($bodyContent2);
 }
+
+function CreateNew(path,id) {
+    $.ajax({
+        url: path,
+        type: 'POST',
+        data: $(id).serialize(),
+        success: function (response) {
+
+        },
+        error: function (err) { alert("Error: " + err.statusText); }
+    });
+}
