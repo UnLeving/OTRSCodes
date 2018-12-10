@@ -1,6 +1,21 @@
-﻿<div> @{Html.RenderAction("Create", "Countries");} </div>
-<div> @{Html.RenderAction("Create", "Colors");} </div>
-<div> @{Html.RenderAction("Create", "Networks");} </div> 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+﻿<div class="row">
+    <div class="col-lg-6 col-md-9 col-sm-12">
+        <div> @{Html.RenderAction("Create", "Countries");} </div>
+        <div> @{Html.RenderAction("Create", "Colors");} </div>
+        <div> @{Html.RenderAction("Create", "Networks");} </div>
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-9 col-sm-12">
+        <div class="form-horizontal">
+            <h4>Export to .xlsx</h4>
+            <hr />
+            <div class="form-group"> @{Html.RenderAction("CountryList", "Countries");} </div>
+
+            <button class="btn btn-info btn-sm" onclick="location.href='@Url.Action("Admin", "Home")'">
+                Export
+            </button>
+        </div>
+    </div>
 </div>

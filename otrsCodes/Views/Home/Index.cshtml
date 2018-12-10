@@ -1,5 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Main";
 }
 
-<div> @{Html.RenderAction("CountryList", "Countries");} </div> 
+<div class="form-inline">
+    @{Html.RenderAction("CountryList", "Countries");}
+    <button class="btn btn-outline-info btn-sm" onclick="location.href='@Url.Action("Admin", "Home")'">
+        Admin
+    </button>
+</div>
+
+<div id="CodesContent"></div>
+<div id="NetworkContent"></div>
