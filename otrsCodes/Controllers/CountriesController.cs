@@ -1,7 +1,10 @@
-﻿using otrsCodes.Models;
+﻿using OfficeOpenXml;
+using otrsCodes.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -48,11 +51,49 @@ namespace otrsCodes.Controllers
 
             return PartialView(dt1);
         }
-
+        
         public ActionResult CountryList()
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
-            return PartialView(new SelectList(db.Countries, "Id", "Name"));
+            return PartialView();
+        }
+
+        [HttpGet]
+        public ActionResult ExportCodes()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult ExportCodes(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Country country = db.Countries.Find(id);
+            if (country == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            // Method for export
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        void ExportToExcel(IEnumerable<Country> dataSet, string fileName)
+        {
+            ExcelPackage excel = new ExcelPackage();
+            var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
+            workSheet.Cells[1, 1].LoadFromCollection(dataSet, true);
+            using (var memoryStream = new MemoryStream())
+            {
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;  filename=" + fileName);
+                excel.SaveAs(memoryStream);
+                memoryStream.WriteTo(Response.OutputStream);
+                Response.Flush();
+                Response.End();
+            }
         }
 
         public ActionResult Details(int? id)

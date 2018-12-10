@@ -1,0 +1,12 @@
+﻿@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <h4>Export to .xlsx</h4>
+        <hr />
+        <div class="form-group"> @{Html.RenderAction("CountryList", "Countries");} </div>
+
+        <button class="btn btn-info btn-sm" type="submit">
+            Export
+        </button>
+    </div>
+}
