@@ -1,9 +1,9 @@
 ﻿@model otrsCodes.Models.Country
 
-@using (Html.BeginForm("Create", "Countries", FormMethod.Post ,new { id = "form_country" }))
+@using (Html.BeginForm("Create", "Countries", FormMethod.Post, new { id = "form_country" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Country</h4>
         <hr />

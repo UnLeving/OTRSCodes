@@ -155,9 +155,10 @@ namespace otrsCodes.Controllers
                     db.SaveChanges();
                     return new HttpStatusCodeResult(HttpStatusCode.OK);
                 }
+                
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Country {country.Name} already exist");
             }
-
+            
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 

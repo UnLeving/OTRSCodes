@@ -237,9 +237,10 @@
     <Content Include="Views\Countries\Main.cshtml" />
     <Content Include="Views\Networks\Edit.cshtml" />
     <Content Include="Views\Countries\ExportCodes.cshtml" />
+    <Content Include="Views\Countries\Modal.cshtml" />
+    <Content Include="Views\Codes\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Codes\" />
     <Folder Include="Views\Zones\" />
   </ItemGroup>
   <ItemGroup>

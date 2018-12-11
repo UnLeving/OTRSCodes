@@ -84,9 +84,8 @@ function CreateNew(path,id) {
         url: path,
         type: 'POST',
         data: $(id).serialize(),
-        success: function (response) {
-
-        },
-        error: function (err) { alert("Error: " + err.statusText); }
+        error: function (err) {
+            alert("Error: " + err.statusText);
+        }
     });
 }
