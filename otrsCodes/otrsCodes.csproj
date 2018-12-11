@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="Models\BaseTable.cs" />
     <Compile Include="Models\Code.cs" />
+    <Compile Include="Models\CodeDT.cs" />
     <Compile Include="Models\Color.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Model.cs" />

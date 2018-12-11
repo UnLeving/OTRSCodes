@@ -3,10 +3,10 @@ using otrsCodes.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.OleDb;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace otrsCodes.Controllers
@@ -51,7 +51,7 @@ namespace otrsCodes.Controllers
 
             return PartialView(dt1);
         }
-        
+
         public ActionResult CountryList()
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
@@ -65,35 +65,63 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ExportCodes(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Country country = db.Countries.Find(id);
-            if (country == null)
+
+            var codes = db.Countries.Find(id)?.Codes;
+            
+            if (codes == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            // Method for export
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            DataTable dataTable = FillDataTable(codes);
+
+            return ExportToExcel(dataTable, "test");
+        }
+        
+        DataTable FillDataTable(ICollection<Code> codes)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.AutoIncrement = false;
+            column.ColumnName = "Code";
+            column.ReadOnly = false;
+            column.Unique = false;
+            dataTable.Columns.Add(column);
+            column = new DataColumn();
+            column.DataType = System.Type.GetType("System.String");
+            column.AutoIncrement = false;
+            column.ColumnName = "Network";
+            column.ReadOnly = false;
+            column.Unique = false;
+            dataTable.Columns.Add(column);
+
+            DataRow dataRow;
+
+            foreach (var code in codes)
+            {
+                dataRow = dataTable.NewRow();
+                dataRow["Code"] = code.Value;
+                dataRow["Network"] = code.Network.Name;
+                dataTable.Rows.Add(dataRow);
+            }
+
+            return dataTable;
         }
 
-        void ExportToExcel(IEnumerable<Country> dataSet, string fileName)
+        FileStreamResult ExportToExcel(DataTable dataSet, string fileName)
         {
             ExcelPackage excel = new ExcelPackage();
             var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
-            workSheet.Cells[1, 1].LoadFromCollection(dataSet, true);
-            using (var memoryStream = new MemoryStream())
-            {
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;  filename=" + fileName);
-                excel.SaveAs(memoryStream);
-                memoryStream.WriteTo(Response.OutputStream);
-                Response.Flush();
-                Response.End();
-            }
+            workSheet.Cells[1, 1].LoadFromDataTable(dataSet, true);
+            
+            return File(new MemoryStream(excel.GetAsByteArray()), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
         }
 
         public ActionResult Details(int? id)
