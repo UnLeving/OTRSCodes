@@ -6,7 +6,6 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace otrsCodes.Controllers
@@ -22,10 +21,11 @@ namespace otrsCodes.Controllers
             ICollection<Code> codes = null;
             if (country != null)
             {
-                if (country.Zones.Count != 0)
+                if (country.Zones?.Count != 0)
                 {
-                    codes = country.Zones
-                      .Where(zone => zone.Id == zoneId).First().Codes;
+                    var zone = country.Zones.Where(z => z.Id == zoneId).FirstOrDefault();
+                    if (zone != null)
+                        codes = zone.Codes;
                 }
             }
 
@@ -74,7 +74,7 @@ namespace otrsCodes.Controllers
             }
 
             var codes = db.Countries.Find(id)?.Codes;
-            
+
             if (codes == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -83,7 +83,7 @@ namespace otrsCodes.Controllers
 
             return ExportToExcel(dataTable, "test");
         }
-        
+
         DataTable FillDataTable(ICollection<Code> codes)
         {
             DataTable dataTable = new DataTable();
@@ -120,7 +120,7 @@ namespace otrsCodes.Controllers
             ExcelPackage excel = new ExcelPackage();
             var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
             workSheet.Cells[1, 1].LoadFromDataTable(dataSet, true);
-            
+
             return File(new MemoryStream(excel.GetAsByteArray()), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
         }
 
@@ -155,10 +155,10 @@ namespace otrsCodes.Controllers
                     db.SaveChanges();
                     return new HttpStatusCodeResult(HttpStatusCode.OK);
                 }
-                
+
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Country {country.Name} already exist");
             }
-            
+
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 

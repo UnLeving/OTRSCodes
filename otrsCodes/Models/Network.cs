@@ -16,9 +16,9 @@ namespace otrsCodes.Models
         }
 
         public int Id { get; set; }
-
+        [Required]
         public int CountryId { get; set; }
-
+        [Required]
         public int ColorId { get; set; }
 
         [Required]
