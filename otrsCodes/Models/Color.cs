@@ -18,7 +18,8 @@ namespace otrsCodes.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(7)]
+        //[StringLength(7, MinimumLength =7)]
+        [RegularExpression(@"^#[a-z0-9]{1,7}$", ErrorMessage = "Bad format. Ex: #123456")]
         public string Hex { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

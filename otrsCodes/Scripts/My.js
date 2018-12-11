@@ -79,13 +79,18 @@ function UpdateTable(response) {
     $table2.find('tbody').empty().append($bodyContent2);
 }
 
-function CreateNew(path,id) {
-    $.ajax({
-        url: path,
-        type: 'POST',
-        data: $(id).serialize(),
-        error: function (err) {
-            alert("Error: " + err.statusText);
-        }
-    });
+function CreateNew(path, id) {
+
+    if ($(id).valid()) {
+        $.ajax({
+            url: path,
+            type: 'POST',
+            data: $(id).serialize(),
+            error: function (err) {
+                alert("Error: " + err.statusText);
+            }
+        });
+    }
+
+    
 }
