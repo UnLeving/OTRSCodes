@@ -40,15 +40,18 @@ $('body').on('click', 'td', function () {
     }).fail(function (status) {
         alert(status.statusText);
     });
-        //.done(function (status) {
-        //    alert(status);
-        //})
-        
+});
+
+$('#Code').bind('keydown', function (e) {
+    document.getElementById("FLAG").value = "0";
 });
 
 $(document).bind('keydown', function (e) {
     key = e.key;
-
+    if (document.getElementById("FLAG").value === "0") {
+        document.getElementById("FLAG").value = "1";
+        return;
+    }
     if ((key >= 0 && key <= 9) || (key === 'ArrowUp' || key === 'ArrowDown')) {
         var $n = $('#tb1').find('#RValue').text();
         if (key === 'ArrowUp') {
@@ -69,6 +72,7 @@ $(document).bind('keydown', function (e) {
                 UpdateTable(response);
             });
     }
+
 });
 
 function UpdateTable(response) {
@@ -94,5 +98,5 @@ function CreateNew(path, id) {
         });
     }
 
-    
+
 }

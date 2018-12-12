@@ -76,10 +76,15 @@ namespace otrsCodes.Controllers
             }
 
             List<CodeDT> list = new List<CodeDT>();
+            string codeRegExp = $"^{codes.First().Country.Code}(";
             foreach (var item in codes)
             {
-                list.Add(new CodeDT() { Network = item.Network.Name, Code = item.Value, RegExp = "^" + item.Country.Code.ToString() + item.Value.ToString() + ".*" });
+                codeRegExp += item.Value+"|";
+                list.Add(new CodeDT() { Network = item.Network.Name, Code = item.Value });
             }
+            codeRegExp.TrimEnd('|');
+            codeRegExp += ").*";
+
             return ExportToExcel(list, "test");
         }
 
