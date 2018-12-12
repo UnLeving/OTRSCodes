@@ -34,7 +34,7 @@ $('body').on('click', 'td', function () {
         data: {
             CountryId: $("#ddlCountries").val(),
             NetworkId: document.getElementById("NetworkIdSaver").value,
-            ZoneId: document.getElementById("RValue").value,
+            Zone: document.getElementById("RValue").value,
             Value: $(this).text()
         }
     }).fail(function (status) {
@@ -48,6 +48,7 @@ $('body').on('click', 'td', function () {
 
 $(document).bind('keydown', function (e) {
     key = e.key;
+
     if ((key >= 0 && key <= 9) || (key === 'ArrowUp' || key === 'ArrowDown')) {
         var $n = $('#tb1').find('#RValue').text();
         if (key === 'ArrowUp') {
@@ -61,7 +62,7 @@ $(document).bind('keydown', function (e) {
             type: "GET",
             data: {
                 id: $("#ddlCountries").val(),
-                zoneId: key
+                zone: key
             }
         })
             .done(function (response) {
@@ -86,6 +87,7 @@ function CreateNew(path, id) {
             url: path,
             type: 'POST',
             data: $(id).serialize(),
+            success: $(id)[0].reset(),
             error: function (err) {
                 alert("Error: " + err.statusText);
             }

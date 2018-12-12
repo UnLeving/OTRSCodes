@@ -1,9 +1,6 @@
 namespace otrsCodes.Models
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
 
     public partial class Model : DbContext
     {
@@ -16,13 +13,14 @@ namespace otrsCodes.Models
         public virtual DbSet<Color> Colors { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Network> Networks { get; set; }
-        public virtual DbSet<Zone> Zones { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Code>()
-                .Property(e => e.Value)
-                .IsFixedLength();
+                .Property(e => e.Value);
+
+            modelBuilder.Entity<Code>()
+                .Property(e => e.Zone);
 
             modelBuilder.Entity<Color>()
                 .Property(e => e.Hex)
@@ -38,8 +36,7 @@ namespace otrsCodes.Models
                 .IsFixedLength();
 
             modelBuilder.Entity<Country>()
-                .Property(e => e.Code)
-                .IsFixedLength();
+                .Property(e => e.Code);
 
             modelBuilder.Entity<Country>()
                 .HasMany(e => e.Codes)
@@ -51,11 +48,6 @@ namespace otrsCodes.Models
                 .WithRequired(e => e.Country)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Country>()
-                .HasMany(e => e.Zones)
-                .WithRequired(e => e.Country)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Network>()
                 .Property(e => e.Name)
                 .IsFixedLength();
@@ -63,11 +55,6 @@ namespace otrsCodes.Models
             modelBuilder.Entity<Network>()
                 .HasMany(e => e.Codes)
                 .WithRequired(e => e.Network)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Zone>()
-                .HasMany(e => e.Codes)
-                .WithRequired(e => e.Zone)
                 .WillCascadeOnDelete(false);
         }
     }

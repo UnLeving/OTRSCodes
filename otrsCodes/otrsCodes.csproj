@@ -137,7 +137,6 @@
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NetworksController.cs" />
-    <Compile Include="Controllers\ZonesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -148,7 +147,6 @@
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Network.cs" />
-    <Compile Include="Models\Zone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -240,7 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Zones\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

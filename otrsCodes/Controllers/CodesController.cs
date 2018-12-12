@@ -41,7 +41,6 @@ namespace otrsCodes.Controllers
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name");
-            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id");
             return View();
         }
 
@@ -61,7 +60,6 @@ namespace otrsCodes.Controllers
 
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", code.CountryId);
             ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name", code.NetworkId);
-            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id", code.ZoneId);
             return View(code);
         }
 
@@ -79,7 +77,6 @@ namespace otrsCodes.Controllers
             }
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", code.CountryId);
             ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name", code.NetworkId);
-            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id", code.ZoneId);
             return View(code);
         }
 
@@ -98,7 +95,6 @@ namespace otrsCodes.Controllers
             }
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", code.CountryId);
             ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name", code.NetworkId);
-            ViewBag.ZoneId = new SelectList(db.Zones, "Id", "Id", code.ZoneId);
             return View(code);
         }
 

@@ -15,9 +15,9 @@ namespace otrsCodes.Controllers
         private Model db = new Model();
 
         // GET: Networks
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var networks = db.Networks.Include(n => n.Color).Include(n => n.Country);
+            var networks = db.Countries.Find(id).Networks;
             return PartialView(networks.ToList());
         }
 

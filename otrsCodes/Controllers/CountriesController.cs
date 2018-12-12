@@ -14,27 +14,22 @@ namespace otrsCodes.Controllers
     {
         private Model db = new Model();
 
-        public ActionResult Index(int id = 0, int zoneId = 0)
+        public ActionResult Index(int id = 0, int zone = 0)
         {
             List<BaseTable> dt1 = new List<BaseTable>();
             Country country = db.Countries.Find(id);
-            ICollection<Code> codes = null;
+            List<Code> codes = null;
             if (country != null)
             {
-                if (country.Zones?.Count != 0)
-                {
-                    var zone = country.Zones.Where(z => z.Id == zoneId).FirstOrDefault();
-                    if (zone != null)
-                        codes = zone.Codes;
-                }
+                codes = country.Codes.Where(z => z.Zone == zone).ToList();
             }
 
             for (int i = 0; i < 100; ++i)
             {
                 BaseTable table = new BaseTable();
-                table.R = zoneId;
+                table.R = zone;
                 table.AB = i;
-                int val = zoneId * 1000 + i * 10;
+                int val = zone * 1000 + i * 10;
 
                 for (int j = 0; j < 10; ++j)
                 {
@@ -42,7 +37,7 @@ namespace otrsCodes.Controllers
                     if (codes != null)
                         foreach (var code in codes)
                         {
-                            if (code.Value.Trim() == (val + j).ToString())
+                            if (code.Value == val + j)
                                 table.codes[j] = new CodeDt() { code = val + j, color = code.Network.Color.Hex };
                         }
                 }
@@ -79,47 +74,20 @@ namespace otrsCodes.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            DataTable dataTable = FillDataTable(codes);
 
-            return ExportToExcel(dataTable, "test");
-        }
-
-        DataTable FillDataTable(ICollection<Code> codes)
-        {
-            DataTable dataTable = new DataTable();
-            DataColumn column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.AutoIncrement = false;
-            column.ColumnName = "Code";
-            column.ReadOnly = false;
-            column.Unique = false;
-            dataTable.Columns.Add(column);
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.AutoIncrement = false;
-            column.ColumnName = "Network";
-            column.ReadOnly = false;
-            column.Unique = false;
-            dataTable.Columns.Add(column);
-
-            DataRow dataRow;
-
-            foreach (var code in codes)
+            List<CodeDT> list = new List<CodeDT>();
+            foreach (var item in codes)
             {
-                dataRow = dataTable.NewRow();
-                dataRow["Code"] = code.Value;
-                dataRow["Network"] = code.Network.Name;
-                dataTable.Rows.Add(dataRow);
+                list.Add(new CodeDT() { Network = item.Network.Name, Code = item.Value, RegExp = "^" + item.Country.Code.ToString() + item.Value.ToString() + ".*" });
             }
-
-            return dataTable;
+            return ExportToExcel(list, "test");
         }
 
-        FileStreamResult ExportToExcel(DataTable dataSet, string fileName)
+        FileStreamResult ExportToExcel(IEnumerable<CodeDT> dataSet, string fileName)
         {
             ExcelPackage excel = new ExcelPackage();
             var workSheet = excel.Workbook.Worksheets.Add("Sheet1");
-            workSheet.Cells[1, 1].LoadFromDataTable(dataSet, true);
+            workSheet.Cells[1, 1].LoadFromCollection(dataSet, true);
 
             return File(new MemoryStream(excel.GetAsByteArray()), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
         }
@@ -163,15 +131,10 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,ZoneId,Value")] Code codes)
+        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,Zone,Value")] Code codes)
         {
             if (ModelState.IsValid)
             {
-                if (db.Zones.Find(codes.Id) == null)
-                {
-                    db.Zones.Add(new Zone() { Value = codes.ZoneId, CountryId = codes.CountryId });
-                    db.SaveChanges();
-                }
                 if (db.Codes.Where(c => c.Value == codes.Value).FirstOrDefault() == null)
                 {
                     db.Codes.Add(codes);

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace otrsCodes.Models
+﻿namespace otrsCodes.Models
 {
     public class CodeDT
     {
-        public string code;
-        public string network;
+        public int Code { get; set; }
+        public string Network { get; set; }
+        public string RegExp { get; set; }
     }
 }
