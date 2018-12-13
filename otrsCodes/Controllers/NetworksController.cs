@@ -21,6 +21,13 @@ namespace otrsCodes.Controllers
             return PartialView(networks.ToList());
         }
 
+        public ActionResult NetworkDropDown(int? id)
+        {
+            var networks = db.Countries.Find(id).Networks;
+            ViewBag.NetworkId = new SelectList(networks, "Id", "Name");
+            return PartialView();
+        }
+
         // GET: Networks/Details/5
         public ActionResult Details(int? id)
         {

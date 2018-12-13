@@ -235,6 +235,8 @@
     <Content Include="Views\Countries\ExportCodes.cshtml" />
     <Content Include="Views\Countries\Modal.cshtml" />
     <Content Include="Views\Codes\Create.cshtml" />
+    <Content Include="Views\Countries\RegExp.cshtml" />
+    <Content Include="Views\Networks\NetworkDropDown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

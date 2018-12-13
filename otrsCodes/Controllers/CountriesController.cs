@@ -52,6 +52,26 @@ namespace otrsCodes.Controllers
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             return PartialView();
         }
+        [HttpGet]
+        public ActionResult RegExp()
+        {
+            return PartialView();
+        }
+
+        public ActionResult GetRegExp(int? id)
+        {
+           var codes = db.Networks.Find(id)?.Codes;
+            if(codes==null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            string codeRegExp = $"^{codes.First().Country.Code}(";
+            foreach (var item in codes)
+            {
+                codeRegExp += item.Value + "|";
+            }
+            codeRegExp.TrimEnd('|');
+            codeRegExp += ").*";
+
+            return Content(codeRegExp);
+        }
 
         [HttpGet]
         public ActionResult ExportCodes()

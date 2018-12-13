@@ -1,3 +1,6 @@
-﻿<div class="form-inline">
-    @Html.DropDownList("Id", ViewBag.CountryId as SelectList, "--select country--", new { id = "ddlCountries", @class = "form-control form-control-sm" })
-</div>
+﻿<label for="Country">Country</label>
+@Html.DropDownList("Id", ViewBag.CountryId as SelectList, "--select country--", new {
+id = "ddlCountries",
+@class = "form-control form-control-sm",
+onchange = "ddlCountries_changed(this.value);"
+})
