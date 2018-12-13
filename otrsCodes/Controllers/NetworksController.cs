@@ -17,12 +17,15 @@ namespace otrsCodes.Controllers
         // GET: Networks
         public ActionResult Index(int? id)
         {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             var networks = db.Countries.Find(id).Networks;
             return PartialView(networks.ToList());
         }
 
         public ActionResult NetworkDropDown(int? id)
         {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             var networks = db.Countries.Find(id).Networks;
             ViewBag.NetworkId = new SelectList(networks, "Id", "Name");
             return PartialView();

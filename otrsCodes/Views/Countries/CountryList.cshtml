@@ -1,6 +1,10 @@
-﻿<label for="Country">Country</label>
-@Html.DropDownList("Id", ViewBag.CountryId as SelectList, "--select country--", new {
-id = "ddlCountries",
-@class = "form-control form-control-sm",
-onchange = "ddlCountries_changed(this.value);"
-})
+﻿<div class="form-group">
+    <label class="control-label col-md-2" for="Country">Country </label>
+    <div class="col-md-10">
+        @Html.DropDownList("Id", ViewBag.CountryId as SelectList, "--select country--", new {
+        id = "ddlCountries",
+        @class = "form-control form-control-sm",
+        onchange = "ddlCountries_changed(this.value);"
+        })
+    </div>
+</div>

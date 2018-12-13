@@ -135,7 +135,7 @@
     <Compile Include="Controllers\CodesController.cs" />
     <Compile Include="Controllers\ColorsController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\NetworksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -188,7 +188,11 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\My.js" />
+    <Content Include="Scripts\My\Admin.js" />
+    <Content Include="Scripts\My\Code.js" />
+    <Content Include="Scripts\My\Country.js" />
+    <Content Include="Scripts\My\Main.js" />
+    <Content Include="Scripts\My\Network.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -210,9 +214,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -229,11 +230,10 @@
     <Content Include="Views\Countries\Index.cshtml" />
     <Content Include="Views\Networks\Index.cshtml" />
     <Content Include="Views\Countries\CountryList.cshtml" />
-    <Content Include="Views\Home\Admin.cshtml" />
+    <Content Include="Views\Admin\Admin.cshtml" />
     <Content Include="Views\Countries\Main.cshtml" />
     <Content Include="Views\Networks\Edit.cshtml" />
     <Content Include="Views\Countries\ExportCodes.cshtml" />
-    <Content Include="Views\Countries\Modal.cshtml" />
     <Content Include="Views\Codes\Create.cshtml" />
     <Content Include="Views\Countries\RegExp.cshtml" />
     <Content Include="Views\Networks\NetworkDropDown.cshtml" />

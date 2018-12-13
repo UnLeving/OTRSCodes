@@ -44,23 +44,20 @@ namespace otrsCodes.Controllers
             return View();
         }
 
-        // POST: Codes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Value,CountryId,NetworkId,ZoneId")] Code code)
+        public ActionResult Create([Bind(Include = "CountryId,NetworkId,Zone,Value")] Code code)
         {
             if (ModelState.IsValid)
             {
-                db.Codes.Add(code);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.Codes.Where(c => c.Value == code.Value).FirstOrDefault() == null)
+                {
+                    db.Codes.Add(code);
+                    db.SaveChanges();
+                    return new HttpStatusCodeResult(HttpStatusCode.OK);
+                }
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Code {code.Value} already exist");
             }
-
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", code.CountryId);
-            ViewBag.NetworkId = new SelectList(db.Networks, "Id", "Name", code.NetworkId);
-            return View(code);
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
         }
 
         // GET: Codes/Edit/5

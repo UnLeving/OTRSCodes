@@ -14,6 +14,11 @@ namespace otrsCodes.Controllers
     {
         private Model db = new Model();
 
+        public ActionResult Main()
+        {
+            return View();
+        }
+
         public ActionResult Index(int id = 0, int zone = 0)
         {
             List<BaseTable> dt1 = new List<BaseTable>();
@@ -155,22 +160,6 @@ namespace otrsCodes.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 
-        [HttpPost]
-        public ActionResult AddCode([Bind(Include = "CountryId,NetworkId,Zone,Value")] Code codes)
-        {
-            if (ModelState.IsValid)
-            {
-                if (db.Codes.Where(c => c.Value == codes.Value).FirstOrDefault() == null)
-                {
-                    db.Codes.Add(codes);
-                    db.SaveChanges();
-                    return new HttpStatusCodeResult(HttpStatusCode.OK);
-                }
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Code {codes.Value} already exist");
-            }
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
-        }
-
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -232,8 +221,3 @@ namespace otrsCodes.Controllers
         }
     }
 }
-
-//public ActionResult Index()
-//{
-//    return View(db.Countries.ToList());
-//}

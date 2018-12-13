@@ -22,7 +22,12 @@ namespace otrsCodes
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/My").Include(
-                      "~/Scripts/My.js"));
+                      "~/Scripts/My/Main.js",
+                      "~/Scripts/My/Code.js",
+                      "~/Scripts/My/Country.js",
+                      "~/Scripts/My/Network.js",
+                      "~/Scripts/My/Admin.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
