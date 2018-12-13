@@ -98,7 +98,8 @@ namespace otrsCodes.Controllers
             return View(code);
         }
 
-        // GET: Codes/Delete/5
+        // POST: Codes/Delete/5
+        [HttpPost]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -108,20 +109,12 @@ namespace otrsCodes.Controllers
             Code code = db.Codes.Find(id);
             if (code == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
-            return View(code);
-        }
 
-        // POST: Codes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Code code = db.Codes.Find(id);
             db.Codes.Remove(code);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)

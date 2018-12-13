@@ -9,6 +9,7 @@
 
     public class CodeDt
     {
+        public int id;
         public int code;
         public string color = "#212529";
     }

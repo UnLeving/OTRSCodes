@@ -38,7 +38,7 @@ namespace otrsCodes.Controllers
                         foreach (var code in codes)
                         {
                             if (code.Value == val + j)
-                                table.codes[j] = new CodeDt() { code = val + j, color = code.Network.Color.Hex };
+                                table.codes[j] = new CodeDt() { id = code.Id ,code = val + j, color = code.Network.Color.Hex };
                         }
                 }
                 dt1.Add(table);

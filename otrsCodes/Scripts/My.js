@@ -13,6 +13,7 @@ function ddlCountries_changed(e) {
             $("#NetworkDD").html(partialViewResult);
         });
 }
+
 function Generate_clicked() {
     $.ajax({
         url: "/Countries/GetRegExp",
@@ -46,6 +47,21 @@ function RetreiveNetworks() {
             $("#NetworkContent").html(partialViewResult);
         });
 }
+
+$('body').on('contextmenu', 'td', function () {
+    $(this).css('background-color', '#32383e');
+    $.ajax({
+        url: "/Codes/Delete",
+        type: "POST",
+        data: {
+            id: this.id
+        },
+        done: function (response) {
+            alert(response.statusText);
+        }
+    });        
+    window.event.preventDefault();
+});
 
 $('body').on('click', 'td', function () {
     $(this).css('background-color', document.getElementById("HexSaver").value);
@@ -106,7 +122,6 @@ function UpdateTable(response) {
 }
 
 function CreateNew(path, id) {
-
     if ($(id).valid()) {
         $.ajax({
             url: path,
@@ -118,6 +133,4 @@ function CreateNew(path, id) {
             }
         });
     }
-
-
 }
