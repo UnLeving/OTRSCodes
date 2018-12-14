@@ -11,6 +11,6 @@
     {
         public int id;
         public int code;
-        public string color = "#212529";
+        public string color = "#FFFFFF";
     }
 }

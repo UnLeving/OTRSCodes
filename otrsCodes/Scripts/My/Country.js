@@ -22,7 +22,7 @@ function Generate_clicked() {
 
 $("#ddlCountries").change(function () {
     $.ajax({
-        url: "/Countries/Index",
+        url: "/Countries/CodesTable",
         type: "GET",
         data: { id: $("#ddlCountries").val() }
     })
@@ -31,3 +31,27 @@ $("#ddlCountries").change(function () {
             RetreiveNetworks();
         });
 });
+
+function RegionChanged(e) {
+    $.ajax({
+            url: "/Countries/CodesTable",
+            type: "GET",
+            data: {
+                id: $("#ddlCountries").val(),
+                zone: e
+            }
+        })
+            .done(function (response) {
+                UpdateTable(response);
+            });
+}
+
+// Fill tables
+function UpdateTable(response) {
+    var $bodyContent1 = $(response).find('#tb1 tbody').children();
+    var $bodyContent2 = $(response).find('#tb2 tbody').children();
+    var $table1 = $('#tb1');
+    var $table2 = $('#tb2');
+    $table1.find('tbody').empty().append($bodyContent1);
+    $table2.find('tbody').empty().append($bodyContent2);
+}

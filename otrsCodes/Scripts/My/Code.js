@@ -1,5 +1,8 @@
 ﻿// delete code
 $('body').on('contextmenu', 'td', function () {
+    if (this.id === '0')
+        return;
+
     $(this).css('background-color', '#32383e');
     $.ajax({
         url: "/Codes/Delete",

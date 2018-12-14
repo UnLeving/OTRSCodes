@@ -1,5 +1,6 @@
 ﻿using OfficeOpenXml;
 using otrsCodes.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -19,7 +20,7 @@ namespace otrsCodes.Controllers
             return View();
         }
 
-        public ActionResult Index(int id = 0, int zone = 0)
+        public ActionResult CodesTable(int id = 0, int zone = 0)
         {
             List<BaseTable> dt1 = new List<BaseTable>();
             Country country = db.Countries.Find(id);
@@ -34,7 +35,7 @@ namespace otrsCodes.Controllers
                 BaseTable table = new BaseTable();
                 table.R = zone;
                 table.AB = i;
-                int val = zone * 1000 + i * 10;
+                int val = /*zone * 1000 +*/ i * 10;
 
                 for (int j = 0; j < 10; ++j)
                 {
@@ -52,7 +53,7 @@ namespace otrsCodes.Controllers
             return PartialView(dt1);
         }
 
-        public ActionResult CountryList()
+        public ActionResult CountryDropDown()
         {
             ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             return PartialView();
@@ -93,7 +94,8 @@ namespace otrsCodes.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var codes = db.Countries.Find(id)?.Codes;
+            string country = db.Countries.Find(id).Name.Trim();
+            var codes = db.Countries.Find(id).Codes;
 
             if (codes == null)
             {
@@ -101,16 +103,11 @@ namespace otrsCodes.Controllers
             }
 
             List<CodeDT> list = new List<CodeDT>();
-            string codeRegExp = $"^{codes.First().Country.Code}(";
             foreach (var item in codes)
             {
-                codeRegExp += item.Value+"|";
-                list.Add(new CodeDT() { Network = item.Network.Name, Code = item.Value });
+                list.Add(new CodeDT() { Network = item.Network.Name, Code = $"{item.Country.Code}{item.Value}" });
             }
-            codeRegExp.TrimEnd('|');
-            codeRegExp += ").*";
-
-            return ExportToExcel(list, "test");
+            return ExportToExcel(list, $"{country} {DateTime.Now}");
         }
 
         FileStreamResult ExportToExcel(IEnumerable<CodeDT> dataSet, string fileName)

@@ -227,9 +227,9 @@
     <Content Include="Views\Colors\Create.cshtml" />
     <Content Include="Views\Networks\Create.cshtml" />
     <Content Include="Views\Colors\Index.cshtml" />
-    <Content Include="Views\Countries\Index.cshtml" />
+    <Content Include="Views\Countries\CodesTable.cshtml" />
     <Content Include="Views\Networks\Index.cshtml" />
-    <Content Include="Views\Countries\CountryList.cshtml" />
+    <Content Include="Views\Countries\CountryDropDown.cshtml" />
     <Content Include="Views\Admin\Admin.cshtml" />
     <Content Include="Views\Countries\Main.cshtml" />
     <Content Include="Views\Networks\Edit.cshtml" />
