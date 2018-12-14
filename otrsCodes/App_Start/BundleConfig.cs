@@ -33,6 +33,10 @@ namespace otrsCodes
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/Custom.css"));
+
+
+            BundleTable.EnableOptimizations = true;
+
         }
     }
 }
