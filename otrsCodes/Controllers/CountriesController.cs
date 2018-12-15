@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web.Mvc;
 
 namespace otrsCodes.Controllers
@@ -64,7 +65,8 @@ namespace otrsCodes.Controllers
             return PartialView();
         }
 
-        public ActionResult GetRegExp(int? id)
+        [HttpPost]
+        public ActionResult RegExp(int? id)
         {
            var codes = db.Networks.Find(id)?.Codes;
             if(codes==null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -73,10 +75,10 @@ namespace otrsCodes.Controllers
             {
                 codeRegExp += item.Value + "|";
             }
-            codeRegExp.TrimEnd('|');
+            codeRegExp = codeRegExp.TrimEnd('|');
             codeRegExp += ").*";
 
-            return Content(codeRegExp);
+            return File(Encoding.UTF8.GetBytes(codeRegExp), "text/plain", $"{codes.First().Country.Name.Trim()} {codes.First().Network.Name.Trim()}.txt");
         }
 
         [HttpGet]

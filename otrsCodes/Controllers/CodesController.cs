@@ -42,22 +42,6 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create([Bind(Include = "CountryId,NetworkId,Zone,Value")] Code code)
-        {
-            if (ModelState.IsValid)
-            {
-                if (db.Codes.Where(c => c.Value == code.Value).FirstOrDefault() == null)
-                {
-                    db.Codes.Add(code);
-                    db.SaveChanges();
-                    return new HttpStatusCodeResult(HttpStatusCode.OK);
-                }
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Code {code.Value} already exist");
-            }
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
-        }
-
-        [HttpPost]
         public ActionResult CreateMulti([Bind(Include = "CountryId,NetworkId,Zone,Value")] Codes codes)
         {
             if (ModelState.IsValid)
@@ -67,6 +51,10 @@ namespace otrsCodes.Controllers
                     if (db.Codes.Where(c => c.Value == code).FirstOrDefault() == null)
                     {
                         db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code });
+                    }
+                    else
+                    {
+                        db.Entry(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code }).State = EntityState.Modified;
                     }
                 }
                 db.SaveChanges();

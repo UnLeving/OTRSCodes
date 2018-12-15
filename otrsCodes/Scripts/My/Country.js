@@ -9,16 +9,16 @@
         });
 }
 
-function Generate_clicked() {
-    $.ajax({
-        url: "/Countries/GetRegExp",
-        type: "GET",
-        data: { id: $("#ddlNetworks").val() }
-    })
-        .done(function (ViewResult) {
-            $("#RegExp").val(ViewResult);
-        });
-}
+//function Generate_clicked() {
+//    $.ajax({
+//        url: "/Countries/GetRegExp",
+//        type: "GET",
+//        data: { id: $("#ddlNetworks").val() }
+//    })
+//        .done(function (ViewResult) {
+//            $("#RegExp").val(ViewResult);
+//        });
+//}
 
 $("#ddlCountries").change(function () {
     $.ajax({

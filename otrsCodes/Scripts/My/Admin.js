@@ -5,9 +5,12 @@ function CreateNew(path, id) {
             url: path,
             type: 'POST',
             data: $(id).serialize(),
-            success: $(id)[0].reset(),
-            error: function (err) {
-                alert("Error: " + err.statusText);
+            success: function () {
+                $(id)[0].reset();
+                document.getElementById("Logs").value = "200 OK";
+            },
+            error: function (status) {
+                document.getElementById("Logs").value = status.statusText;
             }
         });
     }

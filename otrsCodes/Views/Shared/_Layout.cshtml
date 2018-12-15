@@ -10,7 +10,13 @@
 <body>
     <div class="container-fluid">
         @RenderBody()
+        <div class="form-group">
+            <div class="col-md-offset-2">
+                <input id="Logs" type="text" readonly="readonly" class="form-control  form-control-sm" placeholder="Logs">
+            </div>
+        </div>
     </div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")

@@ -10,8 +10,8 @@ $('body').on('contextmenu', 'td', function () {
         data: {
             id: this.id
         },
-        done: function (response) {
-            alert(response.statusText);
+        done: function (status) {
+            document.getElementById("Logs").value = status.statusText;
         }
     });
     window.event.preventDefault();
@@ -43,16 +43,20 @@ function SendCodesOnBack(codes) {
             NetworkId: document.getElementById("NetworkIdSaver").value,
             Zone: document.getElementById("RValue").value,
             Value: codes
+        },
+        success: function () {
+            document.getElementById("Logs").value = "200 OK";
+        },
+        error: function (status) {
+            document.getElementById("Logs").value = status.statusText;
         }
-    }).fail(function (status) {
-        alert(status.statusText);
     });
 }
 
 $('body').on('click', 'td', function () {
     var isMouseDown = false;
     var codes = [];
-
+    
     $('body td')
         .mousedown(function () {
             isMouseDown = true;
@@ -71,7 +75,6 @@ $('body').on('click', 'td', function () {
         })
         .mouseup(function () {
             isMouseDown = false;
-            //alert(codes[0]);
             SendCodesOnBack(codes);
             codes.length = 0;
         });
