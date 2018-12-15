@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using otrsCodes.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using otrsCodes.Models;
 
 namespace otrsCodes.Controllers
 {
@@ -56,6 +53,24 @@ namespace otrsCodes.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.OK);
                 }
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, $"Code {code.Value} already exist");
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
+        }
+
+        [HttpPost]
+        public ActionResult CreateMulti([Bind(Include = "CountryId,NetworkId,Zone,Value")] Codes codes)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var code in codes.Value)
+                {
+                    if (db.Codes.Where(c => c.Value == code).FirstOrDefault() == null)
+                    {
+                        db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code });
+                    }
+                }
+                db.SaveChanges();
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
         }
