@@ -3,14 +3,14 @@
     public class BaseTable
     {
         public int R;
-        public int AB;
+        public string AB;
         public CodeDt[] codes = new CodeDt[10];
     }
 
     public class CodeDt
     {
         public int id;
-        public int code;
+        public string code;
         public string color = "#FFFFFF";
     }
 }

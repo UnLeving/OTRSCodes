@@ -18,7 +18,8 @@ namespace otrsCodes.Controllers
             {
                 foreach (var code in codes.Value)
                 {
-                    if (db.Codes.Where(c => c.Value == code).FirstOrDefault() == null)
+                    var cd = db.Codes.Where(c => c.Value == code).FirstOrDefault();
+                    if (cd == null)
                     {
                         db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code });
                     }

@@ -9,7 +9,7 @@ namespace otrsCodes.Models
         public int Id { get; set; }
 
         [Required]
-        public int Value { get; set; }
+        public string Value { get; set; }
         [Required]
         public int Zone { get; set; }
 

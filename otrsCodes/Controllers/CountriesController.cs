@@ -26,6 +26,7 @@ namespace otrsCodes.Controllers
             List<BaseTable> dt1 = new List<BaseTable>();
             Country country = db.Countries.Find(id);
             List<Code> codes = null;
+            BaseTable table = null;
             if (country != null)
             {
                 codes = country.Codes.Where(z => z.Zone == zone).ToList();
@@ -33,19 +34,21 @@ namespace otrsCodes.Controllers
 
             for (int i = 0; i < 100; ++i)
             {
-                BaseTable table = new BaseTable();
+                table = new BaseTable();
                 table.R = zone;
-                table.AB = i;
-                int val = /*zone * 1000 +*/ i * 10;
+                table.AB = i < 10 ? $"0{i}" : $"{i}";
 
                 for (int j = 0; j < 10; ++j)
                 {
-                    table.codes[j] = new CodeDt() { code = val + j };
+                    table.codes[j] = new CodeDt() { code = $"{table.AB}{j}" };
                     if (codes != null)
                         foreach (var code in codes)
                         {
-                            if (code.Value == val + j)
-                                table.codes[j] = new CodeDt() { id = code.Id ,code = val + j, color = code.Network.Color.Hex };
+                            if (code.Value == $"{table.AB}{j}")
+                            {
+                                table.codes[j].id = code.Id;
+                                table.codes[j].color = code.Network.Color.Hex;
+                            }
                         }
                 }
                 dt1.Add(table);
@@ -59,7 +62,7 @@ namespace otrsCodes.Controllers
             List<CountryDt> countries = new List<CountryDt>();
             foreach (var country in db.Countries)
             {
-                countries.Add(new CountryDt() {Id = country.Id, Name = $"{country.Code} {country.Name}" });
+                countries.Add(new CountryDt() { Id = country.Id, Name = $"{country.Code} {country.Name}" });
             }
             ViewBag.CountryId = new SelectList(countries, "Id", "Name");
             return PartialView();
@@ -73,8 +76,8 @@ namespace otrsCodes.Controllers
         [HttpPost]
         public ActionResult RegExp(int? id)
         {
-           var codes = db.Networks.Find(id)?.Codes;
-            if(codes==null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            var codes = db.Networks.Find(id)?.Codes;
+            if (codes == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             string codeRegExp = $"^{codes.First().Country.Code}(";
             foreach (var item in codes)
             {
@@ -125,7 +128,7 @@ namespace otrsCodes.Controllers
 
             return File(new MemoryStream(excel.GetAsByteArray()), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
         }
-        
+
         public ActionResult Create()
         {
             return PartialView();
