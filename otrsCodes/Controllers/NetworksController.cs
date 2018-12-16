@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using otrsCodes.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using otrsCodes.Models;
 
 namespace otrsCodes.Controllers
 {
@@ -14,7 +11,6 @@ namespace otrsCodes.Controllers
     {
         private Model db = new Model();
 
-        // GET: Networks
         public ActionResult Index(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -31,22 +27,6 @@ namespace otrsCodes.Controllers
             return PartialView();
         }
 
-        // GET: Networks/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Network network = db.Networks.Find(id);
-            if (network == null)
-            {
-                return HttpNotFound();
-            }
-            return View(network);
-        }
-
-        // GET: Networks/Create
         public ActionResult Create()
         {
             ViewBag.ColorId = new SelectList(db.Colors, "Id", "Hex");
@@ -54,9 +34,6 @@ namespace otrsCodes.Controllers
             return PartialView();
         }
 
-        // POST: Networks/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CountryId,ColorId,Name")] Network network)
@@ -75,7 +52,6 @@ namespace otrsCodes.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 
-        // GET: Networks/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -92,9 +68,6 @@ namespace otrsCodes.Controllers
             return View(network);
         }
 
-        // POST: Networks/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,CountryId,ColorId,Name")] Network network)
@@ -110,7 +83,6 @@ namespace otrsCodes.Controllers
             return View(network);
         }
 
-        // GET: Networks/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -125,7 +97,6 @@ namespace otrsCodes.Controllers
             return View(network);
         }
 
-        // POST: Networks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

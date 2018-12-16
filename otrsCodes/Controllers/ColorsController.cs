@@ -11,36 +11,16 @@ namespace otrsCodes.Controllers
     {
         private Model db = new Model();
 
-        // GET: Colors
         public ActionResult Index()
         {
             return View(db.Colors.ToList());
         }
 
-        // GET: Colors/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Color color = db.Colors.Find(id);
-            if (color == null)
-            {
-                return HttpNotFound();
-            }
-            return View(color);
-        }
-
-        // GET: Colors/Create
         public ActionResult Create()
         {
             return PartialView();
         }
 
-        // POST: Colors/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Hex")] Color color)
@@ -59,7 +39,6 @@ namespace otrsCodes.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 
-        // GET: Colors/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -74,9 +53,6 @@ namespace otrsCodes.Controllers
             return View(color);
         }
 
-        // POST: Colors/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Hex")] Color color)
@@ -90,7 +66,6 @@ namespace otrsCodes.Controllers
             return View(color);
         }
 
-        // GET: Colors/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
