@@ -56,7 +56,12 @@ namespace otrsCodes.Controllers
 
         public ActionResult CountryDropDown()
         {
-            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
+            List<CountryDt> countries = new List<CountryDt>();
+            foreach (var country in db.Countries)
+            {
+                countries.Add(new CountryDt() {Id = country.Id, Name = $"{country.Code} {country.Name}" });
+            }
+            ViewBag.CountryId = new SelectList(countries, "Id", "Name");
             return PartialView();
         }
         [HttpGet]
@@ -120,21 +125,7 @@ namespace otrsCodes.Controllers
 
             return File(new MemoryStream(excel.GetAsByteArray()), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName + ".xlsx");
         }
-
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Country country = db.Countries.Find(id);
-            if (country == null)
-            {
-                return HttpNotFound();
-            }
-            return View(country);
-        }
-
+        
         public ActionResult Create()
         {
             return PartialView();
