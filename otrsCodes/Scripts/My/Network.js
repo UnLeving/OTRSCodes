@@ -7,9 +7,12 @@ function RetreiveNetworks() {
     $.ajax({
         url: "/Networks/Index",
         type: "GET",
-        data: { id: $("#ddlCountries").val() }
-    })
-        .done(function (partialViewResult) {
+        data: { id: $("#ddlCountries").val() },
+        success: function (partialViewResult) {
             $("#NetworkContent").html(partialViewResult);
-        });
+        },
+        error: function (status) {
+            document.getElementById("Logs").value = status.statusText;
+        }
+    });
 }

@@ -59,10 +59,10 @@ namespace otrsCodes.Controllers
 
         public ActionResult CountryDropDown()
         {
-            List<CountryDt> countries = new List<CountryDt>();
+            List<Country> countries = new List<Country>();
             foreach (var country in db.Countries)
             {
-                countries.Add(new CountryDt() { Id = country.Id, Name = $"{country.Code} {country.Name}" });
+                countries.Add(new Country() { Id = country.Id, Name = $"{country.Code} {country.Name}" });
             }
             ViewBag.CountryId = new SelectList(countries, "Id", "Name");
             return PartialView();
@@ -96,7 +96,6 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult ExportCodes(int? id)
         {
             if (id == null)
