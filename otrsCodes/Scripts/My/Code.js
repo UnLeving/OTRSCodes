@@ -1,4 +1,16 @@
-﻿// delete code
+﻿var cntrlIsPressed = false;
+
+$(document).keydown(function (event) {
+    if (event.key === 'Control') {
+        cntrlIsPressed = true;
+    }
+});
+
+$(document).keyup(function () {
+    cntrlIsPressed = false;
+});
+
+// delete code
 $('body').on('contextmenu', 'td', function () {
     if (this.id === '0')
         return;
@@ -99,26 +111,25 @@ $('body').on('contextmenu', 'td', function () {
     //});
 }
 
-var cntrlIsPressed = false;
-
-$(document).keydown(function (event) {
-    if (event.key === 'Control') {
-        cntrlIsPressed = true;
+$('body').on('click', 'thead th', function () {
+    var codes = [];
+    var tds = [];
+    var tbl = this.closest('table');
+    
+    var n = parseInt(this.textContent,10) + 2;
+    for (var i = 1; i < tbl.rows.length; ++i) {
+        codes.push(tbl.rows[i].cells[n].textContent);
+        tds.push(tbl.rows[i].cells[n]);
     }
-});
-
-$(document).keyup(function () {
-    cntrlIsPressed = false;
+    SendCodesOnServer(codes, tds);
 });
 
 // add code
-$('body').on('click', 'td', function () {
+$('body').on('click', 'tbody td', function () {
     var codes = [];
     var tds = [];
     if (cntrlIsPressed === true) {
-        //cntrlIsPressed = false;
-        tds = $(this.parentNode).children('td');
-
+        tds = $(this.closest('tbody')).children();
         for (var i = 0; i < tds.length; ++i) {
             codes.push(tds[i].textContent);
         }
@@ -126,6 +137,11 @@ $('body').on('click', 'td', function () {
         codes.push(this.textContent);
         tds.push(this);
     }
+    //document.getElementById("Logs").value = tds.length;
+    //SendCodesOnServer(codes, tds);
+});
+
+function SendCodesOnServer(codes, tds) {
     $.ajax({
         url: "/Codes/CreateMulti",
         type: "POST",
@@ -137,13 +153,11 @@ $('body').on('click', 'td', function () {
         },
         success: function () {
             if (tds.length > 0) {
-                //alert(tds.length);
                 for (var i = 0; i <= tds.length; ++i) {
                     $(tds).css('background-color', document.getElementById("HexSaver").value);
                 }
             }
             else {
-                //alert("single");
                 $(this).css('background-color', document.getElementById("HexSaver").value);
             }
             document.getElementById("Logs").value = "200 OK";
@@ -152,5 +166,4 @@ $('body').on('click', 'td', function () {
             document.getElementById("Logs").value = status.statusText;
         }
     });
-
-});
+}
