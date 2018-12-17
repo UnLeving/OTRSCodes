@@ -8,6 +8,9 @@
     @Html.Hidden("FLAG")
 </head>
 <body>
+    <div id="loader" class="loader">
+        <img src="@Url.Content("~/Content/biohazard.png")" width="120" height="120"/>
+    </div>
     <div class="container-fluid">
         @RenderBody()
         <div class="form-group">

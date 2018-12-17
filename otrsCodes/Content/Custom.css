@@ -23,3 +23,23 @@
         border-bottom-left-radius: 0rem;
         border-bottom-right-radius: 0rem;
     }
+
+.loader {
+    width: 120px;
+    height: 120px;
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+    display: none;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

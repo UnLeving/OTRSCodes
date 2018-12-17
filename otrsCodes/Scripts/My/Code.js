@@ -10,6 +10,8 @@ $(document).keyup(function () {
     cntrlIsPressed = false;
 });
 
+// DELETE ZONE
+
 // delete code
 $('body').on('contextmenu', 'td', function () {
     if (this.id === '0')
@@ -111,6 +113,8 @@ $('body').on('contextmenu', 'td', function () {
     //});
 }
 
+// ADD ZONE
+
 // select and add column 
 $('body').on('click', 'thead th', function () {
     var codes = [];
@@ -126,7 +130,7 @@ $('body').on('click', 'thead th', function () {
     SendCodesOnServer(codes, tds, flag);
 });
 
-// select and add cell or all cells byctrl pressed
+// select and add cell or all cells by CTRL pressed
 $('body').on('click', 'tbody td', function () {
     var flag;
     var codes = [];
@@ -139,6 +143,7 @@ $('body').on('click', 'tbody td', function () {
                 codes.push(tds[i].cells[j].textContent);
             }
         }
+        
         SendCodesOnServer(codes, tds, flag);
     }
     else {
@@ -164,6 +169,7 @@ $('body').on('click', 'tbody th', function () {
 });
 
 function SendCodesOnServer(codes, tds, isTwoDemenArr) {
+    $('#loader').show();
     $.ajax({
         url: "/Codes/CreateMulti",
         type: "POST",
@@ -180,9 +186,11 @@ function SendCodesOnServer(codes, tds, isTwoDemenArr) {
                 OnSuccessArray(tds);
             }
             document.getElementById("Logs").value = "200 OK";
+            $('#loader').hide();
         },
         error: function (status) {
             document.getElementById("Logs").value = status.statusText;
+            $('#loader').hide();
         }
     });
 }
