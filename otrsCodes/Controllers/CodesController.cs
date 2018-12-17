@@ -16,18 +16,24 @@ namespace otrsCodes.Controllers
         {
             if (ModelState.IsValid)
             {
+                var counter = 0;
                 foreach (var code in codes.Value)
                 {
                     var cd = db.Codes.Where(c => c.Value == code).FirstOrDefault();
                     if (cd == null)
                     {
                         db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code });
+                        ++counter;
                     }
                     else
                     {
-                        db.Entry(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code }).State = EntityState.Modified;
+                        if (cd.NetworkId == codes.NetworkId) continue;
+                        cd.NetworkId = codes.NetworkId;
+                        db.Entry(cd).State = EntityState.Modified;
+                        ++counter;
                     }
                 }
+                if (counter == 0) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Nothing to change");
                 db.SaveChanges();
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
