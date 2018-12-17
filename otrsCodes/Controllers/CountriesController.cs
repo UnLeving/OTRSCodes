@@ -57,6 +57,7 @@ namespace otrsCodes.Controllers
             return PartialView(dt1);
         }
 
+        [HttpGet]
         public ActionResult CountryDropDown()
         {
             List<Country> countries = new List<Country>();
@@ -67,6 +68,7 @@ namespace otrsCodes.Controllers
             ViewBag.CountryId = new SelectList(countries, "Id", "Name");
             return PartialView();
         }
+
         [HttpGet]
         public ActionResult RegExp()
         {

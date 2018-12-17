@@ -41,19 +41,22 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int?[] ids)
         {
-            if (id == null)
+            if (ids == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Code code = db.Codes.Find(id);
-            if (code == null)
+            Code code;
+            foreach (var id in ids)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                code = db.Codes.Find(id);
+                if (code == null)
+                {
+                    continue;
+                }
+                db.Codes.Remove(code);
             }
-
-            db.Codes.Remove(code);
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

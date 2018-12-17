@@ -13,23 +13,68 @@ $(document).keyup(function () {
 // DELETE ZONE
 
 // delete code
-$('body').on('contextmenu', 'td', function () {
+$('body').on('contextmenu', 'tbody td', function () {
     if (this.id === '0')
         return;
+    var ids = [];
+    var tds = [];
+    var flag = false;
+    ids.push(this.id);
+    tds.push(this);
+    DeleteCodes(ids, tds, flag);
 
-    $(this).css('background-color', '#32383e');
+    window.event.preventDefault();
+});
+
+// select and delete row
+$('body').on('contextmenu', 'tbody th', function () {
+    var ids = [];
+    var tds = [];
+    var flag = false;
+
+    tds = $(this).parent().children('td');
+    for (var i = 0; i < tds.length; ++i) {
+        ids.push(tds[i].id);
+    }
+
+    DeleteCodes(ids, tds, flag);
+    window.event.preventDefault();
+});
+
+function DeleteCodes(e, tds, flag) {
     $.ajax({
         url: "/Codes/Delete",
         type: "POST",
         data: {
-            id: this.id
+            ids: e
         },
-        done: function (status) {
+        success: function () {
+            if (flag) {
+                DelOnSucc2Array(tds);
+            } else {
+                DelOnSuccArray(tds);
+            }
+            document.getElementById("Logs").value = "200 OK";
+        },
+        error: function (status) {
             document.getElementById("Logs").value = status.statusText;
         }
     });
-    window.event.preventDefault();
-});
+}
+
+function DelOnSuccArray(tds) {
+    for (var i = 0; i <= tds.length; ++i) {
+        $(tds).css('background-color', '#FFFFFF');
+    }
+}
+
+function DelOnSucc2Array(tds) {
+    for (var i = 0; i < tds.length; ++i) {
+        for (var j = 2; j < 12; ++j) {
+            $(tds[i].cells[j]).css('background-color', '#FFFFFF');
+        }
+    }
+}
 
 {// add code
     //$('body').on('click', 'td', function () {
@@ -143,7 +188,7 @@ $('body').on('click', 'tbody td', function () {
                 codes.push(tds[i].cells[j].textContent);
             }
         }
-        
+
         SendCodesOnServer(codes, tds, flag);
     }
     else {
@@ -159,7 +204,7 @@ $('body').on('click', 'tbody th', function () {
     var codes = [];
     var tds = [];
     var flag = false;
-    codes.push(this.textContent);
+    //codes.push(this.textContent);
     tds = $(this).parent().children('td');
     for (var i = 0; i < tds.length; ++i) {
         codes.push(tds[i].textContent);
@@ -196,19 +241,15 @@ function SendCodesOnServer(codes, tds, isTwoDemenArr) {
 }
 
 function OnSuccessTwoDimenArray(tds) {
-    if (tds.length > 0) {
-        for (var i = 0; i < tds.length; ++i) {
-            for (var j = 2; j < 12; ++j) {
-                $(tds[i].cells[j]).css('background-color', document.getElementById("HexSaver").value);
-            }
+    for (var i = 0; i < tds.length; ++i) {
+        for (var j = 2; j < 12; ++j) {
+            $(tds[i].cells[j]).css('background-color', document.getElementById("HexSaver").value);
         }
     }
 }
 
 function OnSuccessArray(tds) {
-    if (tds.length > 0) {
-        for (var i = 0; i <= tds.length; ++i) {
-            $(tds).css('background-color', document.getElementById("HexSaver").value);
-        }
+    for (var i = 0; i <= tds.length; ++i) {
+        $(tds).css('background-color', document.getElementById("HexSaver").value);
     }
 }

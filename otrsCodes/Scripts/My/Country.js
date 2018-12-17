@@ -1,16 +1,17 @@
-﻿var Id;
-
-function ddlCountries_changed(e) {
-    Id = e;
-    $.ajax({
-        url: "/Networks/NetworkDropDown",
-        type: "GET",
-        data: { id: Id }
-    })
-        .done(function (partialViewResult) {
-            $("#NetworkDD").html(partialViewResult);
-        });
-}
+﻿//function ddlCountries_changed(e) {
+//    Id = e;
+//    $.ajax({
+//        url: "/Networks/NetworkDropDown",
+//        type: "GET",
+//        data: { id: Id },
+//        success: function (partialViewResult) {
+//            $("#NetworkDD").html(partialViewResult);
+//        },
+//        error: function (status) {
+//            document.getElementById("Logs").value = status.statusText;
+//        }
+//    });
+//}
 
 //function Generate_clicked() {
 //    $.ajax({
@@ -27,12 +28,15 @@ $("#ddlCountries").change(function () {
     $.ajax({
         url: "/Countries/CodesTable",
         type: "GET",
-        data: { id: $("#ddlCountries").val() }
-    })
-        .done(function (partialViewResult) {
+        data: { id: $("#ddlCountries").val() },
+        success: function (partialViewResult) {
             $("#CodesContent").html(partialViewResult);
             RetreiveNetworks();
-        });
+        },
+        error: function (status) {
+            document.getElementById("Logs").value = status.statusText;
+        }
+    });
 });
 
 function RegionChanged(e) {
@@ -63,15 +67,4 @@ function UpdateTable(response) {
     var $table2 = $('#tb2');
     $table1.find('tbody').empty().append($bodyContent1);
     $table2.find('tbody').empty().append($bodyContent2);
-}
-
-function ExportCodes() {
-    $.ajax({
-        url: "/Countries/ExportCodes",
-        type: "POST",
-        data: Id,
-        success: function (e) {
-
-        }
-    });
 }
