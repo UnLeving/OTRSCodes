@@ -18,7 +18,7 @@
                 {
                     <tr>
                         <th id="RValue" scope="row">@Model.ElementAt(i).R</th>
-                        <th scope="row">@Model.ElementAt(i).AB </th>
+                        <th scope="row">@Model.ElementAt(i).AB</th>
                         @for (int j = 0; j < 10; ++j)
                         {
                             <td id="@Model.ElementAt(i).codes[j].id" style="background-color:@Model.ElementAt(i).codes[j].color">@Model.ElementAt(i).codes[j].code</td>
@@ -45,10 +45,10 @@
                 {
                     <tr>
                         <th scope="row">@Model.ElementAt(i).R</th>
-                        <th scope="row">@Model.ElementAt(i).AB </th>
+                        <th scope="row">@Model.ElementAt(i).AB</th>
                         @for (int j = 0; j < 10; ++j)
                         {
-                            <td style="background-color:@Model.ElementAt(i).codes[j].color">@Model.ElementAt(i).codes[j].code</td>
+                            <td id="@Model.ElementAt(i).codes[j].id" style="background-color:@Model.ElementAt(i).codes[j].color">@Model.ElementAt(i).codes[j].code</td>
                         }
                     </tr>
                 }

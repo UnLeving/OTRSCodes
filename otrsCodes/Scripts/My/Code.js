@@ -12,21 +12,46 @@ $(document).keyup(function () {
 
 // DELETE ZONE
 
-// delete code
-$('body').on('contextmenu', 'tbody td', function () {
-    if (this.id === '0')
-        return;
+// select and delete codes in column 
+$('body').on('contextmenu', 'thead th', function () {
     var ids = [];
     var tds = [];
     var flag = false;
-    ids.push(this.id);
-    tds.push(this);
+
+    var tbl = this.closest('table');
+    var n = parseInt(this.textContent, 10) + 2;
+    for (var i = 1; i < tbl.rows.length; ++i) {
+        ids.push(tbl.rows[i].cells[n].id);
+        tds.push(tbl.rows[i].cells[n]);
+    }
+    DeleteCodes(ids, tds, flag);
+    window.event.preventDefault();
+});
+
+// delete single code
+$('body').on('contextmenu', 'tbody td', function () {
+    var ids = [];
+    var tds = [];
+    var flag;
+    if (cntrlIsPressed) {
+        flag = true;
+        tds = $(this.closest('tbody')).children();
+        for (var i = 0; i < tds.length; ++i) {
+            for (var j = 2; j < 12; ++j) {
+                ids.push(tds[i].cells[j].id);
+            }
+        }
+    } else {
+        flag = false;
+        ids.push(this.id);
+        tds.push(this);
+    }
     DeleteCodes(ids, tds, flag);
 
     window.event.preventDefault();
 });
 
-// select and delete row
+// select and delete codes in row
 $('body').on('contextmenu', 'tbody th', function () {
     var ids = [];
     var tds = [];
@@ -188,15 +213,13 @@ $('body').on('click', 'tbody td', function () {
                 codes.push(tds[i].cells[j].textContent);
             }
         }
-
-        SendCodesOnServer(codes, tds, flag);
     }
     else {
         flag = false;
         tds.push(this);
         codes.push(this.textContent);
-        SendCodesOnServer(codes, tds, flag);
     }
+    SendCodesOnServer(codes, tds, flag);
 });
 
 // select and add row
