@@ -28,7 +28,7 @@ $('body').on('contextmenu', 'thead th', function () {
     window.event.preventDefault();
 });
 
-// delete single code
+// delete single code  and all codes by CTRL pressed
 $('body').on('contextmenu', 'tbody td', function () {
     var ids = [];
     var tds = [];
@@ -67,6 +67,7 @@ $('body').on('contextmenu', 'tbody th', function () {
 });
 
 function DeleteCodes(e, tds, flag) {
+    $('#loader').show();
     $.ajax({
         url: "/Codes/Delete",
         type: "POST",
@@ -80,9 +81,11 @@ function DeleteCodes(e, tds, flag) {
                 DelOnSuccArray(tds);
             }
             document.getElementById("Logs").value = "200 OK";
+            $('#loader').hide();
         },
         error: function (status) {
             document.getElementById("Logs").value = status.statusText;
+            $('#loader').hide();
         }
     });
 }
@@ -99,88 +102,6 @@ function DelOnSucc2Array(tds) {
             $(tds[i].cells[j]).css('background-color', '#FFFFFF');
         }
     }
-}
-
-{// add code
-    //$('body').on('click', 'td', function () {
-    //    $(this).css('background-color', document.getElementById("HexSaver").value);
-    //    $.ajax({
-    //        url: "/Codes/Create",
-    //        type: "POST",
-    //        data: {
-    //            CountryId: $("#ddlCountries").val(),
-    //            NetworkId: document.getElementById("NetworkIdSaver").value,
-    //            Zone: document.getElementById("RValue").value,
-    //            Value: $(this).text()
-    //        }
-    //    }).fail(function (status) {
-    //        alert(status.statusText);
-    //    });
-    //});
-
-    //function SendCodesOnBack(codes) {
-    //    $.ajax({
-    //        url: "/Codes/CreateMulti",
-    //        type: "POST",
-    //        data: {
-    //            CountryId: $("#ddlCountries").val(),
-    //            NetworkId: document.getElementById("NetworkIdSaver").value,
-    //            Zone: document.getElementById("RValue").value,
-    //            Value: codes
-    //        },
-    //        success: function () {
-    //            document.getElementById("Logs").value = "200 OK";
-    //        },
-    //        error: function (status) {
-    //            document.getElementById("Logs").value = status.statusText;
-    //        }
-    //    });
-    //}
-
-    //$(this).css('background-color', document.getElementById("HexSaver").value);
-    //$.ajax({
-    //    url: "/Codes/CreateMulti",
-    //    type: "POST",
-    //    data: {
-    //        CountryId: $("#ddlCountries").val(),
-    //        NetworkId: document.getElementById("NetworkIdSaver").value,
-    //        Zone: document.getElementById("RValue").value,
-    //        Value: $(this).text()
-    //    },
-    //    success: function () {
-    //        document.getElementById("Logs").value = "200 OK";
-    //    },
-    //    error: function (status) {
-    //        document.getElementById("Logs").value = status.statusText;
-    //    }
-    //});
-
-    //$('body').on('click', 'td', function () {
-    //    var isMouseDown = false;
-    //    var codes = [];
-
-    //    $('body td')
-    //        .mousedown(function () {
-    //            isMouseDown = true;
-    //            $(this).css('background-color', document.getElementById("HexSaver").value);
-    //            codes.push(this.textContent);
-    //            return false;
-    //        })
-    //        .mouseover(function () {
-    //            if (isMouseDown) {
-    //                $(this).css('background-color', document.getElementById("HexSaver").value);
-    //                codes.push(this.textContent);
-    //            }
-    //        })
-    //        .bind("selectstart", function () {
-    //            return false;
-    //        })
-    //        .mouseup(function () {
-    //            isMouseDown = false;
-    //            SendCodesOnBack(codes);
-    //            codes.length = 0;
-    //        });
-    //});
 }
 
 // ADD ZONE
@@ -275,4 +196,86 @@ function OnSuccessArray(tds) {
     for (var i = 0; i <= tds.length; ++i) {
         $(tds).css('background-color', document.getElementById("HexSaver").value);
     }
+}
+
+{// add code
+    //$('body').on('click', 'td', function () {
+    //    $(this).css('background-color', document.getElementById("HexSaver").value);
+    //    $.ajax({
+    //        url: "/Codes/Create",
+    //        type: "POST",
+    //        data: {
+    //            CountryId: $("#ddlCountries").val(),
+    //            NetworkId: document.getElementById("NetworkIdSaver").value,
+    //            Zone: document.getElementById("RValue").value,
+    //            Value: $(this).text()
+    //        }
+    //    }).fail(function (status) {
+    //        alert(status.statusText);
+    //    });
+    //});
+
+    //function SendCodesOnBack(codes) {
+    //    $.ajax({
+    //        url: "/Codes/CreateMulti",
+    //        type: "POST",
+    //        data: {
+    //            CountryId: $("#ddlCountries").val(),
+    //            NetworkId: document.getElementById("NetworkIdSaver").value,
+    //            Zone: document.getElementById("RValue").value,
+    //            Value: codes
+    //        },
+    //        success: function () {
+    //            document.getElementById("Logs").value = "200 OK";
+    //        },
+    //        error: function (status) {
+    //            document.getElementById("Logs").value = status.statusText;
+    //        }
+    //    });
+    //}
+
+    //$(this).css('background-color', document.getElementById("HexSaver").value);
+    //$.ajax({
+    //    url: "/Codes/CreateMulti",
+    //    type: "POST",
+    //    data: {
+    //        CountryId: $("#ddlCountries").val(),
+    //        NetworkId: document.getElementById("NetworkIdSaver").value,
+    //        Zone: document.getElementById("RValue").value,
+    //        Value: $(this).text()
+    //    },
+    //    success: function () {
+    //        document.getElementById("Logs").value = "200 OK";
+    //    },
+    //    error: function (status) {
+    //        document.getElementById("Logs").value = status.statusText;
+    //    }
+    //});
+
+    //$('body').on('click', 'td', function () {
+    //    var isMouseDown = false;
+    //    var codes = [];
+
+    //    $('body td')
+    //        .mousedown(function () {
+    //            isMouseDown = true;
+    //            $(this).css('background-color', document.getElementById("HexSaver").value);
+    //            codes.push(this.textContent);
+    //            return false;
+    //        })
+    //        .mouseover(function () {
+    //            if (isMouseDown) {
+    //                $(this).css('background-color', document.getElementById("HexSaver").value);
+    //                codes.push(this.textContent);
+    //            }
+    //        })
+    //        .bind("selectstart", function () {
+    //            return false;
+    //        })
+    //        .mouseup(function () {
+    //            isMouseDown = false;
+    //            SendCodesOnBack(codes);
+    //            codes.length = 0;
+    //        });
+    //});
 }

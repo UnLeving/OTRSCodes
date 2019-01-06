@@ -1,6 +1,6 @@
 ﻿body {
     padding-bottom: 20px;
-    font-size: 0.8rem;
+    font-size: 11.5px;
 }
 
 .list-group {
@@ -12,6 +12,9 @@
     float: left;
     flex-direction: row;
     margin-bottom: 0px;
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
     .list-group-item:first-child {
@@ -42,4 +45,34 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+.table {
+    margin-bottom: 0.2rem;
+}
+
+.table th, .table td {
+    padding: 0rem;
+}
+
+.form-group {
+    margin-bottom: 0.2rem;
+}
+
+.form-control-sm {
+    height: calc(1.6rem + 2px);
+    padding: 2px;
+    padding-left: 4px;
+    font-size: 11px;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
 }
