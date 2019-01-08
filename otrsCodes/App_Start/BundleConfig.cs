@@ -34,7 +34,7 @@ namespace otrsCodes
                       "~/Content/Custom.css"));
 
 
-            BundleTable.EnableOptimizations = false;
+            BundleTable.EnableOptimizations = true;
 
         }
     }

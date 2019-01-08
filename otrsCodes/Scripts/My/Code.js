@@ -10,6 +10,14 @@ $(document).keyup(function () {
     cntrlIsPressed = false;
 });
 
+// open region by middle btn click
+$('body').on('mousedown', 'tbody td', function () {
+    if (event.button === 1 && this.id > 0) {
+        window.event.preventDefault();
+        RegionChanged(this.textContent);
+    }
+});
+
 // DELETE ZONE
 
 // select and delete codes in column 
