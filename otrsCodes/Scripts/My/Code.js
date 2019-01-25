@@ -173,7 +173,7 @@ function SendCodesOnServer(codes, tds, isTwoDemenArr) {
         data: {
             CountryId: $("#ddlCountries").val(),
             NetworkId: document.getElementById("NetworkIdSaver").value,
-            Zone: document.getElementById("RValue").value,
+            Zone: $("#regionChange").val(),
             Value: codes
         },
         success: function () {
