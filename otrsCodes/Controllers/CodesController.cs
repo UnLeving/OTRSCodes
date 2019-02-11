@@ -45,17 +45,46 @@ namespace otrsCodes.Controllers
                                     Code _rootCode = null;
                                     foreach (var item in _keyValuePairs)
                                     {
-                                        _rootCode = _db.Codes.Where(c => c.Zone == item.Key && c.Value == item.Value).First();
+                                        _rootCode = _db.Codes.Where(c => c.Zone == item.Key && c.Value == item.Value).FirstOrDefault();
                                     }
 
                                     if (_rootCode != null)
                                     {
+                                        int _networkId = 0;
+                                        // expand _rootCode
+                                        // codes.color = _rootCode.color, newCode.color = addedCodes.color
+                                        for (int i = 0; i <= 9; i++)
+                                        {
+                                            string t = $"{codes.Zone}{code}".Remove(0, $"{_rootCode.Zone}{_rootCode.Value}".Length);
+                                            if (i.ToString()[0] != t[0])
+                                                _networkId = _rootCode.NetworkId;
+                                            else
+                                                _networkId = codes.NetworkId;
 
+                                            _db.Codes.Add(new Code()
+                                            {
+                                                CountryId = codes.CountryId,
+                                                NetworkId = _networkId,
+                                                Zone = int.Parse($"{_rootCode.Zone}{_rootCode.Value[0]}"),
+                                                Value = $"{_rootCode.Value[1]}{_rootCode.Value[2]}{i}"
+                                            });
+                                        }
+                                        // add new code
+                                        _db.Codes.Add(new Code()
+                                        {
+                                            CountryId = codes.CountryId,
+                                            NetworkId = codes.NetworkId,
+                                            Zone = codes.Zone,
+                                            Value = code
+                                        });
+
+                                        // delete _rootCode
+                                        _db.Codes.Remove(_rootCode);
+                                        ++_addedCodes;
+                                        break;
                                     }
                                 }
-
-
-
+                                
                                 var _inLineDBCodes = _db.Codes.Where(c => c.NetworkId == codes.NetworkId && c.Zone == codes.Zone && c.Value.StartsWith(code.Remove(code.Length - 1)));
                                 if (_inLineDBCodes.Count() == 9)
                                 {
