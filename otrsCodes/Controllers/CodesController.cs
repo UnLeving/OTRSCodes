@@ -1,4 +1,5 @@
 ﻿using otrsCodes.Models;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -29,8 +30,34 @@ namespace otrsCodes.Controllers
                         {
                             if (codes.Value.Count() == 1)
                             {
-                                var _inLineDBCodes = _db.Codes.Where(c => c.Zone == codes.Zone && c.Value.StartsWith(code.Remove(code.Length - 1)));
-                                if(_inLineDBCodes.Count() == 9)
+                                if (codes.Zone / 10 > 0)
+                                {
+                                    int _zone = codes.Zone;
+                                    string _code = code;
+                                    Dictionary<int, string> _keyValuePairs = new Dictionary<int, string>();
+                                    while (_zone / 10 > 0)
+                                    {
+                                        _code = $"{_zone % 10}{_code.Remove(_code.Length - 1)}";
+                                        _keyValuePairs.Add(_zone / 10, _code);
+                                        _zone /= 10;
+                                    }
+                                    // retreive root code
+                                    Code _rootCode = null;
+                                    foreach (var item in _keyValuePairs)
+                                    {
+                                        _rootCode = _db.Codes.Where(c => c.Zone == item.Key && c.Value == item.Value).First();
+                                    }
+
+                                    if (_rootCode != null)
+                                    {
+
+                                    }
+                                }
+
+
+
+                                var _inLineDBCodes = _db.Codes.Where(c => c.NetworkId == codes.NetworkId && c.Zone == codes.Zone && c.Value.StartsWith(code.Remove(code.Length - 1)));
+                                if (_inLineDBCodes.Count() == 9)
                                 {
                                     string _parentCode = codes.Zone % 10 + code.Remove(code.Length - 1);
                                     _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone / 10, Value = _parentCode });
