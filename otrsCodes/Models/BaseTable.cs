@@ -2,7 +2,7 @@
 {
     public class BaseTable
     {
-        public int R;
+        public string R;
         public string AB;
         public CodeDt[] codes = new CodeDt[10];
     }

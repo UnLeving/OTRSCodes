@@ -11,7 +11,7 @@ namespace otrsCodes.Models
         [Required]
         public string Value { get; set; }
         [Required]
-        public int Zone { get; set; }
+        public string Zone { get; set; }
 
         public int CountryId { get; set; }
         public int NetworkId { get; set; }

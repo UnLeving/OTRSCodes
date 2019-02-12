@@ -21,7 +21,7 @@ namespace otrsCodes.Controllers
             return View();
         }
 
-        public ActionResult CodesTable(int id = 0, int zone = 0)
+        public ActionResult CodesTable(int id = 0, string zone = "0")
         {
             List<BaseTable> dt1 = new List<BaseTable>();
             Country country = db.Countries.Find(id);
