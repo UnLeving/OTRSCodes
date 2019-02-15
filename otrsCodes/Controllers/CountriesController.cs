@@ -47,7 +47,21 @@ namespace otrsCodes.Controllers
             {
                 foreach (var ABrow in dt1)
                 {
-                    List<Code> rootCodes = country.Codes.Where(z => z.Zone == zone.Remove(zone.Length - 1) && z.Value.Equals(zone.Remove(0,1)+ABrow.AB)).ToList();
+                    List<Code> rootCodes = null;
+                    string codeTmp;
+                    for (int i = 1; i < zone.Length; i++)
+                    {
+                        codeTmp = zone + ABrow.AB;
+                        if(i > 1)
+                        {
+                            codeTmp = codeTmp.Remove(codeTmp.Length - i+1);
+                        }
+                        codeTmp = codeTmp.Substring(codeTmp.Length-3);
+                        rootCodes = country.Codes.Where(z => z.Zone == zone.Remove(zone.Length - i) && z.Value.Equals(codeTmp)).ToList();
+                        if (rootCodes.Count > 0)
+                            break;
+                    }
+
                     if (rootCodes.Count > 0)
                         foreach (var rootCode in rootCodes)
                         {
