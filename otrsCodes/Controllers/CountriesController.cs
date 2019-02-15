@@ -21,27 +21,66 @@ namespace otrsCodes.Controllers
             return View();
         }
 
-        public ActionResult CodesTable(int id = 0, string zone = "0")
+        public ActionResult CodesTable2(int countryId = 0, string zone = "0")
         {
             List<BaseTable> dt1 = new List<BaseTable>();
-            Country country = db.Countries.Find(id);
+            Country country = db.Countries.Find(countryId);
             List<Code> codes = null;
             BaseTable table = null;
-            if (country != null)
+            List<Code> rootCodes;
+            codes = country.Codes.Where(z => z.Zone == zone).ToList();
+
+            // find root
+            if (zone.Length > 1)
             {
-                codes = country.Codes.Where(z => z.Zone == zone).ToList();
+                rootCodes = country.Codes.Where(z => z.Zone == zone.Remove(zone.Length - 1) && z.Value.StartsWith(table.AB)).ToList();
+                if (rootCodes.Count > 0)
+                {
+                    foreach (var rootCode in rootCodes)
+                    {
+                        for (int j = 0; j < 10; ++j)
+                        {
+                            char lastDigit = rootCode.Value[rootCode.Value.Length - 1] == ' ' ?
+                                rootCode.Value[rootCode.Value.Length - 2] :
+                                rootCode.Value[rootCode.Value.Length - 1];
+
+                            if (lastDigit == j.ToString()[0])
+                            {
+                                for (int k = 0; k < 10; k++)
+                                {
+                                    table.codes[k] = new CodeDt() { code = $"{table.AB}{k}" };
+                                    table.codes[k].color = rootCode.Network.Color.Hex;
+                                }
+                            }
+                            else
+                            {
+                                for (int k = 0; k < 10; k++)
+                                {
+                                    table.codes[k] = new CodeDt() { code = $"{table.AB}{k}" };
+                                }
+                            }
+                            dt1.Add(table);
+                            continue;
+                        }
+                    }
+                }
             }
 
-            for (int i = 0; i < 100; ++i)
+            if (codes != null)
             {
-                table = new BaseTable();
-                table.R = zone;
-                table.AB = i < 10 ? $"0{i}" : $"{i}";
-
-                for (int j = 0; j < 10; ++j)
+                for (int i = 0; i < 100; ++i)
                 {
-                    table.codes[j] = new CodeDt() { code = $"{table.AB}{j}" };
-                    if (codes != null)
+                    table = new BaseTable
+                    {
+                        R = zone,
+                        AB = i < 10 ? $"0{i}" : $"{i}"
+                    };
+
+
+                    for (int j = 0; j < 10; ++j)
+                    {
+                        table.codes[j] = new CodeDt() { code = $"{table.AB}{j}" };
+
                         foreach (var code in codes)
                         {
                             if (code.Value == $"{table.AB}{j}")
@@ -50,8 +89,92 @@ namespace otrsCodes.Controllers
                                 table.codes[j].color = code.Network.Color.Hex;
                             }
                         }
+                    }
+                    dt1.Add(table);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 100; ++i)
+                {
+                    table = new BaseTable
+                    {
+                        R = zone,
+                        AB = i < 10 ? $"0{i}" : $"{i}"
+                    };
+                    for (int j = 0; j < 10; ++j)
+                    {
+                        table.codes[j] = new CodeDt() { code = $"{table.AB}{j}" };
+                    }
+                    dt1.Add(table);
+                }
+            }
+
+            return PartialView(dt1);
+        }
+
+        public ActionResult CodesTable(int countryId = 0, string zone = "0")
+        {
+            List<BaseTable> dt1 = new List<BaseTable>();
+            BaseTable table = null;
+            // init table with default values
+            for (int i = 0; i < 100; ++i)
+            {
+                table = new BaseTable
+                {
+                    R = zone,
+                    AB = i < 10 ? $"0{i}" : $"{i}"
+                };
+                for (int j = 0; j < 10; ++j)
+                {
+                    table.codes[j] = new CodeDt() { code = $"{table.AB}{j}" };
                 }
                 dt1.Add(table);
+            }
+
+            Country country = db.Countries.Find(countryId);
+            // paint cells with root values
+            if (zone.Length > 1)
+            {
+                foreach (var ABrow in dt1)
+                {
+                    List<Code> rootCodes = country.Codes.Where(z => z.Zone == zone.Remove(zone.Length - 1) && z.Value.StartsWith(ABrow.AB)).ToList();
+                    if (rootCodes.Count > 0)
+                        foreach (var rootCode in rootCodes)
+                        {
+                            char lastDigit = rootCode.Value[rootCode.Value.Length - 1] == ' ' ?
+                                                    rootCode.Value[rootCode.Value.Length - 2] :
+                                                     rootCode.Value[rootCode.Value.Length - 1];
+                            for (int i = 0; i < 10; ++i)
+                            {
+                                if (lastDigit == i.ToString()[0])
+                                {
+                                    for (int k = 0; k < 10; k++)
+                                    {
+                                        ABrow.codes[k].color = rootCode.Network.Color.Hex;
+                                    }
+                                }
+                                continue;
+                            }
+                        }
+                }
+            }
+
+            // fill table with codes
+            List<Code> codes = country.Codes.Where(z => z.Zone == zone).ToList();
+            if (codes.Count > 0)
+            {
+                foreach (var ABrow in dt1)
+                {
+                    foreach (var cell in ABrow.codes)
+                    {
+                        Code code = codes.Find(c => c.Value == cell.code);
+                        if (code != null)
+                        {
+                            cell.color = code.Network.Color.Hex;
+                        }
+                    }
+                }
             }
 
             return PartialView(dt1);

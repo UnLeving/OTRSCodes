@@ -52,10 +52,10 @@ namespace otrsCodes.Controllers
                                     {
                                         int _networkId = 0;
                                         // expand _rootCode
-                                        // codes.color = _rootCode.color, newCode.color = addedCodes.color
                                         for (int i = 0; i <= 9; i++)
                                         {
                                             string t = $"{codes.Zone}{code}".Remove(0, $"{_rootCode.Zone}{_rootCode.Value}".Length);
+                                            // codes painting
                                             if (i.ToString()[0] != t[0])
                                                 _networkId = _rootCode.NetworkId;
                                             else
