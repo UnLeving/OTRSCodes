@@ -52,11 +52,11 @@ namespace otrsCodes.Controllers
                     for (int i = 1; i < zone.Length; i++)
                     {
                         codeTmp = zone + ABrow.AB;
-                        if(i > 1)
+                        if (i > 1)
                         {
-                            codeTmp = codeTmp.Remove(codeTmp.Length - i+1);
+                            codeTmp = codeTmp.Remove(codeTmp.Length - i + 1);
                         }
-                        codeTmp = codeTmp.Substring(codeTmp.Length-3);
+                        codeTmp = codeTmp.Substring(codeTmp.Length - 3);
                         rootCodes = country.Codes.Where(z => z.Zone == zone.Remove(zone.Length - i) && z.Value.Equals(codeTmp)).ToList();
                         if (rootCodes.Count > 0)
                             break;
@@ -75,6 +75,7 @@ namespace otrsCodes.Controllers
                                     for (int k = 0; k < 10; k++)
                                     {
                                         ABrow.codes[k].color = rootCode.Network.Color.Hex;
+                                        ABrow.codes[k].id = -rootCode.Id;
                                     }
                                 }
                                 continue;

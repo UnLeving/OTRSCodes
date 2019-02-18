@@ -51,6 +51,9 @@ $('body').on('contextmenu', 'tbody td', function () {
         }
     } else {
         flag = false;
+        if (this.id < 0) {
+            DelInheritedCode(this.id,this.textContent);
+        }
         ids.push(this.id);
         tds.push(this);
     }
@@ -110,6 +113,28 @@ function DelOnSucc2Array(tds) {
             $(tds[i].cells[j]).css('background-color', '#FFFFFF');
         }
     }
+}
+
+function DelInheritedCode(rootId, code) {
+    $('#loader').show();
+    $.ajax({
+        url: "/Codes/DeleteInheritedCode",
+        type: "POST",
+        data: {
+            Id: rootId,
+            CountryId: $("#ddlCountries").val(),
+            Zone: $("#regionChange").val(),
+            Value: code
+        },
+        success: function () {
+            document.getElementById("Logs").value = "200 OK";
+            $('#loader').hide();
+        },
+        error: function (status) {
+            document.getElementById("Logs").value = status.statusText;
+            $('#loader').hide();
+        }
+    });
 }
 
 // ADD ZONE

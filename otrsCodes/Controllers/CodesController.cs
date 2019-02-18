@@ -142,6 +142,28 @@ namespace otrsCodes.Controllers
         }
 
         [HttpPost]
+        public ActionResult DeleteInheritedCode([Bind(Include = "Id,CountryId,Zone,Value")] Code code)
+        {
+            Code rootCode = _db.Codes.Find(-code.Id);
+            for (int i = 0; i < 10; i++)
+            {
+                if (code.Value[code.Value.Length - 1] == i.ToString()[0])
+                    continue;
+                
+                _db.Codes.Add(new Code()
+                {
+                    CountryId = code.CountryId,
+                    NetworkId = rootCode.NetworkId,
+                    Zone = code.Zone,
+                    Value = code.Value.Remove(code.Value.Length - 1) + i
+                });
+            }
+            _db.Codes.Remove(rootCode);
+            _db.SaveChanges();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
         public ActionResult Delete(int?[] ids)
         {
             if (ids == null)
