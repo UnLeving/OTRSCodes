@@ -52,13 +52,14 @@ $('body').on('contextmenu', 'tbody td', function () {
         }
     } else {
         flag = false;
-        if (this.id < 0) {
-            DelInheritedCode(this.id,this.textContent);
-        }
+
         ids.push(this.id);
         tds.push(this);
     }
-    DeleteCodes(ids, tds, flag);
+    if (this.id < 0) {
+        DelInheritedCode(this.id, this.textContent);
+    } else
+        DeleteCodes(ids, tds, flag);
 
     window.event.preventDefault();
 });

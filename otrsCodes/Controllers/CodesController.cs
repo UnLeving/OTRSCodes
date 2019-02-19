@@ -52,9 +52,9 @@ namespace otrsCodes.Controllers
                                     {
                                         int _networkId = 0;
                                         // expand _rootCode
+                                        string t = $"{codes.Zone}{code}".Remove(0, $"{_rootCode.Zone}{_rootCode.Value}".Length);
                                         for (int i = 0; i <= 9; i++)
                                         {
-                                            string t = $"{codes.Zone}{code}".Remove(0, $"{_rootCode.Zone}{_rootCode.Value}".Length);
                                             // codes painting
                                             if (i.ToString()[0] != t[0])
                                                 _networkId = _rootCode.NetworkId;
@@ -79,9 +79,11 @@ namespace otrsCodes.Controllers
                                         });
 
                                         // delete _rootCode
-                                        _db.Codes.Remove(_rootCode);
-                                        ++_addedCodes;
-                                        break;
+                                        if (_db.Codes.Remove(_rootCode) != null)
+                                        {
+                                            ++_addedCodes;
+                                            break;
+                                        }
                                     }
                                 }
 
@@ -121,7 +123,8 @@ namespace otrsCodes.Controllers
                             }
                         }
                         #endregion
-                        _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code });
+                        var ccc = _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code });
+
                         ++_addedCodes;
                     }
                     else
@@ -144,7 +147,11 @@ namespace otrsCodes.Controllers
         [HttpPost]
         public ActionResult DeleteInheritedCode([Bind(Include = "Id,CountryId,Zone,Value")] Code code)
         {
-            Code rootCode = _db.Codes.Find(-code.Id);
+            int id = -code.Id;
+            Code rootCode = _db.Codes.Find(id);
+            //Code rootCode2 = _db.Codes.Find(4201);
+            if (rootCode == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Root code not found");
             for (int i = 0; i < 10; i++)
             {
                 if (code.Value[code.Value.Length - 1] == i.ToString()[0])
@@ -158,9 +165,14 @@ namespace otrsCodes.Controllers
                     Value = code.Value.Remove(code.Value.Length - 1) + i
                 });
             }
-            _db.Codes.Remove(rootCode);
-            _db.SaveChanges();
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            var c = _db.Codes.Remove(rootCode);
+            if (c != null)
+            {
+                _db.SaveChanges();
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Root code not deleted");
         }
 
         [HttpPost]
@@ -174,7 +186,7 @@ namespace otrsCodes.Controllers
             Code code;
             foreach (var id in ids)
             {
-                code = _db.Codes.Find(id);
+                code = _db.Codes.Find(-id);
                 if (code == null)
                 {
                     continue;
