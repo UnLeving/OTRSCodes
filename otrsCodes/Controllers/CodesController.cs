@@ -149,7 +149,7 @@ namespace otrsCodes.Controllers
             {
                 if (code.Value[code.Value.Length - 1] == i.ToString()[0])
                     continue;
-                
+
                 _db.Codes.Add(new Code()
                 {
                     CountryId = code.CountryId,
@@ -166,6 +166,7 @@ namespace otrsCodes.Controllers
         [HttpPost]
         public ActionResult Delete(int?[] ids)
         {
+            ushort _deletedCodes = 0;
             if (ids == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -178,10 +179,17 @@ namespace otrsCodes.Controllers
                 {
                     continue;
                 }
-                _db.Codes.Remove(code);
+
+                if (_db.Codes.Remove(code) != null)
+                    ++_deletedCodes;
             }
-            _db.SaveChanges();
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            if (_deletedCodes > 0)
+            {
+                _db.SaveChanges();
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Nothing to remove");
         }
 
         protected override void Dispose(bool disposing)

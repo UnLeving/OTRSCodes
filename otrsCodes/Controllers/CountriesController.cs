@@ -96,6 +96,7 @@ namespace otrsCodes.Controllers
                         if (code != null)
                         {
                             cell.color = code.Network.Color.Hex;
+                            cell.id = code.Id;
                         }
                     }
                 }
