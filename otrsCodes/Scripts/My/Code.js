@@ -25,8 +25,6 @@ $('body').on('mousedown', 'tbody td', function () {
 $('body').on('contextmenu', 'thead th', function () {
     var codesIDs = [];
     var columnCells = [];
-    var flag = false;
-
     var tableCodes = this.closest('table');
     var selectedColumn = parseInt(this.textContent, 10) + 2;
     for (var i = 1; i < tableCodes.rows.length; ++i) {
@@ -40,7 +38,7 @@ $('body').on('contextmenu', 'thead th', function () {
         return;
     }
 
-    DeleteCodes(codesIDs, columnCells, flag);
+    DeleteCodes(codesIDs, columnCells);
     window.event.preventDefault();
 });
 
@@ -48,21 +46,23 @@ $('body').on('contextmenu', 'thead th', function () {
 $('body').on('contextmenu', 'tbody td', function () {
     var codesIDs = [];
     var rowCells = [];
-    var flag;
     if (cntrlIsPressed) {
-        flag = true;
         rowCells = $(this.closest('tbody')).children();
         for (var i = 0; i < rowCells.length; ++i) {
             for (var j = 2; j < 12; ++j) {
-                codesIDs.push(rowCells[i].cells[j].id);
+                if (rowCells[i].cells[j].id !== "0")
+                    codesIDs.push(rowCells[i].cells[j].id);
             }
+        }
+        if (codesIDs.length === 0) {
+            document.getElementById("Logs").value = "Client: nothing to delete";
+            return;
         }
     } else if (this.id < 0) {
         DeleteInheritedCode(this.id, this.textContent);
         window.event.preventDefault();
         return;
     } else {
-        flag = false;
         if (this.id === '0') {
             document.getElementById("Logs").value = "Client: nothing to delete";
             return;
@@ -71,13 +71,12 @@ $('body').on('contextmenu', 'tbody td', function () {
         rowCells.push(this);
     }
 
-    DeleteCodes(codesIDs, rowCells, flag);
+    DeleteCodes(codesIDs, rowCells);
     window.event.preventDefault();
 });
 
 // select and delete codes in row
 $('body').on('contextmenu', 'tbody th', function () {
-    var flag = false;
     var rowCells = $(this).parent().children('td');
     var codesIDs = [];
 
@@ -90,23 +89,24 @@ $('body').on('contextmenu', 'tbody th', function () {
         document.getElementById("Logs").value = "Client: nothing to delete";
         return;
     }
-    DeleteCodes(codesIDs, rowCells, flag);
+    DeleteCodes(codesIDs, rowCells);
     window.event.preventDefault();
 });
 
-function DeleteCodes(e, tds, flag) {
+function DeleteCodes(codesIDs, cells) {
+    var isTableSelected = cntrlIsPressed;
     $('#loader').show();
     $.ajax({
         url: "/Codes/Delete",
         type: "POST",
         data: {
-            ids: e
+            ids: codesIDs
         },
         success: function () {
-            if (flag) {
-                DelOnSucc2Array(tds);
+            if (isTableSelected) {
+                DeleteAllTableCodes_OnSuccess(cells);
             } else {
-                DelOnSuccArray(tds);
+                DeleteArray_OnSuccess(cells);
             }
             document.getElementById("Logs").value = "200 OK";
             $('#loader').hide();
@@ -118,16 +118,16 @@ function DeleteCodes(e, tds, flag) {
     });
 }
 
-function DelOnSuccArray(tds) {
-    for (var i = 0; i <= tds.length; ++i) {
-        $(tds).css('background-color', '#FFFFFF');
+function DeleteArray_OnSuccess(cells) {
+    for (var i = 0; i <= cells.length; ++i) {
+        $(cells).css('background-color', '#FFFFFF');
     }
 }
 
-function DelOnSucc2Array(tds) {
-    for (var i = 0; i < tds.length; ++i) {
+function DeleteAllTableCodes_OnSuccess(cells) {
+    for (var i = 0; i < cells.length; ++i) {
         for (var j = 2; j < 12; ++j) {
-            $(tds[i].cells[j]).css('background-color', '#FFFFFF');
+            $(cells[i].cells[j]).css('background-color', '#FFFFFF');
         }
     }
 }
@@ -160,16 +160,15 @@ function DeleteInheritedCode(rootId, code) {
 $('body').on('click', 'thead th', function () {
     if (!IsNetworkSelected()) return;
     var codes = [];
-    var tds = [];
-    var flag = false;
+    var cells = [];
 
-    var tbl = this.closest('table');
-    var n = parseInt(this.textContent, 10) + 2;
-    for (var i = 1; i < tbl.rows.length; ++i) {
-        codes.push(tbl.rows[i].cells[n].textContent);
-        tds.push(tbl.rows[i].cells[n]);
+    var table = this.closest('table');
+    var selectedColumn = parseInt(this.textContent, 10) + 2;
+    for (var i = 1; i < table.rows.length; ++i) {
+        codes.push(table.rows[i].cells[selectedColumn].textContent);
+        cells.push(table.rows[i].cells[selectedColumn]);
     }
-    SendCodesOnServer(codes, tds, flag);
+    SendCodesOnServer(codes, cells);
 });
 
 // select and add cell or all cells by CTRL pressed
@@ -177,43 +176,38 @@ $('body').on('click', 'tbody td', function () {
     if (!IsNetworkSelected()) {
         return;
     }
-    var flag;
     var codes = [];
-    var tds = [];
+    var cells = [];
     if (cntrlIsPressed === true) {
-        flag = true;
-        tds = $(this.closest('tbody')).children();
-        for (var i = 0; i < tds.length; ++i) {
+        cells = $(this.closest('tbody')).children();
+        for (var i = 0; i < cells.length; ++i) {
             for (var j = 2; j < 12; ++j) {
-                codes.push(tds[i].cells[j].textContent);
+                codes.push(cells[i].cells[j].textContent);
             }
         }
     }
     else {
-        flag = false;
-        tds.push(this);
+        cells.push(this);
         codes.push(this.textContent);
     }
 
-    SendCodesOnServer(codes, tds, flag);
+    SendCodesOnServer(codes, cells);
 });
 
 // select and add row
 $('body').on('click', 'tbody th', function () {
     if (!IsNetworkSelected()) return;
     var codes = [];
-    var tds = [];
-    var flag = false;
-    //codes.push(this.textContent);
-    tds = $(this).parent().children('td');
-    for (var i = 0; i < tds.length; ++i) {
-        codes.push(tds[i].textContent);
+    var cells = $(this).parent().children('td');
+    for (var i = 0; i < cells.length; ++i) {
+        codes.push(cells[i].textContent);
     }
 
-    SendCodesOnServer(codes, tds, flag);
+    SendCodesOnServer(codes, cells);
 });
 
-function SendCodesOnServer(codes, tds, isTwoDemenArr) {
+function SendCodesOnServer(codes, cells) {
+    var isTableSelected = cntrlIsPressed;
     $('#loader').show();
     $.ajax({
         url: "/Codes/CreateMulti",
@@ -225,10 +219,10 @@ function SendCodesOnServer(codes, tds, isTwoDemenArr) {
             Value: codes
         },
         success: function () {
-            if (isTwoDemenArr) {
-                OnSuccessTwoDimenArray(tds);
+            if (isTableSelected) {
+                AddedAllTableCodes_OnSuccess(cells);
             } else {
-                OnSuccessArray(tds);
+                AddedArray_OnSuccess(cells);
             }
             document.getElementById("Logs").value = "200 OK";
             $('#loader').hide();
@@ -240,17 +234,17 @@ function SendCodesOnServer(codes, tds, isTwoDemenArr) {
     });
 }
 
-function OnSuccessTwoDimenArray(tds) {
-    for (var i = 0; i < tds.length; ++i) {
+function AddedAllTableCodes_OnSuccess(cells) {
+    for (var i = 0; i < cells.length; ++i) {
         for (var j = 2; j < 12; ++j) {
-            $(tds[i].cells[j]).css('background-color', document.getElementById("HexSaver").value);
+            $(cells[i].cells[j]).css('background-color', document.getElementById("HexSaver").value);
         }
     }
 }
 
-function OnSuccessArray(tds) {
-    for (var i = 0; i <= tds.length; ++i) {
-        $(tds).css('background-color', document.getElementById("HexSaver").value);
+function AddedArray_OnSuccess(cells) {
+    for (var i = 0; i <= cells.length; ++i) {
+        $(cells).css('background-color', document.getElementById("HexSaver").value);
     }
 }
 
@@ -261,86 +255,4 @@ function IsNetworkSelected() {
     } else {
         return true;
     }
-}
-
-{// add code
-    //$('body').on('click', 'td', function () {
-    //    $(this).css('background-color', document.getElementById("HexSaver").value);
-    //    $.ajax({
-    //        url: "/Codes/Create",
-    //        type: "POST",
-    //        data: {
-    //            CountryId: $("#ddlCountries").val(),
-    //            NetworkId: document.getElementById("NetworkIdSaver").value,
-    //            Zone: document.getElementById("RValue").value,
-    //            Value: $(this).text()
-    //        }
-    //    }).fail(function (status) {
-    //        alert(status.statusText);
-    //    });
-    //});
-
-    //function SendCodesOnBack(codes) {
-    //    $.ajax({
-    //        url: "/Codes/CreateMulti",
-    //        type: "POST",
-    //        data: {
-    //            CountryId: $("#ddlCountries").val(),
-    //            NetworkId: document.getElementById("NetworkIdSaver").value,
-    //            Zone: document.getElementById("RValue").value,
-    //            Value: codes
-    //        },
-    //        success: function () {
-    //            document.getElementById("Logs").value = "200 OK";
-    //        },
-    //        error: function (status) {
-    //            document.getElementById("Logs").value = status.statusText;
-    //        }
-    //    });
-    //}
-
-    //$(this).css('background-color', document.getElementById("HexSaver").value);
-    //$.ajax({
-    //    url: "/Codes/CreateMulti",
-    //    type: "POST",
-    //    data: {
-    //        CountryId: $("#ddlCountries").val(),
-    //        NetworkId: document.getElementById("NetworkIdSaver").value,
-    //        Zone: document.getElementById("RValue").value,
-    //        Value: $(this).text()
-    //    },
-    //    success: function () {
-    //        document.getElementById("Logs").value = "200 OK";
-    //    },
-    //    error: function (status) {
-    //        document.getElementById("Logs").value = status.statusText;
-    //    }
-    //});
-
-    //$('body').on('click', 'td', function () {
-    //    var isMouseDown = false;
-    //    var codes = [];
-
-    //    $('body td')
-    //        .mousedown(function () {
-    //            isMouseDown = true;
-    //            $(this).css('background-color', document.getElementById("HexSaver").value);
-    //            codes.push(this.textContent);
-    //            return false;
-    //        })
-    //        .mouseover(function () {
-    //            if (isMouseDown) {
-    //                $(this).css('background-color', document.getElementById("HexSaver").value);
-    //                codes.push(this.textContent);
-    //            }
-    //        })
-    //        .bind("selectstart", function () {
-    //            return false;
-    //        })
-    //        .mouseup(function () {
-    //            isMouseDown = false;
-    //            SendCodesOnBack(codes);
-    //            codes.length = 0;
-    //        });
-    //});
 }
