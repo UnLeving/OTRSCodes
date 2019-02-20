@@ -186,7 +186,7 @@ namespace otrsCodes.Controllers
             Code code;
             foreach (var id in ids)
             {
-                code = _db.Codes.Find(-id);
+                code = _db.Codes.Find(id);
                 if (code == null)
                 {
                     continue;
