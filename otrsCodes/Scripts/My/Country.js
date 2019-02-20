@@ -1,30 +1,4 @@
-﻿//function ddlCountries_changed(e) {
-//    Id = e;
-//    $.ajax({
-//        url: "/Networks/NetworkDropDown",
-//        type: "GET",
-//        data: { id: Id },
-//        success: function (partialViewResult) {
-//            $("#NetworkDD").html(partialViewResult);
-//        },
-//        error: function (status) {
-//            document.getElementById("Logs").value = status.statusText;
-//        }
-//    });
-//}
-
-//function Generate_clicked() {
-//    $.ajax({
-//        url: "/Countries/GetRegExp",
-//        type: "GET",
-//        data: { id: $("#ddlNetworks").val() }
-//    })
-//        .done(function (ViewResult) {
-//            $("#RegExp").val(ViewResult);
-//        });
-//}
-
-$("#ddlCountries").change(function () {
+﻿$("#ddlCountries").change(function () {
     $.ajax({
         url: "/Countries/CodesTable",
         type: "GET",
@@ -50,6 +24,7 @@ function RegionChanged(e) {
         },
         success: function (response) {
             UpdateTable(response);
+            UpdateList();
             $('#loader').hide();
         },
         error: function (status) {
@@ -67,4 +42,17 @@ function UpdateTable(response) {
     var $table2 = $('#tb2');
     $table1.find('tbody').empty().append($bodyContent1);
     $table2.find('tbody').empty().append($bodyContent2);
+}
+
+function UpdateList() {
+    $.ajax({
+        url: "/Countries/CodesList",
+        type: "GET",
+        data: {
+            countryId: $("#ddlCountries").val()
+        },
+        success: function (response) {
+            $("#CodesList").html(response);
+        }
+    });
 }

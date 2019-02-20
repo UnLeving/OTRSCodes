@@ -105,6 +105,18 @@ namespace otrsCodes.Controllers
             return PartialView(dt1);
         }
 
+        public ActionResult CodesList(int countryId)
+        {
+            Country country = db.Countries.Find(countryId);
+            if(country == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Country not found");
+            List<Code> codes = new List<Code>();
+            foreach (var code in country.Codes.ToList())
+            {
+                codes.Add(new Code() {Value = $"{code.Country.Code}{code.Zone}{code.Value}" }); 
+            }
+            return PartialView(codes);
+        }
+
         [HttpGet]
         public ActionResult CountryDropDown()
         {
