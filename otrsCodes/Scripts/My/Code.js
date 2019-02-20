@@ -250,7 +250,7 @@ function AddedArray_OnSuccess(cells) {
 }
 
 function IsNetworkSelected() {
-    if (document.getElementById("NetworkIdSaver").value === "0") {
+    if (document.getElementById("NetworkIdSaver").value === "-1") {
         document.getElementById("Logs").value = "Client: network not selected";
         return false;
     } else {
