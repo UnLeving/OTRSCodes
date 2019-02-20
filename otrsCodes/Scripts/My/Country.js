@@ -2,7 +2,7 @@
     $.ajax({
         url: "/Countries/CodesTable",
         type: "GET",
-        data: { id: $("#ddlCountries").val() },
+        data: { countryId: $("#ddlCountries").val() },
         success: function (partialViewResult) {
             $("#CodesContent").html(partialViewResult);
             RetreiveNetworks();
@@ -20,7 +20,7 @@ function RegionChanged(e) {
         url: "/Countries/CodesTable",
         type: "GET",
         data: {
-            id: $("#ddlCountries").val(),
+            countryId: $("#ddlCountries").val(),
             zone: e
         },
         success: function (response) {
