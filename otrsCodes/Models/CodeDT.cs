@@ -2,7 +2,8 @@
 {
     public class CodeDT
     {
-        public string Network { get; set; }
         public string Code { get; set; }
+        public string Country { get; set; }
+        public string Network { get; set; }
     }
 }

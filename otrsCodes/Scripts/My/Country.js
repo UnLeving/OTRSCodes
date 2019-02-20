@@ -6,6 +6,7 @@
         success: function (partialViewResult) {
             $("#CodesContent").html(partialViewResult);
             RetreiveNetworks();
+            UpdateList();
         },
         error: function (status) {
             document.getElementById("Logs").value = status.statusText;

@@ -176,7 +176,7 @@ namespace otrsCodes.Controllers
             List<CodeDT> list = new List<CodeDT>();
             foreach (var item in codes)
             {
-                list.Add(new CodeDT() { Network = item.Network.Name, Code = $"{item.Country.Code}{item.Value}" });
+                list.Add(new CodeDT() { Code = $"{item.Country.Code}{item.Zone}{item.Value}", Country = item.Country.Name, Network = item.Network.Name});
             }
             return ExportToExcel(list, $"{country} {DateTime.Now}");
         }

@@ -65,6 +65,7 @@ $('body').on('contextmenu', 'tbody td', function () {
     } else {
         if (this.id === '0') {
             document.getElementById("Logs").value = "Client: nothing to delete";
+            window.event.preventDefault();
             return;
         }
         codesIDs.push(this.id);
