@@ -21,7 +21,7 @@ function RegionChanged(e) {
         type: "GET",
         data: {
             countryId: $("#ddlCountries").val(),
-            zone: e
+            R: e
         },
         success: function (response) {
             UpdateTable(response);

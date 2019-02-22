@@ -4,10 +4,7 @@ namespace otrsCodes.Models
 
     public partial class Model : DbContext
     {
-        public Model()
-            : base("name=Model1")
-        {
-        }
+        public Model() : base("name=Model1") { }
 
         public virtual DbSet<Code> Codes { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
@@ -20,7 +17,7 @@ namespace otrsCodes.Models
                 .Property(e => e.Value);
 
             modelBuilder.Entity<Code>()
-                .Property(e => e.Zone);
+                .Property(e => e.R);
 
             modelBuilder.Entity<Color>()
                 .Property(e => e.Hex)

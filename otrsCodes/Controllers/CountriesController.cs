@@ -21,7 +21,7 @@ namespace otrsCodes.Controllers
             return View();
         }
 
-        public ActionResult CodesTable(int countryId, string zone = "0")
+        public ActionResult CodesTable(int countryId, string R = "0")
         {
             List<BaseTable> dt1 = new List<BaseTable>();
             BaseTable table = null;
@@ -30,7 +30,7 @@ namespace otrsCodes.Controllers
             {
                 table = new BaseTable
                 {
-                    R = zone,
+                    R = R,
                     AB = i < 10 ? $"0{i}" : $"{i}"
                 };
                 for (int j = 0; j < 10; ++j)
@@ -43,21 +43,21 @@ namespace otrsCodes.Controllers
             Country country = db.Countries.Find(countryId);
 
             // paint cells with root values
-            if (zone.Length > 1)
+            if (R.Length > 1)
             {
                 foreach (var ABrow in dt1)
                 {
                     List<Code> rootCodes = null;
                     string codeTmp;
-                    for (int i = 1; i < zone.Length; i++)
+                    for (int i = 1; i < R.Length; i++)
                     {
-                        codeTmp = zone + ABrow.AB;
+                        codeTmp = R + ABrow.AB;
                         if (i > 1)
                         {
                             codeTmp = codeTmp.Remove(codeTmp.Length - i + 1);
                         }
                         codeTmp = codeTmp.Substring(codeTmp.Length - 3);
-                        rootCodes = country.Codes.Where(z => z.Zone == zone.Remove(zone.Length - i) && z.Value.Equals(codeTmp)).ToList();
+                        rootCodes = country.Codes.Where(z => z.R == R.Remove(R.Length - i) && z.Value.Equals(codeTmp)).ToList();
                         if (rootCodes.Count > 0)
                             break;
                     }
@@ -85,7 +85,7 @@ namespace otrsCodes.Controllers
             }
 
             // fill table with codes
-            List<Code> codes = country.Codes.Where(z => z.Zone == zone).ToList();
+            List<Code> codes = country.Codes.Where(z => z.R == R).ToList();
             if (codes.Count > 0)
             {
                 foreach (var ABrow in dt1)
@@ -112,7 +112,7 @@ namespace otrsCodes.Controllers
             List<Code> codes = new List<Code>();
             foreach (var code in country.Codes.ToList())
             {
-                codes.Add(new Code() {Value = $"{code.Country.Code}{code.Zone}{code.Value}" }); 
+                codes.Add(new Code() {Value = $"{code.Country.Code}{code.R}{code.Value}" }); 
             }
             return PartialView(codes);
         }
@@ -176,7 +176,7 @@ namespace otrsCodes.Controllers
             List<CodeDT> list = new List<CodeDT>();
             foreach (var item in codes)
             {
-                list.Add(new CodeDT() { Code = $"{item.Country.Code}{item.Zone}{item.Value}", Country = item.Country.Name, Network = item.Network.Name});
+                list.Add(new CodeDT() { Value = $"{item.Country.Code}{item.R}{item.Value}", Country = item.Country.Name, Network = item.Network.Name});
             }
             return ExportToExcel(list, $"{country} {DateTime.Now}");
         }

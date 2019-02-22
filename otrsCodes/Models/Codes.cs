@@ -7,9 +7,9 @@
         public int Id { get; set; }
 
         [Required]
-        public string[] Value { get; set; }
+        public string[] Values { get; set; }
         [Required]
-        public string Zone { get; set; }
+        public string R { get; set; }
 
         public int CountryId { get; set; }
         public int NetworkId { get; set; }

@@ -20,19 +20,19 @@ namespace otrsCodes.Controllers
                 ushort _addedCodes = 0;
 
                 // TODO: преобразовать выражение для сравнения коллекций ??
-                foreach (var code in codes.Value)
+                foreach (var code in codes.Values)
                 {
-                    var codeInDb = _db.Codes.Where(c => c.Zone == codes.Zone && c.Value == code).FirstOrDefault();
+                    var codeInDb = _db.Codes.Where(c => c.R == codes.R && c.Value == code).FirstOrDefault();
                     if (codeInDb == null)
                     {
                         #region Reduce codes
-                        if (codes.Zone.Length >= 2)
+                        if (codes.R.Length >= 2)
                         {
-                            if (codes.Value.Count() == 1)
+                            if (codes.Values.Count() == 1)
                             {
-                                if (codes.Zone.Remove(codes.Zone.Length - 1).Length > 0)
+                                if (codes.R.Remove(codes.R.Length - 1).Length > 0)
                                 {
-                                    string _zone = codes.Zone;
+                                    string _zone = codes.R;
                                     string _code = code;
                                     Dictionary<string, string> _keyValuePairs = new Dictionary<string, string>();
                                     while (_zone.Remove(_zone.Length - 1).Length > 0)
@@ -45,14 +45,14 @@ namespace otrsCodes.Controllers
                                     Code _rootCode = null;
                                     foreach (var item in _keyValuePairs)
                                     {
-                                        _rootCode = _db.Codes.Where(c => c.Zone == item.Key && c.Value == item.Value).FirstOrDefault();
+                                        _rootCode = _db.Codes.Where(c => c.R == item.Key && c.Value == item.Value).FirstOrDefault();
                                     }
 
                                     if (_rootCode != null)
                                     {
                                         int _networkId = 0;
                                         // expand _rootCode
-                                        string t = $"{codes.Zone}{code}".Remove(0, $"{_rootCode.Zone}{_rootCode.Value}".Length);
+                                        string t = $"{codes.R}{code}".Remove(0, $"{_rootCode.R}{_rootCode.Value}".Length);
                                         for (int i = 0; i <= 9; i++)
                                         {
                                             // codes painting
@@ -65,7 +65,7 @@ namespace otrsCodes.Controllers
                                             {
                                                 CountryId = codes.CountryId,
                                                 NetworkId = _networkId,
-                                                Zone = $"{_rootCode.Zone}{_rootCode.Value[0]}",
+                                                R = $"{_rootCode.R}{_rootCode.Value[0]}",
                                                 Value = $"{_rootCode.Value[1]}{_rootCode.Value[2]}{i}"
                                             });
                                         }
@@ -74,7 +74,7 @@ namespace otrsCodes.Controllers
                                         {
                                             CountryId = codes.CountryId,
                                             NetworkId = codes.NetworkId,
-                                            Zone = codes.Zone,
+                                            R = codes.R,
                                             Value = code
                                         });
 
@@ -89,16 +89,16 @@ namespace otrsCodes.Controllers
 
                                 var _inLineDBCodes = _db.Codes.Where(c =>
                                 c.NetworkId == codes.NetworkId &&
-                                c.Zone == codes.Zone &&
+                                c.R == codes.R &&
                                 c.Value.StartsWith(code.Remove(code.Length - 1)));
                                 if (_inLineDBCodes.Count() == 9)
                                 {
-                                    string _parentCode = codes.Zone[codes.Zone.Length - 1] + code.Remove(code.Length - 1);
+                                    string _parentCode = codes.R[codes.R.Length - 1] + code.Remove(code.Length - 1);
                                     _db.Codes.Add(new Code()
                                     {
                                         CountryId = codes.CountryId,
                                         NetworkId = codes.NetworkId,
-                                        Zone = codes.Zone.Remove(codes.Zone.Length - 1),
+                                        R = codes.R.Remove(codes.R.Length - 1),
                                         Value = _parentCode
                                     });
                                     ++_addedCodes;
@@ -108,14 +108,14 @@ namespace otrsCodes.Controllers
                                     // TODO: triger table update
                                 }
                             }
-                            else if (codes.Value.Count() == 10)
+                            else if (codes.Values.Count() == 10)
                             {
-                                string _parentCode = codes.Zone[codes.Zone.Length - 1] + code.Remove(code.Length - 1);
+                                string _parentCode = codes.R[codes.R.Length - 1] + code.Remove(code.Length - 1);
                                 _db.Codes.Add(new Code()
                                 {
                                     CountryId = codes.CountryId,
                                     NetworkId = codes.NetworkId,
-                                    Zone = codes.Zone.Remove(codes.Zone.Length - 1),
+                                    R = codes.R.Remove(codes.R.Length - 1),
                                     Value = _parentCode
                                 });
                                 ++_addedCodes;
@@ -123,7 +123,7 @@ namespace otrsCodes.Controllers
                             }
                         }
                         #endregion
-                        var ccc = _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, Zone = codes.Zone, Value = code });
+                        var ccc = _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, R = codes.R, Value = code });
 
                         ++_addedCodes;
                     }
@@ -161,7 +161,7 @@ namespace otrsCodes.Controllers
                 {
                     CountryId = code.CountryId,
                     NetworkId = rootCode.NetworkId,
-                    Zone = code.Zone,
+                    R = code.R,
                     Value = code.Value.Remove(code.Value.Length - 1) + i
                 });
             }
