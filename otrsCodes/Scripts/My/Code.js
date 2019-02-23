@@ -216,8 +216,8 @@ function SendCodesOnServer(codes, cells) {
         data: {
             CountryId: $("#ddlCountries").val(),
             NetworkId: document.getElementById("NetworkIdSaver").value,
-            Zone: $("#regionChange").val(),
-            Value: codes
+            R: $("#regionChange").val(),
+            Values: codes
         },
         success: function () {
             if (isTableSelected) {

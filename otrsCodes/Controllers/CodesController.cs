@@ -13,7 +13,7 @@ namespace otrsCodes.Controllers
         private Model _db = new Model();
 
         [HttpPost]
-        public ActionResult CreateMulti([Bind(Include = "CountryId,NetworkId,Zone,Value")] Codes codes)
+        public ActionResult CreateMulti([Bind(Include = "CountryId,NetworkId,R,Values")] Codes codes)
         {
             if (ModelState.IsValid)
             {
@@ -141,15 +141,14 @@ namespace otrsCodes.Controllers
                 _db.SaveChanges();
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Network not selected");
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Wrong model");
         }
 
         [HttpPost]
-        public ActionResult DeleteInheritedCode([Bind(Include = "Id,CountryId,Zone,Value")] Code code)
+        public ActionResult DeleteInheritedCode([Bind(Include = "Id,CountryId,R,Value")] Code code)
         {
             int id = -code.Id;
             Code rootCode = _db.Codes.Find(id);
-            //Code rootCode2 = _db.Codes.Find(4201);
             if (rootCode == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Root code not found");
             for (int i = 0; i < 10; i++)

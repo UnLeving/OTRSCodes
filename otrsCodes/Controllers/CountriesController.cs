@@ -15,6 +15,7 @@ namespace otrsCodes.Controllers
     public class CountriesController : Controller
     {
         private Model db = new Model();
+        readonly string greyColorHEX = "#808080";
 
         public ActionResult Main()
         {
@@ -23,7 +24,7 @@ namespace otrsCodes.Controllers
 
         public ActionResult CodesTable(int countryId, string R = "0")
         {
-            List<BaseTable> dt1 = new List<BaseTable>();
+            List<BaseTable> UIcodesTable = new List<BaseTable>();
             BaseTable table = null;
             // init table with default values
             for (int i = 0; i < 100; ++i)
@@ -37,32 +38,32 @@ namespace otrsCodes.Controllers
                 {
                     table.codes[j] = new CodeDt() { code = $"{table.AB}{j}" };
                 }
-                dt1.Add(table);
+                UIcodesTable.Add(table);
             }
 
             Country country = db.Countries.Find(countryId);
-
-            // paint cells with root values
+            ICollection<Code> countryCodes = country.Codes;
+            // paint cells with roots colors
             if (R.Length > 1)
             {
-                foreach (var ABrow in dt1)
+                foreach (var ABrow in UIcodesTable)
                 {
-                    List<Code> rootCodes = null;
-                    string codeTmp;
+                    IEnumerable<Code> rootCodes = null;
+                    string RAB;
                     for (int i = 1; i < R.Length; i++)
                     {
-                        codeTmp = R + ABrow.AB;
+                        RAB = R + ABrow.AB;
                         if (i > 1)
                         {
-                            codeTmp = codeTmp.Remove(codeTmp.Length - i + 1);
+                            RAB = RAB.Remove(RAB.Length - i + 1);
                         }
-                        codeTmp = codeTmp.Substring(codeTmp.Length - 3);
-                        rootCodes = country.Codes.Where(z => z.R == R.Remove(R.Length - i) && z.Value.Equals(codeTmp)).ToList();
-                        if (rootCodes.Count > 0)
+                        RAB = RAB.Substring(RAB.Length - 3);
+                        rootCodes = countryCodes.Where(code => code.R == R.Remove(R.Length - i) && code.Value.Equals(RAB));
+                        if (rootCodes.Count() > 0)
                             break;
                     }
 
-                    if (rootCodes.Count > 0)
+                    if (rootCodes.Count() > 0)
                         foreach (var rootCode in rootCodes)
                         {
                             char lastDigit = rootCode.Value[rootCode.Value.Length - 1] == ' ' ?
@@ -74,7 +75,7 @@ namespace otrsCodes.Controllers
                                 {
                                     for (int k = 0; k < 10; k++)
                                     {
-                                        ABrow.codes[k].color = rootCode.Network.Color.Hex;
+                                        ABrow.codes[k].colorHEX = rootCode.Network.Color.Hex;
                                         ABrow.codes[k].id = -rootCode.Id;
                                     }
                                 }
@@ -84,35 +85,60 @@ namespace otrsCodes.Controllers
                 }
             }
 
-            // fill table with codes
-            List<Code> codes = country.Codes.Where(z => z.R == R).ToList();
-            if (codes.Count > 0)
+            // paint cells with inherited codes colors
+            IEnumerable<Code> inheritedCodes = null;
+            string RCodeValue;
+            foreach (var ABrow in UIcodesTable)
             {
-                foreach (var ABrow in dt1)
+                foreach (var cell in ABrow.codes)
+                {
+                    RCodeValue = R + cell.code;
+                    inheritedCodes = countryCodes.Where(code => $"{code.R}{code.Value}".StartsWith(RCodeValue));
+                    if (inheritedCodes.Count() == 0) continue;
+                    string colorHEX = null;
+                    foreach (var code in inheritedCodes)
+                    {
+                        if (colorHEX == null)
+                            colorHEX = code.Network.Color.Hex;
+                        else if (colorHEX != code.Network.Color.Hex)
+                        {
+                            colorHEX = greyColorHEX;
+                            break;
+                        }
+                    }
+                    cell.colorHEX = colorHEX;
+                }
+            }
+
+            // fill table with codes
+            IEnumerable<Code> codesOfR = countryCodes.Where(code => code.R == R);
+            if (codesOfR.Count() > 0)
+            {
+                foreach (var ABrow in UIcodesTable)
                 {
                     foreach (var cell in ABrow.codes)
                     {
-                        Code code = codes.Find(c => c.Value == cell.code);
+                        Code code = codesOfR.FirstOrDefault(_code => _code.Value == cell.code);
                         if (code != null)
                         {
-                            cell.color = code.Network.Color.Hex;
+                            cell.colorHEX = code.Network.Color.Hex;
                             cell.id = code.Id;
                         }
                     }
                 }
             }
 
-            return PartialView(dt1);
+            return PartialView(UIcodesTable);
         }
 
         public ActionResult CodesList(int countryId)
         {
             Country country = db.Countries.Find(countryId);
-            if(country == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Country not found");
+            if (country == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Country not found");
             List<Code> codes = new List<Code>();
             foreach (var code in country.Codes.ToList())
             {
-                codes.Add(new Code() {Value = $"{code.Country.Code}{code.R}{code.Value}" }); 
+                codes.Add(new Code() { Value = $"{code.Country.Code}{code.R}{code.Value}" });
             }
             return PartialView(codes);
         }
@@ -176,7 +202,7 @@ namespace otrsCodes.Controllers
             List<CodeDT> list = new List<CodeDT>();
             foreach (var item in codes)
             {
-                list.Add(new CodeDT() { Value = $"{item.Country.Code}{item.R}{item.Value}", Country = item.Country.Name, Network = item.Network.Name});
+                list.Add(new CodeDT() { Value = $"{item.Country.Code}{item.R}{item.Value}", Country = item.Country.Name, Network = item.Network.Name });
             }
             return ExportToExcel(list, $"{country} {DateTime.Now}");
         }
