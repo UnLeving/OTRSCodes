@@ -1,4 +1,5 @@
-﻿using otrsCodes.Models;
+﻿using Newtonsoft.Json;
+using otrsCodes.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -123,8 +124,8 @@ namespace otrsCodes.Controllers
                             }
                         }
                         #endregion
-                        var ccc = _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, R = codes.R, Value = code });
-
+                        _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, R = codes.R, Value = code });
+                        
                         ++_addedCodes;
                     }
                     else

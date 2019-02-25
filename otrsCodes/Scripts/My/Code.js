@@ -56,6 +56,8 @@ $('body').on('contextmenu', 'tbody td', function () {
         }
         if (codesIDs.length === 0) {
             document.getElementById("Logs").value = "Client: nothing to delete";
+            cntrlIsPressed = false;
+            window.event.preventDefault();
             return;
         }
     } else if (this.id < 0) {
@@ -119,6 +121,7 @@ function DeleteCodes(codesIDs, cells) {
     });
 }
 
+// TODO: wft???
 function DeleteArray_OnSuccess(cells) {
     for (var i = 0; i <= cells.length; ++i) {
         $(cells).css('background-color', '#FFFFFF');
@@ -141,11 +144,12 @@ function DeleteInheritedCode(rootId, code) {
         data: {
             Id: rootId,
             CountryId: $("#ddlCountries").val(),
-            Zone: $("#regionChange").val(),
+            R: $("#regionChange").val(),
             Value: code
         },
         success: function () {
             document.getElementById("Logs").value = "200 OK";
+            RegionChanged($("#regionChange").val());
             $('#loader').hide();
         },
         error: function (status) {
@@ -159,7 +163,7 @@ function DeleteInheritedCode(rootId, code) {
 
 // select and add column 
 $('body').on('click', 'thead th', function () {
-    if (!IsNetworkSelected()) return;
+    if (!IsNetworkSelected() || cntrlIsPressed === true) return;
     var codes = [];
     var cells = [];
 
@@ -197,7 +201,7 @@ $('body').on('click', 'tbody td', function () {
 
 // select and add row
 $('body').on('click', 'tbody th', function () {
-    if (!IsNetworkSelected()) return;
+    if (!IsNetworkSelected() || cntrlIsPressed === true) return;
     var codes = [];
     var cells = $(this).parent().children('td');
     for (var i = 0; i < cells.length; ++i) {
@@ -206,6 +210,7 @@ $('body').on('click', 'tbody th', function () {
 
     SendCodesOnServer(codes, cells);
 });
+
 
 function SendCodesOnServer(codes, cells) {
     var isTableSelected = cntrlIsPressed;
@@ -225,6 +230,7 @@ function SendCodesOnServer(codes, cells) {
             } else {
                 AddedArray_OnSuccess(cells);
             }
+            RegionChanged($("#regionChange").val());
             document.getElementById("Logs").value = "200 OK";
             $('#loader').hide();
         },
