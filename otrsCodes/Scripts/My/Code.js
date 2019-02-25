@@ -10,12 +10,24 @@ $(document).keyup(function () {
     cntrlIsPressed = false;
 });
 
-// open region by middle btn click
+// forward region by middle btn click
 $('body').on('mousedown', 'tbody td', function () {
-    if (event.button === 1) {
-        window.event.preventDefault();
+    window.event.preventDefault();
+    if (!cntrlIsPressed && event.button === 1) {
         document.getElementById("regionChange").value = $("#regionChange").val() + this.textContent.charAt(0);
         RegionChanged($("#regionChange").val());
+    }
+});
+
+// back region by ctrl + middle btn click
+$('body').on('mousedown', 'tbody td', function () {
+    window.event.preventDefault();
+    if (cntrlIsPressed && $("#regionChange").val().length > 1 && event.button === 1) {
+        cntrlIsPressed = false;
+        var R = $("#regionChange").val();
+        R = R.slice(0, R.length - 1);
+        document.getElementById("regionChange").value = R;
+        RegionChanged(R);
     }
 });
 
