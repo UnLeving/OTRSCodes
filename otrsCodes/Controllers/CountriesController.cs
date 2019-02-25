@@ -84,32 +84,7 @@ namespace otrsCodes.Controllers
                         }
                 }
             }
-
-            // paint cells with inherited codes colors
-            IEnumerable<Code> inheritedCodes = null;
-            string RCodeValue;
-            foreach (var ABrow in UIcodesTable)
-            {
-                foreach (var cell in ABrow.codes)
-                {
-                    RCodeValue = R + cell.code;
-                    inheritedCodes = countryCodes.Where(code => $"{code.R}{code.Value}".StartsWith(RCodeValue));
-                    if (inheritedCodes.Count() == 0) continue;
-                    string colorHEX = null;
-                    foreach (var code in inheritedCodes)
-                    {
-                        if (colorHEX == null)
-                            colorHEX = code.Network.Color.Hex;
-                        else if (colorHEX != code.Network.Color.Hex)
-                        {
-                            colorHEX = greyColorHEX;
-                            break;
-                        }
-                    }
-                    cell.colorHEX = colorHEX;
-                }
-            }
-
+            
             // fill table with codes
             IEnumerable<Code> codesOfR = countryCodes.Where(code => code.R == R);
             if (codesOfR.Count() > 0)
@@ -125,6 +100,35 @@ namespace otrsCodes.Controllers
                             cell.id = code.Id;
                         }
                     }
+                }
+            }
+
+            // paint cells with inherited codes colors
+            IEnumerable<Code> inheritedCodes = null;
+
+            foreach (var ABrow in UIcodesTable)
+            {
+                foreach (var cell in ABrow.codes)
+                {
+                    inheritedCodes = countryCodes.Where(code => $"{code.R}{code.Value}".StartsWith(R + cell.code));
+                    if (inheritedCodes.Count() == 0) continue;
+                    string colorHEX = null;
+                    foreach (var code in inheritedCodes)
+                    {
+                        if (cell.colorHEX == "#FFFFFF")
+                        {
+                            colorHEX = greyColorHEX;
+                            break;
+                        }
+                        if (colorHEX == null)
+                            colorHEX = code.Network.Color.Hex;
+                        else if (colorHEX != code.Network.Color.Hex)
+                        {
+                            colorHEX = greyColorHEX;
+                            break;
+                        }
+                    }
+                    cell.colorHEX = colorHEX;
                 }
             }
 
