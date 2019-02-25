@@ -22,9 +22,9 @@ $('body').on('mousedown', 'tbody td', function () {
 // back region by ctrl + middle btn click
 $('body').on('mousedown', 'tbody td', function () {
     window.event.preventDefault();
-    if (cntrlIsPressed && $("#regionChange").val().length > 1 && event.button === 1) {
+    var R = $("#regionChange").val();
+    if (cntrlIsPressed && R.length > 1 && event.button === 1) {
         cntrlIsPressed = false;
-        var R = $("#regionChange").val();
         R = R.slice(0, R.length - 1);
         document.getElementById("regionChange").value = R;
         RegionChanged(R);

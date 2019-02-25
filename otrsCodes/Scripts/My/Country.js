@@ -57,3 +57,16 @@ function UpdateList() {
         }
     });
 }
+
+function ddlCountries_changed(id) {
+    $.ajax({
+        url: "/Networks/NetworkDropDown",
+        type: "GET",
+        data: {
+            countryId: id
+        },
+        success: function (response) {
+            $("#NetworkDD").html(response);
+        }
+    });
+}

@@ -18,11 +18,11 @@ namespace otrsCodes.Controllers
             return PartialView(networks.ToList());
         }
 
-        public ActionResult NetworkDropDown(int? id)
+        public ActionResult NetworkDropDown(int? countryId)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (countryId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var networks = db.Countries.Find(id).Networks;
+            var networks = db.Countries.Find(countryId).Networks;
             ViewBag.NetworkId = new SelectList(networks, "Id", "Name");
             return PartialView();
         }

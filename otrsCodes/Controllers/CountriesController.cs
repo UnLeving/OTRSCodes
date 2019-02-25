@@ -173,7 +173,7 @@ namespace otrsCodes.Controllers
             string codeRegExp = $"^{codes.First().Country.Code}(";
             foreach (var item in codes)
             {
-                codeRegExp += item.Value + "|";
+                codeRegExp += $"{item.R}{item.Value}" + "|";
             }
             codeRegExp = codeRegExp.TrimEnd('|');
             codeRegExp += ").*";

@@ -18,3 +18,5 @@ function CreateNew(path, id) {
         });
     }
 }
+
+// RegExp
