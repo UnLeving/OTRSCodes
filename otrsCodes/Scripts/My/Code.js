@@ -35,6 +35,11 @@ $('body').on('mousedown', 'tbody td', function () {
 
 // select and delete codes in column 
 $('body').on('contextmenu', 'thead th', function () {
+    window.event.preventDefault();
+    if (cntrlIsPressed === true) {
+        cntrlIsPressed = false;
+        return;
+    }
     var codesIDs = [];
     var columnCells = [];
     var tableCodes = this.closest('table');
@@ -51,7 +56,6 @@ $('body').on('contextmenu', 'thead th', function () {
     }
 
     DeleteCodes(codesIDs, columnCells);
-    window.event.preventDefault();
 });
 
 // delete single code  OR all codes by CTRL pressed
@@ -92,6 +96,11 @@ $('body').on('contextmenu', 'tbody td', function () {
 
 // select and delete codes in row
 $('body').on('contextmenu', 'tbody th', function () {
+    window.event.preventDefault();
+    if (cntrlIsPressed === true) {
+        cntrlIsPressed = false;
+        return;
+    }
     var rowCells = $(this).parent().children('td');
     var codesIDs = [];
 
@@ -105,7 +114,6 @@ $('body').on('contextmenu', 'tbody th', function () {
         return;
     }
     DeleteCodes(codesIDs, rowCells);
-    window.event.preventDefault();
 });
 
 function DeleteCodes(codesIDs, cells) {
