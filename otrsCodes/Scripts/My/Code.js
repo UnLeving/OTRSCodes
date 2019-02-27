@@ -138,6 +138,7 @@ function DeleteCodes(codesIDs, cells) {
             } else {
                 DeleteArray_OnSuccess(cells);
             }
+            RegionChanged($("#regionChange").val());
             document.getElementById("Logs").value = "200 OK";
             $('#loader').hide();
         },
@@ -153,11 +154,7 @@ function DeleteArray_OnSuccess(cells) {
 }
 
 function DeleteAllTableCodes_OnSuccess(cells) {
-    for (var i = 0; i < cells.length; ++i) {
-        for (var j = 2; j < 12; ++j) {
-            $(cells[i].cells[j]).css('background-color', '#FFFFFF');
-        }
-    }
+    $(cells).css('background-color', '#FFFFFF');
 }
 
 function DeleteInheritedCode(rootId, code) {
