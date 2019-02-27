@@ -62,12 +62,15 @@ $('body').on('contextmenu', 'thead th', function () {
 $('body').on('contextmenu', 'tbody td', function () {
     var codesIDs = [];
     var rowCells = [];
+    var cells = [];
     if (cntrlIsPressed) {
         rowCells = $(this.closest('tbody')).children();
         for (var i = 0; i < rowCells.length; ++i) {
             for (var j = 2; j < 12; ++j) {
-                if (rowCells[i].cells[j].id !== "0")
+                if (rowCells[i].cells[j].id !== "0") {
                     codesIDs.push(rowCells[i].cells[j].id);
+                    cells.push(rowCells[i].cells[j]);
+                }
             }
         }
         if (codesIDs.length === 0) {
@@ -87,10 +90,10 @@ $('body').on('contextmenu', 'tbody td', function () {
             return;
         }
         codesIDs.push(this.id);
-        rowCells.push(this);
+        cells.push(this);
     }
 
-    DeleteCodes(codesIDs, rowCells);
+    DeleteCodes(codesIDs, cells);
     window.event.preventDefault();
 });
 
@@ -103,21 +106,25 @@ $('body').on('contextmenu', 'tbody th', function () {
     }
     var rowCells = $(this).parent().children('td');
     var codesIDs = [];
+    var cells = [];
 
     for (var i = 0; i < rowCells.length; ++i) {
-        if (rowCells[i].id !== "0")
+        if (rowCells[i].id !== "0") {
             codesIDs.push(rowCells[i].id);
+            cells.push(rowCells[i]);
+        }
     }
 
     if (codesIDs.length === 0) {
         document.getElementById("Logs").value = "Client: nothing to delete";
         return;
     }
-    DeleteCodes(codesIDs, rowCells);
+    DeleteCodes(codesIDs, cells);
 });
 
 function DeleteCodes(codesIDs, cells) {
     var isTableSelected = cntrlIsPressed;
+
     $('#loader').show();
     $.ajax({
         url: "/Codes/Delete",
@@ -141,11 +148,8 @@ function DeleteCodes(codesIDs, cells) {
     });
 }
 
-// TODO: wft???
 function DeleteArray_OnSuccess(cells) {
-    for (var i = 0; i <= cells.length; ++i) {
-        $(cells).css('background-color', '#FFFFFF');
-    }
+    $(cells).css('background-color', '#FFFFFF');
 }
 
 function DeleteAllTableCodes_OnSuccess(cells) {
