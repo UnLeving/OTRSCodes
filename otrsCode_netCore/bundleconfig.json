@@ -1,0 +1,12 @@
+[
+  {
+    "outputFileName": "wwwroot/js/bundle.js",
+    "inputFiles": [
+      "wwwroot/js/Admin.js",
+      "wwwroot/js/Code.js",
+      "wwwroot/js/Country.js",
+      "wwwroot/js/Main.js",
+      "wwwroot/js/Network.js"
+    ]
+  }
+]

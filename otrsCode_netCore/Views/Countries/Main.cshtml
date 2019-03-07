@@ -1,0 +1,21 @@
+﻿<div class="form-inline">
+    <div class="form-group">
+        @await Html.PartialAsync("CountryDropDown", "Countries");
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2">
+            <input type="number" id="regionChange" class="form-control form-control-sm" min="0" value="0" maxlength="10" onchange="RegionChanged(this.value)">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button class="btn btn-outline-info btn-sm" onclick="location.href='@Url.Action("Admin", "Admin")'">
+                Admin
+            </button>
+        </div>
+    </div>
+</div>
+<div id="CodesContent"></div>
+<div class="form-group" id="NetworkContent"></div>

@@ -1,0 +1,78 @@
+﻿body {
+    padding-bottom: 20px;
+    font-size: 11.5px;
+}
+
+.list-group {
+    flex-direction: row;
+}
+
+.list-group-item {
+    display: inline-block;
+    float: left;
+    flex-direction: row;
+    margin-bottom: 0px;
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+    .list-group-item:first-child {
+        border-top-left-radius: 0rem;
+        border-top-right-radius: 0rem;
+    }
+
+    .list-group-item:last-child {
+        border-bottom-left-radius: 0rem;
+        border-bottom-right-radius: 0rem;
+    }
+
+.loader {
+    width: 120px;
+    height: 120px;
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+    display: none;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.table {
+    margin-bottom: 0.2rem;
+}
+
+    .table th, .table td {
+        padding: 0rem;
+    }
+
+.form-group {
+    margin-bottom: 0.2rem;
+}
+
+.form-control-sm {
+    height: calc(1.6rem + 2px);
+    padding: 2px;
+    padding-left: 4px;
+    font-size: 11px;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    padding: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
