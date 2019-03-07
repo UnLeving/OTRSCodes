@@ -14,11 +14,24 @@ namespace otrsCode_netCore.Controllers
 {
     public class CountriesController : Controller
     {
-        private Model db = new Model();
+        private ModelContext db;
+
+        public CountriesController(ModelContext context)
+        {
+            db = context;
+        }
+
         readonly string greyColorHEX = "#808080";
 
         public ActionResult Main()
         {
+            List<Country> countries = new List<Country>();
+            foreach (var country in db.Countries)
+            {
+                countries.Add(new Country() { Id = country.Id, Name = $"{country.Code} {country.Name}" });
+            }
+            ViewBag.CountryId = new SelectList(countries, "Id", "Name");
+
             return View();
         }
 
@@ -156,6 +169,7 @@ namespace otrsCode_netCore.Controllers
                 countries.Add(new Country() { Id = country.Id, Name = $"{country.Code} {country.Name}" });
             }
             ViewBag.CountryId = new SelectList(countries, "Id", "Name");
+
             return PartialView();
         }
 

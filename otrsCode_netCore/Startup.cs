@@ -19,7 +19,7 @@ namespace otrsCode_netCore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Model>(options =>
+            services.AddDbContext<ModelContext>(options =>
         options
         .UseLazyLoadingProxies()
         .UseSqlServer(Configuration.GetConnectionString("Default")));

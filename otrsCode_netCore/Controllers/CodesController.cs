@@ -9,7 +9,12 @@ namespace otrsCode_netCore.Controllers
 {
     public class CodesController : Controller
     {
-        private Model _db = new Model();
+        private ModelContext db;
+
+        public CodesController(ModelContext context)
+        {
+            db = context;
+        }
 
         [HttpPost]
         public ActionResult CreateMulti([Bind("CountryId,NetworkId,R,Values")] Codes codes)
@@ -21,7 +26,7 @@ namespace otrsCode_netCore.Controllers
                 // TODO: преобразовать выражение для сравнения коллекций ??
                 foreach (var code in codes.Values)
                 {
-                    var codeInDb = _db.Codes.Where(c => c.R == codes.R && c.Value == code).FirstOrDefault();
+                    var codeInDb = db.Codes.Where(c => c.R == codes.R && c.Value == code).FirstOrDefault();
                     if (codeInDb == null)
                     {
                         #region Reduce codes
@@ -44,7 +49,7 @@ namespace otrsCode_netCore.Controllers
                                     Code _rootCode = null;
                                     foreach (var item in _keyValuePairs)
                                     {
-                                        _rootCode = _db.Codes.Where(c => c.R == item.Key && c.Value == item.Value).FirstOrDefault();
+                                        _rootCode = db.Codes.Where(c => c.R == item.Key && c.Value == item.Value).FirstOrDefault();
                                     }
 
                                     if (_rootCode != null)
@@ -60,7 +65,7 @@ namespace otrsCode_netCore.Controllers
                                             else
                                                 _networkId = codes.NetworkId;
 
-                                            _db.Codes.Add(new Code()
+                                            db.Codes.Add(new Code()
                                             {
                                                 CountryId = codes.CountryId,
                                                 NetworkId = _networkId,
@@ -69,7 +74,7 @@ namespace otrsCode_netCore.Controllers
                                             });
                                         }
                                         // add new code
-                                        _db.Codes.Add(new Code()
+                                        db.Codes.Add(new Code()
                                         {
                                             CountryId = codes.CountryId,
                                             NetworkId = codes.NetworkId,
@@ -78,7 +83,7 @@ namespace otrsCode_netCore.Controllers
                                         });
 
                                         // delete _rootCode
-                                        if (_db.Codes.Remove(_rootCode) != null)
+                                        if (db.Codes.Remove(_rootCode) != null)
                                         {
                                             ++_addedCodes;
                                             break;
@@ -86,14 +91,14 @@ namespace otrsCode_netCore.Controllers
                                     }
                                 }
 
-                                var _inLineDBCodes = _db.Codes.Where(c =>
+                                var _inLineDBCodes = db.Codes.Where(c =>
                                 c.NetworkId == codes.NetworkId &&
                                 c.R == codes.R &&
                                 c.Value.StartsWith(code.Remove(code.Length - 1)));
                                 if (_inLineDBCodes.Count() == 9)
                                 {
                                     string _parentCode = codes.R[codes.R.Length - 1] + code.Remove(code.Length - 1);
-                                    _db.Codes.Add(new Code()
+                                    db.Codes.Add(new Code()
                                     {
                                         CountryId = codes.CountryId,
                                         NetworkId = codes.NetworkId,
@@ -101,7 +106,7 @@ namespace otrsCode_netCore.Controllers
                                         Value = _parentCode
                                     });
                                     ++_addedCodes;
-                                    _db.Codes.RemoveRange(_inLineDBCodes);
+                                    db.Codes.RemoveRange(_inLineDBCodes);
                                     break;
 
                                     // TODO: triger table update
@@ -110,7 +115,7 @@ namespace otrsCode_netCore.Controllers
                             else if (codes.Values.Count() == 10)
                             {
                                 string _parentCode = codes.R[codes.R.Length - 1] + code.Remove(code.Length - 1);
-                                _db.Codes.Add(new Code()
+                                db.Codes.Add(new Code()
                                 {
                                     CountryId = codes.CountryId,
                                     NetworkId = codes.NetworkId,
@@ -122,7 +127,7 @@ namespace otrsCode_netCore.Controllers
                             }
                         }
                         #endregion
-                        _db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, R = codes.R, Value = code });
+                        db.Codes.Add(new Code() { CountryId = codes.CountryId, NetworkId = codes.NetworkId, R = codes.R, Value = code });
 
                         ++_addedCodes;
                     }
@@ -130,14 +135,14 @@ namespace otrsCode_netCore.Controllers
                     {
                         if (codeInDb.NetworkId == codes.NetworkId) continue;
                         codeInDb.NetworkId = codes.NetworkId;
-                        _db.Entry(codeInDb).State = EntityState.Modified;
+                        db.Entry(codeInDb).State = EntityState.Modified;
                         ++_addedCodes;
                     }
                 }
                 if (_addedCodes == 0)
                     return new StatusCodeResult(StatusCodes.Status400BadRequest);
 
-                _db.SaveChanges();
+                db.SaveChanges();
                 return new StatusCodeResult(StatusCodes.Status200OK);
             }
             return new StatusCodeResult(StatusCodes.Status400BadRequest);
@@ -147,7 +152,7 @@ namespace otrsCode_netCore.Controllers
         public ActionResult DeleteInheritedCode([Bind("Id,CountryId,R,Value")] Code code)
         {
             int id = -code.Id;
-            Code rootCode = _db.Codes.Find(id);
+            Code rootCode = db.Codes.Find(id);
             if (rootCode == null)
                 return new StatusCodeResult(StatusCodes.Status400BadRequest);
             for (int i = 0; i < 10; i++)
@@ -155,7 +160,7 @@ namespace otrsCode_netCore.Controllers
                 if (code.Value[code.Value.Length - 1] == i.ToString()[0])
                     continue;
 
-                _db.Codes.Add(new Code()
+                db.Codes.Add(new Code()
                 {
                     CountryId = code.CountryId,
                     NetworkId = rootCode.NetworkId,
@@ -163,10 +168,10 @@ namespace otrsCode_netCore.Controllers
                     Value = code.Value.Remove(code.Value.Length - 1) + i
                 });
             }
-            var c = _db.Codes.Remove(rootCode);
+            var c = db.Codes.Remove(rootCode);
             if (c != null)
             {
-                _db.SaveChanges();
+                db.SaveChanges();
                 return new StatusCodeResult(StatusCodes.Status200OK);
             }
             else
@@ -184,18 +189,18 @@ namespace otrsCode_netCore.Controllers
             Code code;
             foreach (var id in ids)
             {
-                code = _db.Codes.Find(id);
+                code = db.Codes.Find(id);
                 if (code == null)
                 {
                     continue;
                 }
 
-                if (_db.Codes.Remove(code) != null)
+                if (db.Codes.Remove(code) != null)
                     ++_deletedCodes;
             }
             if (_deletedCodes > 0)
             {
-                _db.SaveChanges();
+                db.SaveChanges();
                 return new StatusCodeResult(StatusCodes.Status200OK);
             }
             else
@@ -206,7 +211,7 @@ namespace otrsCode_netCore.Controllers
         {
             if (disposing)
             {
-                _db.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -2,8 +2,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace otrsCode_netCore.Models
 {
-    public class Model : DbContext
+    public class ModelContext : DbContext
     {
+        public ModelContext(DbContextOptions<ModelContext> contextOptions): base(contextOptions)
+        {
+            Database.EnsureCreated();
+        }
+
         public DbSet<Code> Codes { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Country> Countries { get; set; }

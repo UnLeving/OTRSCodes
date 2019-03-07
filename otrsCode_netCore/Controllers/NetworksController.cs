@@ -9,7 +9,12 @@ namespace otrsCode_netCore.Controllers
 {
     public class NetworksController : Controller
     {
-        private Model db = new Model();
+        private ModelContext db;
+
+        public NetworksController(ModelContext context)
+        {
+            db = context;
+        }
 
         public ActionResult Index(int? id)
         {

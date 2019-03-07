@@ -1,14 +1,14 @@
 ﻿<div class="row">
     <div class="col-lg-6 col-md-9 col-sm-12">
-        <div> @await Html.PartialAsync("Create", "Countries"); </div>
-        <div> @await Html.PartialAsync("Create", "Colors"); </div>
-        <div> @await Html.PartialAsync("Create", "Networks"); </div>
+        <div> @await Html.PartialAsync("/Views/Countries/Create.cshtml") </div>
+        <div> @await Html.PartialAsync("/Views/Colors/Create.cshtml") </div>
+        <div> @await Html.PartialAsync("/Views/Networks/Create.cshtml") </div>
         <div>
             @Html.ActionLink("Back to List", "Main", "Countries")
         </div>
     </div>
     <div class="col-lg-6 col-md-9 col-sm-12">
-        @await Html.PartialAsync("ExportCodes", "Countries");
-        @await Html.PartialAsync("RegExp", "Countries");
+        @await Html.PartialAsync("/Views/Countries/ExportCodes.cshtml")
+        @await Html.PartialAsync("/Views/Countries/RegExp.cshtml")
     </div>
 </div>

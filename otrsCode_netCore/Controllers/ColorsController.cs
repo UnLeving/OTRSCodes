@@ -8,7 +8,12 @@ namespace otrsCode_netCore.Controllers
 {
     public class ColorsController : Controller
     {
-        private Model db = new Model();
+        private ModelContext db;
+
+        public ColorsController(ModelContext context)
+        {
+            db = context;
+        }
 
         public ActionResult Index()
         {
