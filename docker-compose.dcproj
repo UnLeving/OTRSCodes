@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Windows</DockerTargetOS>
-    <ProjectGuid>a5541aa4-a1aa-4d1e-a5a4-32657c4ddaf7</ProjectGuid>
+    <ProjectGuid>e54584f5-3aa2-41c2-b78f-3911d6e1f43d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>http://{ServiceIPAddress}</DockerServiceUrl>
     <DockerServiceName>otrscodes</DockerServiceName>

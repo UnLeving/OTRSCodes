@@ -49,5 +49,10 @@ namespace otrsCode_netCore.Models
             modelBuilder.Entity<Network>()
                 .HasMany(e => e.Codes);
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=otrs;Username=postgres;Password=qq");
+        }
     }
 }

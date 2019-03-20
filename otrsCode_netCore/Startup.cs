@@ -19,10 +19,9 @@ namespace otrsCode_netCore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ModelContext>(options =>
-        options
-        .UseLazyLoadingProxies()
-        .UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<ModelContext>(options => options
+        .UseLazyLoadingProxies());
+            //.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
@@ -37,6 +36,11 @@ namespace otrsCode_netCore
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+            });
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
